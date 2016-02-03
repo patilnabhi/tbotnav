@@ -7,6 +7,7 @@ import cv2.cv as cv
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np 
+from rec_fingers import RecognizeNumFingers
 
 class getImg:
     def __init__(self):
@@ -17,9 +18,10 @@ class getImg:
 
         self.cv_window_name = self.node_name
         cv2.namedWindow("Depth Image", 1)
-        cv2.moveWindow("Depth Image", 100, 350)
+        cv2.moveWindow("Depth Image", 20, 350)
 
         self.bridge = CvBridge()
+        self.numFingers = RecognizeNumFingers() 
 
         # self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
@@ -29,7 +31,7 @@ class getImg:
 
     def depth_callback(self, ros_image):
         try:
-            inImg = self.bridge.imgmsg_to_cv2(ros_image, "bgr8")
+            inImg = self.bridge.imgmsg_to_cv2(ros_image, desired_encoding="mono16")
         except CvBridgeError, e:
             print e
 
@@ -40,14 +42,16 @@ class getImg:
         cv2.waitKey(3)        
 
     def process_depth_image(self, inImg):
-        # outImg, num_fingers = output_from_hand_recognization(inImg)
-        outImg = inImg
-        num_fingers = 3
+        # np.clip(inImg, 0, 2**10-1, inImg)
+        # inImg >>= 2
+        # inImg = inImg.astype(np.uint8)
+
+        outImg, num_fingers = self.numFingers.find(inImg)
 
         height, width = inImg.shape[:2]
-        cv2.circle(outImg, (width/2, height/2), 3, [0, 0, 255], 2)
-        cv2.rectangle(outImg, (width/3, height/3), (width*2/3, height*2/3), [255, 0, 0], 2)
-        cv2.putText(outImg, str(num_fingers), (220,180), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0))
+        cv2.circle(outImg, (width/2, height/2), 3, [0, 102, 255], 2)
+        cv2.rectangle(outImg, (width/3, height/3), (width*2/3, height*2/3), [0, 102, 255], 2)
+        cv2.putText(outImg, str(num_fingers), (width/2,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
         
         return outImg
 
