@@ -23,35 +23,41 @@ class getImg:
         self.bridge = CvBridge()
         self.numFingers = RecognizeNumFingers() 
 
-        # self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
-        self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
+        self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
+        # self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
         
         rospy.loginfo("Waiting for image topics...")
         
 
     def depth_callback(self, ros_image):
         try:
-            inImg = self.bridge.imgmsg_to_cv2(ros_image, desired_encoding="mono16")
+            inImg = self.bridge.imgmsg_to_cv2(ros_image)
         except CvBridgeError, e:
             print e
 
-        inImgarr = np.array(inImg, dtype=np.uint8)
+        inImgarr = np.array(inImg, dtype=np.uint16)
+        # inImgarr = cv2.GaussianBlur(inImgarr, (3, 3), 0)
+
+        # cv2.normalize(inImgarr, inImgarr, 0, 1, cv2.NORM_MINMAX) 
+        
         outimg = self.process_depth_image(inImgarr)        
                 
         cv2.imshow("Depth Image", outimg)
         cv2.waitKey(3)        
 
     def process_depth_image(self, inImg):
-        # np.clip(inImg, 0, 2**10-1, inImg)
-        # inImg >>= 2
-        # inImg = inImg.astype(np.uint8)
+        np.clip(inImg, 0, 1023, inImg)
+        inImg >>= 2
+        inImg = inImg.astype(np.uint8)
 
-        outImg, num_fingers = self.numFingers.find(inImg)
-
+        outImg = self.numFingers.find(inImg)
+        num_fingers = 3
+       
         height, width = inImg.shape[:2]
+        # print width
         cv2.circle(outImg, (width/2, height/2), 3, [0, 102, 255], 2)
         cv2.rectangle(outImg, (width/3, height/3), (width*2/3, height*2/3), [0, 102, 255], 2)
-        cv2.putText(outImg, str(num_fingers), (width/2,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
+        cv2.putText(outImg, str(num_fingers), (width/3,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
         
         return outImg
 
