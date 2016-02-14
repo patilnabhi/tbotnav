@@ -12,7 +12,7 @@ class GoToPose():
         rospy.init_node('nav_test', anonymous=False)
 
         #what to do if shut down (e.g. ctrl + C or failure)
-        rospy.on_shutdown(self.shutdown)
+        rospy.on_shutdown(self._shutdown)
 
         
         #tell the action client that we want to spin a thread by default
@@ -77,7 +77,7 @@ class GoToPose():
             if state == GoalStatus.SUCCEEDED:
                 rospy.loginfo("Hooray, reached! :)")
 
-    def shutdown(self):
+    def _shutdown(self):
         rospy.loginfo("Stopped")
 
 
