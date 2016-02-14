@@ -9,9 +9,9 @@
     </include> -->
 
     <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
-    <!-- <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
         <arg name="world_file"   default="worlds/willowgarage.world"/>
-    </include> -->
+    </include>
 
     <!-- <include file="$(find turtlebot_teleop)/launch/ps3_teleop.launch"/> -->
 

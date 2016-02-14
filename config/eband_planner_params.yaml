@@ -5,7 +5,7 @@ EBandPlannerROS:
 
   # velocity limits
   max_vel_lin: 0.5
-  max_vel_th: 1.4
+  max_vel_th: 1.1
   min_vel_lin: 0.3
   min_vel_th: 0.4
   min_in_place_vel_th: 0.1

@@ -50,8 +50,7 @@ class getImg:
         inImg >>= 2
         inImg = inImg.astype(np.uint8)
 
-        outImg = self.numFingers.find(inImg)
-        num_fingers = 3
+        outImg, num_fingers = self.numFingers.find(inImg)
        
         height, width = inImg.shape[:2]
         # print width

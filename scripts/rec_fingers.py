@@ -7,13 +7,20 @@ import numpy as np
 class RecognizeNumFingers:
 	def __init__(self):
 		self.abs_depth_dev = 14
+		self.thresh_deg = 80.0
 
 	def find(self, img):
 		self.height, self.width = img.shape[:2]
 
-		armImg = self._extract_arm(img)		
+		armImg = self._extract_arm(img)	
 
-		return armImg
+		(contours, defects) = self._find_hull_defects(armImg)
+
+		outImg = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+
+		(outImg, num_fingers) = self._detect_num_fingers(contours, defects, outImg)
+
+		return (outImg, num_fingers)
 
 	def _extract_arm(self, img):
 		# find center region of image frame (assume center region is 21 x 21 px)
@@ -26,6 +33,7 @@ class RecognizeNumFingers:
 		'''mask the image such that all pixels whose depth values
 		lie within a particular range are gray and the rest are black
 		'''
+
 		img = np.where(abs(img-median_val) <= self.abs_depth_dev, 128, 0).astype(np.uint8)
 
 		# Apply morphology operation to fill small holes in the image
@@ -48,3 +56,47 @@ class RecognizeNumFingers:
 		ret, floodedImg = cv2.threshold(floodImg, 129, 255, cv2.THRESH_BINARY)
 
 		return floodedImg
+
+	def _find_hull_defects(self, segment):
+		contours, hierarchy = cv2.findContours(segment, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+		max_contour = max(contours, key=cv2.contourArea)
+		epsilon = 0.01*cv2.arcLength(max_contour, True)
+		max_contour = cv2.approxPolyDP(max_contour, epsilon, True)
+
+		hull = cv2.convexHull(max_contour, returnPoints=False)
+		defects = cv2.convexityDefects(max_contour, hull)
+
+		return (max_contour, defects)
+
+	def _detect_num_fingers(self, contours, defects, outimg):
+		if defects is None:
+			return [outimg, 0]
+
+		if len(defects) <= 2:
+			return [outimg, 0]
+
+		num_fingers = 1
+
+		for i in range(defects.shape[0]):
+			start_idx, end_idx, farthest_idx, _ = defects[i, 0]
+			start = tuple(contours[start_idx][0])
+			end = tuple(contours[end_idx][0])
+			far = tuple(contours[farthest_idx][0])
+
+			cv2.line(outimg, start, end, [0, 255, 0], 2)
+
+			if angle_rad(np.subtract(start, far), np.subtract(end, far)) < deg2rad(self.thresh_deg):
+				num_fingers = num_fingers + 1
+				
+				cv2.circle(outimg, far, 5, [0, 255, 0], -1)
+			else:
+				cv2.circle(outimg, far, 5, [0, 0, 255], -1)
+
+		return (outimg, min(5, num_fingers))
+
+def angle_rad(v1, v2):
+	return np.arctan2(np.linalg.norm(np.cross(v1, v2)), np.dot(v1, v2))
+
+def deg2rad(angle_deg):
+	return angle_deg/180.0*np.pi
