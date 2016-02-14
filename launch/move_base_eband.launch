@@ -1,0 +1,65 @@
+<?xml version="1.0"?> 
+
+<launch>
+
+	<!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+        <arg name="rgb_processing" value="false" />
+        <arg name="depth_registration" value="false" />
+        <arg name="depth_processing" value="false" />        
+        <arg name="scan_topic" value="/scan" />
+    </include> -->
+
+    <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
+    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+	    <arg name="world_file"   default="worlds/willowgarage.world"/>
+	</include>
+
+    <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
+	<include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
+
+	<arg name="odom_frame_id"   default="odom"/>
+	<arg name="base_frame_id"   default="base_footprint"/>
+	<arg name="global_frame_id" default="map"/>
+	<arg name="odom_topic" default="odom" />
+	<arg name="laser_topic" default="scan" />
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />   
+		<rosparam file="$(find tbotnav)/config/local_costmap_params.yaml" command="load" />   
+		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/global_planner_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/navfn_global_planner_params.yaml" command="load" />
+
+
+
+	    <param name="base_global_planner" value="navfn/NavfnROS" />  
+		<!-- <rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />
+	    <rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
+	    <rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load"/> -->
+
+	    <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" />
+	    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+
+	    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+	    <remap from="odom" to="$(arg odom_topic)"/>
+	    <remap from="scan" to="$(arg laser_topic)"/>
+
+	</node>
+
+	<node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/willow_map01.yaml" />
+
+	<arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+	<arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+	<arg name="initial_pose_a" default="0.0"/>
+	<include file="$(find turtlebot_navigation)/launch/includes/amcl.launch.xml">
+		<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+		<arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+		<arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+	</include>
+
+</launch>

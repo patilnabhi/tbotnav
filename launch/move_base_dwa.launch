@@ -1,0 +1,36 @@
+<?xml version="1.0"?> 
+
+<launch>
+
+	<!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+        <arg name="rgb_processing" value="false" />
+        <arg name="depth_registration" value="false" />
+        <arg name="depth_processing" value="false" />        
+        <arg name="scan_topic" value="/scan" />
+    </include> -->
+
+    <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
+    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch"/>
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+	    <param name="base_global_planner" value="navfn/NavfnROS" />  
+		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />
+	    <rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
+	    <rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load"/>
+
+	    <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" />
+	    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+
+	    <remap from="cmd_vel" to="/cmd_vel"/>
+	    <remap from="odom" to="/odom"/>
+
+	</node>
+
+	<node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/world_map.yaml.yaml" />
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+	  	<param name="base_frame_id" value="base_footprint" />
+	</node>
+
+</launch>

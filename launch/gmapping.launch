@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    
+    <!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+        <arg name="rgb_processing" value="false" />
+        <arg name="depth_registration" value="false" />
+        <arg name="depth_processing" value="false" />        
+        <arg name="scan_topic" value="/scan" />
+    </include> -->
+
+    <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
+    <!-- <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+        <arg name="world_file"   default="worlds/willowgarage.world"/>
+    </include> -->
+
+    <!-- <include file="$(find turtlebot_teleop)/launch/ps3_teleop.launch"/> -->
+
+    <include file="$(find turtlebot_navigation)/launch/includes/gmapping.launch.xml"/>
+
+</launch>
