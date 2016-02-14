@@ -5,11 +5,12 @@ import sys
 import cv2
 import cv2.cv as cv
 from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import Int16
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np 
 from rec_fingers import RecognizeNumFingers
 
-class getImg:
+class getGes:
     def __init__(self):
         self.node_name = "getImg"
         rospy.init_node(self.node_name)
@@ -25,9 +26,9 @@ class getImg:
 
         self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         # self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
-        
-        rospy.loginfo("Waiting for image topics...")
-        
+        self.num_pub = rospy.Publisher('num_fingers', Int16, queue_size=10)       
+
+        rospy.loginfo("Waiting for image topics...")        
 
     def depth_callback(self, ros_image):
         try:
@@ -37,13 +38,13 @@ class getImg:
 
         inImgarr = np.array(inImg, dtype=np.uint16)
         # inImgarr = cv2.GaussianBlur(inImgarr, (3, 3), 0)
-
         # cv2.normalize(inImgarr, inImgarr, 0, 1, cv2.NORM_MINMAX) 
         
-        outimg = self.process_depth_image(inImgarr)        
+        outImg, self.num_fingers = self.process_depth_image(inImgarr)         
+        self.num_fingers_pub()        
                 
-        cv2.imshow("Depth Image", outimg)
-        cv2.waitKey(3)        
+        cv2.imshow("Depth Image", outImg)
+        cv2.waitKey(3) 
 
     def process_depth_image(self, inImg):
         np.clip(inImg, 0, 1023, inImg)
@@ -58,7 +59,12 @@ class getImg:
         cv2.rectangle(outImg, (width/3, height/3), (width*2/3, height*2/3), [0, 102, 255], 2)
         cv2.putText(outImg, str(num_fingers), (width/3,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
         
-        return outImg
+        return (outImg, num_fingers)
+
+    def num_fingers_pub(self):
+        rate = rospy.Rate(10)
+        self.num_pub.publish(self.num_fingers)
+        rate.sleep()
 
     def cleanup(self):
         print "Shutting down vision node."
@@ -66,7 +72,7 @@ class getImg:
 
 def main(args):
     try:
-        getImg()
+        getGes()
         rospy.spin()
     except KeyboardInterrupt:
         print "Shutting down vision node."    
