@@ -13,7 +13,7 @@
         <arg name="world_file"   default="worlds/willowgarage.world"/>
     </include>
 
-    <!-- <include file="$(find turtlebot_teleop)/launch/ps3_teleop.launch"/> -->
+    <include file="$(find turtlebot_teleop)/launch/ps3_teleop.launch"/>
 
     <include file="$(find turtlebot_navigation)/launch/includes/gmapping.launch.xml"/>
 

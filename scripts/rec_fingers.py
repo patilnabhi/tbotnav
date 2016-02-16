@@ -13,14 +13,16 @@ class RecognizeNumFingers:
 		self.height, self.width = img.shape[:2]
 
 		armImg = self._extract_arm(img)	
+		armImg2 = armImg.copy()
 
 		(contours, defects) = self._find_hull_defects(armImg)
 
-		outImg = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+		outImg = cv2.cvtColor(armImg2, cv2.COLOR_GRAY2RGB)
 
 		(outImg, num_fingers) = self._detect_num_fingers(contours, defects, outImg)
 
 		return (outImg, num_fingers)
+		# return outImg
 
 	def _extract_arm(self, img):
 		# find center region of image frame (assume center region is 21 x 21 px)
@@ -58,24 +60,30 @@ class RecognizeNumFingers:
 		return floodedImg
 
 	def _find_hull_defects(self, segment):
+		# Use cv2 findContours function to find all the contours in segmented img
 		contours, hierarchy = cv2.findContours(segment, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+		# assume largest contour is the one of interest
 		max_contour = max(contours, key=cv2.contourArea)
 		epsilon = 0.01*cv2.arcLength(max_contour, True)
 		max_contour = cv2.approxPolyDP(max_contour, epsilon, True)
 
+		# determine convex hull & convexity defects of the hull
 		hull = cv2.convexHull(max_contour, returnPoints=False)
 		defects = cv2.convexityDefects(max_contour, hull)
 
 		return (max_contour, defects)
 
 	def _detect_num_fingers(self, contours, defects, outimg):
+		# if no defects are present, no fingers are extended
 		if defects is None:
 			return [outimg, 0]
 
+		# some defects are preseent if arm is extended (e.g. thin wrist)
 		if len(defects) <= 2:
 			return [outimg, 0]
 
+		
 		num_fingers = 1
 
 		for i in range(defects.shape[0]):

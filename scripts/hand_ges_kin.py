@@ -26,7 +26,7 @@ class getGes:
 
         self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         # self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
-        self.num_pub = rospy.Publisher('num_fingers', Int16, queue_size=10)       
+        # self.num_pub = rospy.Publisher('num_fingers', Int16, queue_size=10)       
 
         rospy.loginfo("Waiting for image topics...")        
 
@@ -40,8 +40,9 @@ class getGes:
         # inImgarr = cv2.GaussianBlur(inImgarr, (3, 3), 0)
         # cv2.normalize(inImgarr, inImgarr, 0, 1, cv2.NORM_MINMAX) 
         
-        outImg, self.num_fingers = self.process_depth_image(inImgarr)         
-        self.num_fingers_pub()        
+        outImg, self.num_fingers = self.process_depth_image(inImgarr) 
+        # outImg = self.process_depth_image(inImgarr)         
+        # self.num_fingers_pub()        
                 
         cv2.imshow("Depth Image", outImg)
         cv2.waitKey(3) 
@@ -52,6 +53,7 @@ class getGes:
         inImg = inImg.astype(np.uint8)
 
         outImg, num_fingers = self.numFingers.find(inImg)
+        # outImg = self.numFingers.find(inImg)
        
         height, width = inImg.shape[:2]
         # print width
@@ -60,6 +62,7 @@ class getGes:
         cv2.putText(outImg, str(num_fingers), (width/3,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
         
         return (outImg, num_fingers)
+        # return outImg
 
     def num_fingers_pub(self):
         rate = rospy.Rate(10)
