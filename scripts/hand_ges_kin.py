@@ -5,7 +5,7 @@ import sys
 import cv2
 import cv2.cv as cv
 from sensor_msgs.msg import Image, CameraInfo
-from std_msgs.msg import Int16
+from std_msgs.msg import Int32
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np 
 from rec_fingers import RecognizeNumFingers
@@ -26,8 +26,8 @@ class getGes:
 
         self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         # self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
-        # self.num_pub = rospy.Publisher('num_fingers', Int16, queue_size=10)       
-
+        self.num_pub = rospy.Publisher('num_fingers', Int32, queue_size=10, latch=True)       
+        self.img_pub = rospy.Publisher('outImg', Image, queue_size=10)
         rospy.loginfo("Waiting for image topics...")        
 
     def depth_callback(self, ros_image):
@@ -40,12 +40,15 @@ class getGes:
         # inImgarr = cv2.GaussianBlur(inImgarr, (3, 3), 0)
         # cv2.normalize(inImgarr, inImgarr, 0, 1, cv2.NORM_MINMAX) 
         
-        outImg, self.num_fingers = self.process_depth_image(inImgarr) 
-        # outImg = self.process_depth_image(inImgarr)         
-        # self.num_fingers_pub()        
+        self.outImg, self.num_fingers = self.process_depth_image(inImgarr) 
+        # outImg = self.process_depth_image(inImgarr) 
+        # rate = rospy.Rate(1)        
+        self.num_pub.publish(self.num_fingers)
+        self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
                 
-        cv2.imshow("Depth Image", outImg)
-        cv2.waitKey(3) 
+        # cv2.imshow("Depth Image", self.outImg)
+        # cv2.waitKey(3) 
+
 
     def process_depth_image(self, inImg):
         np.clip(inImg, 0, 1023, inImg)
@@ -64,10 +67,15 @@ class getGes:
         return (outImg, num_fingers)
         # return outImg
 
-    def num_fingers_pub(self):
-        rate = rospy.Rate(10)
-        self.num_pub.publish(self.num_fingers)
-        rate.sleep()
+    # def outImg_pub(self):
+    # 	self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+
+
+    # def num_fingers_pub(self):
+    #     rate = rospy.Rate(10)
+    #     # while not rospy.is_shutdown():
+    #     self.num_pub.publish(self.num_fingers)
+    #     rate.sleep()
 
     def cleanup(self):
         print "Shutting down vision node."

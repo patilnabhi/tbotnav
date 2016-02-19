@@ -1,15 +1,64 @@
 #!/usr/bin/env python
 
 import sys
+import numpy as np 
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
+from sensor_msgs.msg import Image
+import rospy
 from move_to_pose_map import GoToPose
+from std_msgs.msg import Int32
 
-test = GoToPose()
+def num_callback(data):
+    global num_fingers
+    num_fingers = data.data
 
-if sys.argv[1] == '1':
-	test.move_to_pose(-9.798, -4.671, 135.0)
+def img_callback(data):
+    bridge = CvBridge()
+    try:
+        img = bridge.imgmsg_to_cv2(data, "bgr8")
+    except CvBridgeError, e:
+        print e
 
-if sys.argv[1] == '2':
-	test.move_to_pose(-10.224, -0.311, 100.0)
+    # img = np.array(img)
+    cv2.imshow("Image", img)
+    cv2.waitKey(3)
 
-if sys.argv[1] == '3':
-	test.move_to_pose(3.618, 0.727, 85.0)
+
+rospy.init_node('move_in_map')
+
+proceed = raw_input('Move the robot? (yes/no): ')
+a = []
+if(proceed == "yes"):
+    proceed = "no"
+    while (proceed == "no"):
+        rospy.Subscriber("outImg", Image, img_callback)
+        rospy.sleep(1)
+        # img = np.array(img, dtype=np.uint16)
+        
+        print "Place your palm parallel to camera & align to center"
+        rospy.sleep(5)
+        for i in range(5):
+            rospy.Subscriber("num_fingers", Int32, num_callback)
+            rospy.sleep(1)
+            a.append(num_fingers)
+        print "Please remove your hand"
+        rospy.sleep(2)
+        option = int(np.mean(a))
+        print "Detected fingers = ", option
+        rospy.sleep(1)
+        proceed = raw_input("Do you want to proceed? (yes/no): ")
+
+print "Robot starting to move..."
+
+
+# test = GoToPose()
+
+# if option == 1:
+#     test.move_to_pose(-9.798, -4.671, 135.0)
+
+# if option == 2:
+#     test.move_to_pose(-10.224, -0.311, 100.0)
+
+# if option == 3:
+#     test.move_to_pose(3.618, 0.727, 85.0)
