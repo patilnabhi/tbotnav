@@ -11,7 +11,7 @@ from math import pi
 
 class GoToPose():
     def __init__(self):
-        rospy.init_node('nav_test', anonymous=False)
+        # rospy.init_node('nav_test', anonymous=False)
 
         #what to do if shut down (e.g. ctrl + C or failure)
         rospy.on_shutdown(self._shutdown)

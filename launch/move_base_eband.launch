@@ -2,17 +2,17 @@
 
 <launch>
 
-	<!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
         <arg name="rgb_processing" value="false" />
         <arg name="depth_registration" value="false" />
         <arg name="depth_processing" value="false" />        
         <arg name="scan_topic" value="/scan" />
-    </include> -->
+    </include>
 
     <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
-    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+    <!-- <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
 	    <arg name="world_file"   default="worlds/willowgarage.world"/>
-	</include>
+	</include> -->
 
     <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
 	<include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
@@ -51,7 +51,9 @@
 
 	</node>
 
-	<node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/willow_map02.yaml" />
+	<arg name="map_file" default="$(env TURTLEBOT_MAP_FILE)"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+	<!-- <node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/willow_map02.yaml" /> -->
 
 	<arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
 	<arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->

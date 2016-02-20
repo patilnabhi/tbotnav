@@ -27,38 +27,43 @@ def img_callback(data):
 
 rospy.init_node('move_in_map')
 
-proceed = raw_input('Move the robot? (yes/no): ')
-a = []
-if(proceed == "yes"):
-    proceed = "no"
-    while (proceed == "no"):
-        rospy.Subscriber("outImg", Image, img_callback)
-        rospy.sleep(1)
-        # img = np.array(img, dtype=np.uint16)
-        
-        print "Place your palm parallel to camera & align to center"
-        rospy.sleep(5)
-        for i in range(5):
-            rospy.Subscriber("num_fingers", Int32, num_callback)
+while not rospy.is_shutdown():
+    proceed = raw_input("Type 'M' to move robot: ")
+    
+    if(proceed == "M"):
+        proceed = "no"
+        while (proceed == "no"):
+            a = []
+            rospy.Subscriber("outImg", Image, img_callback)
             rospy.sleep(1)
-            a.append(num_fingers)
-        print "Please remove your hand"
-        rospy.sleep(2)
-        option = int(np.mean(a))
-        print "Detected fingers = ", option
-        rospy.sleep(1)
-        proceed = raw_input("Do you want to proceed? (yes/no): ")
+            # img = np.array(img, dtype=np.uint16)
+            
+            print "Place your palm parallel to camera & align to center"
+            rospy.sleep(5)
+            for i in range(5):
+                rospy.Subscriber("num_fingers", Int32, num_callback)
+                rospy.sleep(1)
+                a.append(num_fingers)
+                print num_fingers
+            print "Please remove your hand"
+            rospy.sleep(2)
+            # option = int(np.mean(a))
+            option = max(set(a), key=a.count)
+            print "Detected fingers = ", option
+            rospy.sleep(1)
+            proceed = raw_input("Do you want to proceed? (yes/no): ")
 
-print "Robot starting to move..."
+            if proceed == "yes":
+                print "Robot starting to move..."
 
+                # option = 2
+                # test = GoToPose()
 
-# test = GoToPose()
+                # if option == 1:
+                #     test.move_to_pose(-9.798, -4.671, 135.0)
 
-# if option == 1:
-#     test.move_to_pose(-9.798, -4.671, 135.0)
+                # if option == 2:
+                #     test.move_to_pose(-10.224, -0.311, 100.0)
 
-# if option == 2:
-#     test.move_to_pose(-10.224, -0.311, 100.0)
-
-# if option == 3:
-#     test.move_to_pose(3.618, 0.727, 85.0)
+                # if option == 3:
+                #     test.move_to_pose(3.618, 0.727, 85.0)
