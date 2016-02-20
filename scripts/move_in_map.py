@@ -28,6 +28,7 @@ def img_callback(data):
 rospy.init_node('move_in_map')
 
 while not rospy.is_shutdown():
+    option = 0
     proceed = raw_input("Type 'M' to move robot: ")
     
     if(proceed == "M"):
@@ -56,14 +57,14 @@ while not rospy.is_shutdown():
             if proceed == "yes":
                 print "Robot starting to move..."
 
-                # option = 2
-                # test = GoToPose()
+    
+    test = GoToPose()
 
-                # if option == 1:
-                #     test.move_to_pose(-9.798, -4.671, 135.0)
+    if option == 1:
+        test.move_to_pose(4.56, -0.8, 135.0)
 
-                # if option == 2:
-                #     test.move_to_pose(-10.224, -0.311, 100.0)
+    if option == 2:
+        test.move_to_pose(0.56, 1.05, 100.0)
 
-                # if option == 3:
-                #     test.move_to_pose(3.618, 0.727, 85.0)
+    # if option == 3:
+    #     test.move_to_pose(3.618, 0.727, 85.0)
