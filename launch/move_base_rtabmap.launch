@@ -91,7 +91,8 @@
 			<param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
 			<param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/> 
 		</node>
+	</group>
 
 	<include file="$(find tbotnav)/launch/asus_cam.launch"/>
-	
+
 </launch>
