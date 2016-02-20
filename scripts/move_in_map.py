@@ -58,13 +58,13 @@ while not rospy.is_shutdown():
                 print "Robot starting to move..."
 
     
-    test = GoToPose()
+    # test = GoToPose()
 
-    if option == 1:
-        test.move_to_pose(4.56, -0.8, 135.0)
+    # if option == 1:
+    #     test.move_to_pose(4.56, -0.8, 135.0)
 
-    if option == 2:
-        test.move_to_pose(0.56, 1.05, 200.0)
+    # if option == 2:
+    #     test.move_to_pose(0.56, 1.05, 200.0)
 
-    # # if option == 3:
-    # #     test.move_to_pose(3.618, 0.727, 85.0)
+    # # # if option == 3:
+    # # #     test.move_to_pose(3.618, 0.727, 85.0)
