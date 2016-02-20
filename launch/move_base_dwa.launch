@@ -48,7 +48,7 @@
 
 
 	    <param name="base_global_planner" value="navfn/NavfnROS" />
-	    
+
 	    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
 	    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
 	    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
@@ -62,6 +62,7 @@
 
 	</node>
 
-
+	<include file="$(find tbotnav)/launch/asus_cam.launch"/>
+	
 
 </launch>
