@@ -1,0 +1,45 @@
+<launch>
+
+  <!-- Parameters possible to change-->
+    <arg name="camera1_id" default="1d27/0601@3/54" /><!-- here you can change 1@0 by the serial number -->
+    <arg name="camera2_id" default="1d27/0601@3/53" /><!-- here you can change 2@0 by the serial number -->
+    <arg name="camera3_id" default="A70773705335341A" /><!-- here you can change 2@0 by the serial number -->
+
+    <arg name="depth_registration" default="false" />
+
+  <!-- Default parameters-->
+    <arg name="camera1_name" default="kinect1" />
+    <arg name="camera2_name" default="kinect2" />
+    <arg name="camera3_name" default="kinect3" />
+    
+
+ <!-- Putting the time back to real time-->
+    <rosparam>
+       /use_sim_time : false
+    </rosparam>
+
+<!-- Openning Rviz for visualization-->
+<!-- <node name="rviz" pkg="rviz" type="rviz"/> -->
+
+  <!-- Launching first kinect-->
+    <include file="$(find openni2_launch)/launch/openni2.launch">
+        <arg name="device_id" value="$(arg camera1_id)" />
+        <arg name="camera" value="$(arg camera1_name)" />
+        <arg name="depth_registration" value="$(arg depth_registration)" />
+     </include>
+
+ <!-- Launching second kinect-->
+    <include file="$(find openni2_launch)/launch/openni2.launch">
+        <arg name="device_id" value="$(arg camera2_id)" />
+        <arg name="camera" value="$(arg camera2_name)" />
+        <arg name="depth_registration" value="$(arg depth_registration)" />
+     </include>
+
+     <!-- Launching second kinect-->
+    <include file="$(find freenect_launch)/launch/freenect.launch">
+        <arg name="device_id" value="$(arg camera3_id)" />
+        <arg name="camera" value="$(arg camera3_name)" />
+        <arg name="depth_registration" value="$(arg depth_registration)" />
+     </include>
+
+  </launch>

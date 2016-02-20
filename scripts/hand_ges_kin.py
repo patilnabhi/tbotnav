@@ -24,7 +24,7 @@ class getGes:
         self.bridge = CvBridge()
         self.numFingers = RecognizeNumFingers() 
 
-        self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
+        self.depth_sub = rospy.Subscriber("/asus/depth/image_raw", Image, self.depth_callback)
         # self.depth_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.depth_callback)
         self.num_pub = rospy.Publisher('num_fingers', Int32, queue_size=10, latch=True)       
         self.img_pub = rospy.Publisher('outImg', Image, queue_size=10)
