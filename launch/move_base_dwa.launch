@@ -2,35 +2,66 @@
 
 <launch>
 
-	<!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
         <arg name="rgb_processing" value="false" />
         <arg name="depth_registration" value="false" />
         <arg name="depth_processing" value="false" />        
         <arg name="scan_topic" value="/scan" />
-    </include> -->
+    </include>
 
     <!-- <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
-    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch"/>
+    <!-- <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+	    <arg name="world_file"   default="worlds/willowgarage.world"/>
+	</include> -->
+	<arg name="map_file" default="$(env TURTLEBOT_MAP_FILE)"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+	<!-- <node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/willow_map02.yaml" /> -->
+
+	<arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+	<arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+	<arg name="initial_pose_a" default="0.0"/>
+	<include file="$(find turtlebot_navigation)/launch/includes/amcl.launch.xml">
+		<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+		<arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+		<arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+	</include>
+
+    <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
+	<include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
+
+	<arg name="odom_frame_id"   default="odom"/>
+	<arg name="base_frame_id"   default="base_footprint"/>
+	<arg name="global_frame_id" default="map"/>
+	<arg name="odom_topic" default="odom" />
+	<arg name="laser_topic" default="scan" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 
-	    <param name="base_global_planner" value="navfn/NavfnROS" />  
-		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />
-	    <rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
-	    <rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load"/>
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />   
+		<rosparam file="$(find tbotnav)/config/local_costmap_params.yaml" command="load" />   
+		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/dwa_planner_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/global_planner_params.yaml" command="load" />
+		<rosparam file="$(find tbotnav)/config/navfn_global_planner_params.yaml" command="load" />
 
-	    <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" />
-	    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
 
-	    <remap from="cmd_vel" to="/cmd_vel"/>
-	    <remap from="odom" to="/odom"/>
+	    <param name="base_global_planner" value="navfn/NavfnROS" />
+	    
+	    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
+	    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+	    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
+	    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+	    <!-- <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" /> -->
+	    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+
+	    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+	    <remap from="odom" to="$(arg odom_topic)"/>
+	    <remap from="scan" to="$(arg laser_topic)"/>
 
 	</node>
 
-	<node pkg="map_server" type="map_server" name="map_server" args="$(find tbotnav)/config/world_map.yaml.yaml" />
-	<node pkg="amcl" type="amcl" name="amcl" output="screen">
-	  	<param name="base_frame_id" value="base_footprint" />
-	</node>
+
 
 </launch>
