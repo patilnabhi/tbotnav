@@ -63,7 +63,7 @@ while not rospy.is_shutdown():
                 print "Robot starting to move..."
 
                 if option == 2:
-                    moving.move_to_pose(-5.35, 1.559, 0.0)
+                    moving.move_to_pose(-4.323, -1.333, 67.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:
@@ -71,5 +71,5 @@ while not rospy.is_shutdown():
                 # elif option == 5:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 else:
-                    moving.move_to_pose(0.022, 0.884, 10.0)
+                    moving.move_to_pose(-0.846, 2.587, 135.0)
 
