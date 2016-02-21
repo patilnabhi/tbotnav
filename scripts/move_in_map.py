@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import sys
 import numpy as np 
@@ -35,7 +35,7 @@ while not rospy.is_shutdown():
         proceed = "no"
         while (proceed == "no"):
             a = []
-            rospy.Subscriber("outImg", Image, img_callback)
+            rospy.Subscriber("hand_img", Image, img_callback)
             rospy.sleep(1)
             # img = np.array(img, dtype=np.uint16)
             
