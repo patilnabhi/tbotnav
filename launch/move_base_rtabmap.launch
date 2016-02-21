@@ -32,7 +32,8 @@
 		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />   
 		<rosparam file="$(find tbotnav)/config/local_costmap_params.yaml" command="load" />   
 		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" />
-		<rosparam file="$(find tbotnav)/config/dwa_planner_params.yaml" command="load" />
+		<!-- <rosparam file="$(find tbotnav)/config/dwa_planner_params.yaml" command="load" /> -->
+		<rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load" />
 		<rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
 		<rosparam file="$(find tbotnav)/config/global_planner_params.yaml" command="load" />
 		<rosparam file="$(find tbotnav)/config/navfn_global_planner_params.yaml" command="load" />
@@ -43,8 +44,8 @@
 	    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
 	    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
 	    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
-	    <!-- <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" /> -->
-	    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+	    <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" />
+	    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
 
 	    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
 	    <remap from="odom" to="$(arg odom_topic)"/>
