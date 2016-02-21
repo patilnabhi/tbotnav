@@ -49,7 +49,7 @@ while not rospy.is_shutdown():
                 print num_fingers
             print "Please remove your hand"
             rospy.sleep(2)
-            cv2.destroyAllWindows()
+            # cv2.destroyAllWindows()
             # option = int(np.mean(a))
             option = max(set(a), key=a.count)
             print "Detected fingers = ", option
