@@ -20,7 +20,6 @@ def img_callback(data):
     except CvBridgeError, e:
         print e
 
-    # img = np.array(img)
     cv2.imshow("Image", img)
     cv2.waitKey(3)
 
@@ -28,10 +27,12 @@ def img_callback(data):
 rospy.init_node('move_in_map')
 
 while not rospy.is_shutdown():
+    moving = GoToPose()
     option = 0
-    proceed = raw_input("Type 'M' to move robot: ")
+    proceed = raw_input("Enter 'm' to move robot: ")
     
-    if(proceed == "M"):
+    
+    if(proceed == "m"):
         proceed = "no"
         while (proceed == "no"):
             a = []
@@ -48,23 +49,27 @@ while not rospy.is_shutdown():
                 print num_fingers
             print "Please remove your hand"
             rospy.sleep(2)
+            cv2.destroyAllWindows()
             # option = int(np.mean(a))
             option = max(set(a), key=a.count)
             print "Detected fingers = ", option
             rospy.sleep(1)
+
             proceed = raw_input("Do you want to proceed? (yes/no): ")
+
+            find_person = raw_input("Enter the name of person to move to: ")
 
             if proceed == "yes":
                 print "Robot starting to move..."
 
-    
-    # test = GoToPose()
+                # if option == 2:
+                #     moving.move_to_pose(4.56, -0.8, 135.0)
+                # elif option == 3:
+                #     moving.move_to_pose(4.56, -0.8, 135.0)
+                # elif option == 4:
+                #     moving.move_to_pose(4.56, -0.8, 135.0)
+                # elif option == 5:
+                #     moving.move_to_pose(4.56, -0.8, 135.0)
+                # else:
+                #     moving.move_to_pose()
 
-    # if option == 1:
-    #     test.move_to_pose(4.56, -0.8, 135.0)
-
-    # if option == 2:
-    #     test.move_to_pose(0.56, 1.05, 200.0)
-
-    # # # if option == 3:
-    # # #     test.move_to_pose(3.618, 0.727, 85.0)
