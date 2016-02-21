@@ -8,7 +8,7 @@
 	<arg name="args"              default=""/>
 	<arg name="version083"        default="false"/>
 	<arg name="rtabmapviz"        default="false"/>
-	<arg name="wait_for_transform"  default="0.1"/>
+	<arg name="wait_fcdor_transform"  default="0.1"/>
 
 	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
         <!-- <arg name="rgb_processing" value="false" />

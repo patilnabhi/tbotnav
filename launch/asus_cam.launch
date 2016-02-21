@@ -1,6 +1,6 @@
 <launch>
 
-    <arg name="camera_id" default="1d27/0601@3/54" />
+    <arg name="camera_id" default="#2" />
     <!-- <arg name="camera_id" default="1d27/0601@3/53" /> -->
 
     <arg name="depth_registration" default="false" />
