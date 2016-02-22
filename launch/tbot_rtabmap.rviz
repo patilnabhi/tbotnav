@@ -427,7 +427,7 @@ Visualization Manager:
         X: 0
         Y: 0
         Z: 0
-      Topic: /move_base/DWAPlannerROS/local_plan
+      Topic: /move_base/EBandPlannerROS/local_plan
       Value: true
   Enabled: true
   Global Options:
@@ -461,10 +461,10 @@ Visualization Manager:
         Z: 0.0223136
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 1.3598
+      Pitch: 1.0598
       Target Frame: base_footprint
       Value: Orbit (rviz)
-      Yaw: 3.12914
+      Yaw: 1.13914
     Saved: ~
 Window Geometry:
   Displays:
