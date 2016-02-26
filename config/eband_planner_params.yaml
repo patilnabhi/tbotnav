@@ -26,20 +26,20 @@ EBandPlannerROS:
   # max_acceleration: 0.5
   # virtual_mass: 1.75
 
-  # connectivity checking
-  eband_min_relative_bubble_overlap_: 0.7
+  # # connectivity checking
+  # eband_min_relative_bubble_overlap_: 0.7
 
-  # bubble geometric bounds
-  eband_tiny_bubble_distance: 0.01
-  eband_tiny_bubble_expansion: 0.01
+  # # bubble geometric bounds
+  # eband_tiny_bubble_distance: 0.01
+  # eband_tiny_bubble_expansion: 0.01
 
-  # optimization - force calculation
-  eband_internal_force_gain: 1.1
-  # default 2.0
-  eband_external_force_gain: 0.9
-  num_iterations_eband_optimization: 2
+  # # optimization - force calculation
+  # eband_internal_force_gain: 1.1
+  # # default 2.0
+  # eband_external_force_gain: 0.9
+  # num_iterations_eband_optimization: 2
 
-  # recursive approximation of bubble equilibrium position based
-  eband_equilibrium_approx_max_recursion_depth: 3
-  eband_equilibrium_relative_overshoot: 0.8
-  eband_significant_force_lower_bound: 0.15
+  # # recursive approximation of bubble equilibrium position based
+  # eband_equilibrium_approx_max_recursion_depth: 3
+  # eband_equilibrium_relative_overshoot: 0.8
+  # eband_significant_force_lower_bound: 0.15
