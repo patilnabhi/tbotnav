@@ -71,7 +71,7 @@
 			<remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
 
 			<!-- output -->
-			<remap unless="$(arg version083)" from="grid_map" to="/odom"/>
+			<remap unless="$(arg version083)" from="grid_map" to="/map"/>
 			<!-- <remap unless="$(arg version083)" from="proj_map" to="/map"/> -->
 
 			<!-- RTAB-Map's parameters: do "rosrun rtabmap rtabmap (double-dash)params" to see the list of available parameters. -->
