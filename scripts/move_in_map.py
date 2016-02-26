@@ -63,7 +63,7 @@ moving = GoToPose()
 #                 print "Robot starting to move..."
 
 #                 if option == 2:
-moving.move_to_pose(1.0, 0.0, 0.0)
+moving.move_to_pose(0.0, 0.0, 0.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:
