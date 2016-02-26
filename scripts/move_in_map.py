@@ -26,50 +26,50 @@ def img_callback(data):
 
 rospy.init_node('move_in_map')
 
-while not rospy.is_shutdown():
-    moving = GoToPose()
-    option = 0
-    proceed = raw_input("Enter 'm' to move robot: ")
+# while not rospy.is_shutdown():
+moving = GoToPose()
+#     option = 0
+#     proceed = raw_input("Enter 'm' to move robot: ")
     
     
-    if(proceed == "m"):
-        proceed = "no"
-        while (proceed == "no"):
-            a = []
-            rospy.Subscriber("hand_img", Image, img_callback)
-            rospy.sleep(1)
-            # img = np.array(img, dtype=np.uint16)
+#     if(proceed == "m"):
+#         proceed = "no"
+#         while (proceed == "no"):
+#             a = []
+#             rospy.Subscriber("hand_img", Image, img_callback)
+#             rospy.sleep(1)
+#             # img = np.array(img, dtype=np.uint16)
             
-            print "Place your palm parallel to camera & align to center"
-            rospy.sleep(5)
-            for i in range(5):
-                rospy.Subscriber("num_fingers", Int32, num_callback)
-                rospy.sleep(1)
-                a.append(num_fingers)
-                print num_fingers
-            print "Please remove your hand"
-            rospy.sleep(2)
-            # cv2.destroyAllWindows()
-            # option = int(np.mean(a))
-            option = max(set(a), key=a.count)
-            print "Detected fingers = ", option
-            rospy.sleep(1)
+#             print "Place your palm parallel to camera & align to center"
+#             rospy.sleep(5)
+#             for i in range(5):
+#                 rospy.Subscriber("num_fingers", Int32, num_callback)
+#                 rospy.sleep(1)
+#                 a.append(num_fingers)
+#                 print num_fingers
+#             print "Please remove your hand"
+#             rospy.sleep(2)
+#             # cv2.destroyAllWindows()
+#             # option = int(np.mean(a))
+#             option = max(set(a), key=a.count)
+#             print "Detected fingers = ", option
+#             rospy.sleep(1)
 
-            proceed = raw_input("Do you want to proceed? (yes/no): ")
+#             proceed = raw_input("Do you want to proceed? (yes/no): ")
 
-            find_person = raw_input("Enter the name of person to move to: ")
+#             find_person = raw_input("Enter the name of person to move to: ")
 
-            if proceed == "yes":
-                print "Robot starting to move..."
+#             if proceed == "yes":
+#                 print "Robot starting to move..."
 
-                if option == 2:
-                    moving.move_to_pose(-4.323, -1.333, 67.0)
+#                 if option == 2:
+moving.move_to_pose(1.0, 0.0, 0.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 5:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
-                else:
-                    moving.move_to_pose(-0.846, 2.587, 135.0)
+                # else:
+                #     moving.move_to_pose(-0.846, 2.587, 135.0)
 
