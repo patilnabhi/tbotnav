@@ -25,7 +25,7 @@ class FaceRecognition:
         self.train_faces()
 
         self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
-        self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
+        self.img_pub = rospy.Publisher('detect_face', Image, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -39,7 +39,7 @@ class FaceRecognition:
         self.outImg = self.process_image(inImgarr)         
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
 
-        cv2.imshow("Face Image", self.outImg)
+        cv2.imshow("Recognise Face", self.outImg)
         cv2.waitKey(3)
 
     def process_image(self, inImg):
@@ -56,7 +56,10 @@ class FaceRecognition:
             prediction = self.model.predict(face_resize)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-            cv2.putText(frame, '%s - %.2f' % (self.names[prediction[0]], prediction[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+            if prediction[1]<500:
+                cv2.putText(frame, '%s - %.0f' % (self.names[prediction[0]],prediction[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+            else:
+                cv2.putText(frame, 'Unknown', (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
 
         return frame
 
