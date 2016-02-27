@@ -23,8 +23,11 @@ def img_callback(data):
     cv2.imshow("Image", img)
     cv2.waitKey(3)
 
+# def qr_callback(data):
+#     global 
 
-rospy.init_node('move_in_map')
+
+rospy.init_node('move_my_turtle')
 
 # while not rospy.is_shutdown():
 # moving = GoToPose()
@@ -63,7 +66,7 @@ rospy.init_node('move_in_map')
 #                 print "Robot starting to move..."
 
 #                 if option == 2:
-# moving.move_to_pose(1.7, -1.4, 0.0)
+moving.move_to_pose(0.0, 0.0, 120.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:

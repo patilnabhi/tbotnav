@@ -95,5 +95,6 @@
 		</node>
 	</group>
 
+	<include file="$(find tbotnav)/launch/alvar.launch"/>
 	<include file="$(find tbotnav)/launch/asus_cam.launch"/>
 </launch>
