@@ -1,4 +1,3 @@
-
 GlobalPlanner:                                  # Also see: http://wiki.ros.org/global_planner
   old_navfn_behavior: false                     # Exactly mirror behavior of navfn, use defaults for other boolean parameters, default false
   use_quadratic: true                           # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true

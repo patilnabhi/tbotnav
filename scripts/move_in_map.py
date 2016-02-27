@@ -8,6 +8,7 @@ from sensor_msgs.msg import Image
 import rospy
 from move_to_pose_map import GoToPose
 from std_msgs.msg import Int32
+from nav_msgs.msg import Odometry
 
 def num_callback(data):
     global num_fingers
@@ -23,11 +24,14 @@ def img_callback(data):
     cv2.imshow("Image", img)
     cv2.waitKey(3)
 
-# def qr_callback(data):
-#     global 
+def odometryCb(msg):
+    print msg.pose.pose 
 
 
 rospy.init_node('move_my_turtle')
+
+rospy.Subscriber('odom', Odometry, odometryCb)
+rospy.spin()
 
 # while not rospy.is_shutdown():
 # moving = GoToPose()
@@ -66,7 +70,8 @@ rospy.init_node('move_my_turtle')
 #                 print "Robot starting to move..."
 
 #                 if option == 2:
-moving.move_to_pose(0.0, 0.0, 120.0)
+
+# moving.move_to_pose(0.0, 0.0, 180.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:
