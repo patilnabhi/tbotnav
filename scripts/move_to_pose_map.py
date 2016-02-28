@@ -28,17 +28,15 @@ class GoToPose():
         self.goal.target_pose.header.stamp = rospy.Time.now()
         
         
-    def move_to_pose(self, x1, y1, th):
+    def move_to_pose(self, x1, y1):
         # Goal
         self.goal.target_pose.pose.position.x = x1
         self.goal.target_pose.pose.position.y = y1
-        self.goal.target_pose.pose.position.z = 0.000
+        self.goal.target_pose.pose.position.z = 0.0
         self.goal.target_pose.pose.orientation.x = 0.0
-        self.goal.target_pose.pose.orientation.y = 0.000
-        self.goal.target_pose.pose.orientation.z = 0.000
-        self.goal.target_pose.pose.orientation.w = 0.000
-
-        # th = th*(pi/180.0)
+        self.goal.target_pose.pose.orientation.y = 0.0
+        self.goal.target_pose.pose.orientation.z = 0.0
+        self.goal.target_pose.pose.orientation.w = 0.0
         
         #start moving
         self.move_base.send_goal(self.goal)
