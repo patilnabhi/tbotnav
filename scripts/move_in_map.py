@@ -11,7 +11,7 @@ from std_msgs.msg import Int32
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
-
+from math import pi
 
 # global odom_data
 
@@ -34,20 +34,23 @@ def odom_callback(data):
     odom_data = data.pose.pose.orientation
    
 rospy.init_node('move_my_turtle')
-turn_pub = rospy.Publisher('turn_tbot', Twist, queue_size=10)
+turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
 turn = Twist()
 
 
-# # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+
 rate = rospy.Rate(10)
-while not rospy.is_shutdown():
+th=0.0
+# (_, _, th_0) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+while abs(th) < pi/2:
     rospy.Subscriber('odom', Odometry, odom_callback)
     rospy.sleep(0.1)
-    (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w]) 
+    (_, _, th_0) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+    th += th_0 
     turn.linear.x = 0.0
-    turn.angular.z = 0.6
+    turn.angular.z = 0.8
     turn_pub.publish(turn)
-    # rate.sleep()
+    rate.sleep()
     # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
     print th
 
@@ -89,7 +92,7 @@ while not rospy.is_shutdown():
 
 #                 if option == 2:
 
-# moving.move_to_pose(0.0, 0.0, 120.0)
+# moving.move_to_pose(0.0, 0.0, 180.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:

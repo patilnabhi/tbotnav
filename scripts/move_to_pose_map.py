@@ -38,10 +38,8 @@ class GoToPose():
         self.goal.target_pose.pose.orientation.z = 0.000
         self.goal.target_pose.pose.orientation.w = 0.000
 
-        th = th*(pi/180.0)
-
-        self.goal.target_pose.pose = rotate(self.goal.target_pose.pose, 0.00, 0.00, th)
-        # self.goal.target_pose.pose = Pose(Point(p1, p2, 0.000), Quaternion(0.000, 0.000, q3, q4))
+        # th = th*(pi/180.0)
+        
         #start moving
         self.move_base.send_goal(self.goal)
         rospy.loginfo("moving to desired position...")
