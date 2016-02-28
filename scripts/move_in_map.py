@@ -9,6 +9,11 @@ import rospy
 from move_to_pose_map import GoToPose
 from std_msgs.msg import Int32
 from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Twist
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
+
+
+# global odom_data
 
 def num_callback(data):
     global num_fingers
@@ -24,14 +29,27 @@ def img_callback(data):
     cv2.imshow("Image", img)
     cv2.waitKey(3)
 
-def odometryCb(msg):
-    print msg.pose.pose 
-
-
+def odom_callback(data):  
+    global odom_data
+    odom_data = data.pose.pose.orientation
+   
 rospy.init_node('move_my_turtle')
+turn_pub = rospy.Publisher('turn_tbot', Twist, queue_size=10)
+turn = Twist()
 
-rospy.Subscriber('odom', Odometry, odometryCb)
-rospy.spin()
+
+# # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+rate = rospy.Rate(10)
+while not rospy.is_shutdown():
+    rospy.Subscriber('odom', Odometry, odom_callback)
+    rospy.sleep(0.1)
+    (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w]) 
+    turn.linear.x = 0.0
+    turn.angular.z = 0.6
+    turn_pub.publish(turn)
+    # rate.sleep()
+    # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+    print th
 
 # while not rospy.is_shutdown():
 # moving = GoToPose()
@@ -71,7 +89,7 @@ rospy.spin()
 
 #                 if option == 2:
 
-# moving.move_to_pose(0.0, 0.0, 180.0)
+# moving.move_to_pose(0.0, 0.0, 120.0)
                 # elif option == 3:
                 #     moving.move_to_pose(4.56, -0.8, 135.0)
                 # elif option == 4:

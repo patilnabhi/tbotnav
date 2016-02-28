@@ -5,9 +5,9 @@ import rospy
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import actionlib
 from actionlib_msgs.msg import *
-from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
-from math import radians, degrees
+from geometry import rotate_pose_msg_by_euler_angles as rotate 
+from math import pi
+# from geometry_msgs.msg import PoseArray, PoseStamped, PoseWithCovarianceStamped, Point, Quaternion, Twist
 
 class GoToPose():
     def __init__(self):
@@ -23,28 +23,27 @@ class GoToPose():
         self.move_base.wait_for_server(rospy.Duration(5))
 
         #we'll send a goal to the robot to tell it to move to a pose that's near the docking station
-        self.mygoal = MoveBaseGoal()
-        self.mygoal.target_pose.header.frame_id = 'odom'
-        self.mygoal.target_pose.header.stamp = rospy.Time.now()
+        self.goal = MoveBaseGoal()
+        self.goal.target_pose.header.frame_id = 'odom'
+        self.goal.target_pose.header.stamp = rospy.Time.now()
+        
         
     def move_to_pose(self, x1, y1, th):
         # Goal
-        self.mygoal.target_pose.pose.position.x = x1
-        self.mygoal.target_pose.pose.position.y = y1
-        self.mygoal.target_pose.pose.position.z = 0.0
+        self.goal.target_pose.pose.position.x = x1
+        self.goal.target_pose.pose.position.y = y1
+        self.goal.target_pose.pose.position.z = 0.000
+        self.goal.target_pose.pose.orientation.x = 0.0
+        self.goal.target_pose.pose.orientation.y = 0.000
+        self.goal.target_pose.pose.orientation.z = 0.000
+        self.goal.target_pose.pose.orientation.w = 0.000
 
-        angle = radians(th)
-        quat = quaternion_from_euler(0.0, 0.0, angle)
+        th = th*(pi/180.0)
 
-        self.mygoal.target_pose.pose.orientation = Quaternion(*quat.tolist())
-        
-
-        # th = th*(pi/180.0)
-
-        # self.goal.target_pose.pose = rotate(self.goal.target_pose.pose, 0.00, 0.00, th)
+        self.goal.target_pose.pose = rotate(self.goal.target_pose.pose, 0.00, 0.00, th)
         # self.goal.target_pose.pose = Pose(Point(p1, p2, 0.000), Quaternion(0.000, 0.000, q3, q4))
         #start moving
-        self.move_base.send_goal(self.mygoal)
+        self.move_base.send_goal(self.goal)
         rospy.loginfo("moving to desired position...")
         #allow TurtleBot up to 60 seconds to complete task
         self.success = self.move_base.wait_for_result(rospy.Duration(60)) 
