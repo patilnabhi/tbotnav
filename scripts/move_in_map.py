@@ -40,14 +40,15 @@ class MoveTbot:
         self.turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)        
         self.rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-            print self.qr_data
+            self.rotate_tbot(0.4)
+            rospy.sleep(20)
         # self.tbot_routine()
 
     def qr_callback(self, data):
         # print data.markers[0].pose.pose.position.x
         # print data.markers[1].pose.pose.position.x
         self.qr_data = data.markers
-        self.i=0
+   
         
         # self.qr_position = data.markers.pose.pose.position
 
@@ -79,27 +80,16 @@ class MoveTbot:
     def face_name_callback(self, data):
         self.face_name = data.data
 
-    def rotate_tbot(self, th_0):        
+    def rotate_tbot(self, speed):        
         # th = th_0
-        
-        while self.i < 100:            
-            # (_, _, th) = euler_from_quaternion([self.odom_orient.x, self.odom_orient.y, self.odom_orient.z, self.odom_orient.w])
-            # if th_0 > np.pi/2:
-            #     th_0 = np.pi - th_0
-            #     if th < 0:
-            #         th = -th
-            #     else:
-            #         th = np.pi - th
-            
+        start = rospy.get_time()
+        time = 0
+        while time < 2*np.pi/speed:           
             self.turn.linear.x = 0.0
-            self.turn.angular.z = 0.4
-
+            self.turn.angular.z = speed
             self.turn_pub.publish(self.turn)
-            # print th - th_0
-            print self.i
-            self.i += 1
-
             self.rate.sleep()
+            time = rospy.get_time() - start
 
     def determine_goal_loc(self, proceed):
         if proceed == 'm':
@@ -183,49 +173,49 @@ if __name__ == '__main__':
 
 # global odom_data
 
-def num_callback(data):
-    global num_fingers
-    num_fingers = data.data
+# def num_callback(data):
+#     global num_fingers
+#     num_fingers = data.data
 
-def img_callback(data):
-    bridge = CvBridge()
-    try:
-        img = bridge.imgmsg_to_cv2(data, "bgr8")
-    except CvBridgeError, e:
-        print e
+# def img_callback(data):
+#     bridge = CvBridge()
+#     try:
+#         img = bridge.imgmsg_to_cv2(data, "bgr8")
+#     except CvBridgeError, e:
+#         print e
 
-    cv2.imshow("Image", img)
-    cv2.waitKey(3)
+#     cv2.imshow("Image", img)
+#     cv2.waitKey(3)
 
-def odom_callback(data):  
-    global odom_data
-    odom_data = data.pose.pose.orientation
+# def odom_callback(data):  
+#     global odom_data
+#     odom_data = data.pose.pose.orientation
    
-rospy.init_node('move_my_turtle')
-turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
-turn = Twist()
+# rospy.init_node('move_my_turtle')
+# turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
+# turn = Twist()
 
 
 
-rate = rospy.Rate(10)
-rospy.Subscriber('odom', Odometry, odom_callback)
-rospy.sleep(0.1)
-(_, _, th_0) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
-th = th_0
-while (th - th_0) < pi/2:
-    rospy.Subscriber('odom', Odometry, odom_callback)
-    rospy.sleep(0.1)
-    (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
-    if th_0 > pi/2:
-        th_0 = pi - th_0
-        th = -th
+# rate = rospy.Rate(10)
+# rospy.Subscriber('odom', Odometry, odom_callback)
+# rospy.sleep(0.1)
+# (_, _, th_0) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+# th = th_0
+# while (th - th_0) < pi/2:
+#     rospy.Subscriber('odom', Odometry, odom_callback)
+#     rospy.sleep(0.1)
+#     (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+#     if th_0 > pi/2:
+#         th_0 = pi - th_0
+#         th = -th
     
-    turn.linear.x = 0.0
-    turn.angular.z = 0.8
-    turn_pub.publish(turn)
-    rate.sleep()
-    # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
-    print (th - th_0)
+#     turn.linear.x = 0.0
+#     turn.angular.z = 0.8
+#     turn_pub.publish(turn)
+#     rate.sleep()
+#     # (_, _, th) = euler_from_quaternion([odom_data.x, odom_data.y, odom_data.z, odom_data.w])
+#     print (th - th_0)
 
 # while not rospy.is_shutdown():
 # moving = GoToPose()
