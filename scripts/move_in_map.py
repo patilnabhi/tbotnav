@@ -23,7 +23,7 @@ class MoveTbot:
 
         self.bridge = CvBridge()
         self.turn = Twist()
-        self.move = GoToPose()
+        move = GoToPose()
 
         self.goal_x = []
         self.goal_y = []
@@ -32,25 +32,37 @@ class MoveTbot:
 
         self.qr_sub = rospy.Subscriber('ar_pose_marker', AlvarMarkers, self.qr_callback)
         self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
-        # self.num_fingers_sub = rospy.Subscriber('num_fingers', Int32, num_fingers_callback)
-        # self.hand_img_sub = rospy.Subscriber('hand_img', Image, hand_img_callback)
+        self.num_fingers_sub = rospy.Subscriber('num_fingers', Int32, self.num_fingers_callback)
+        self.hand_img_sub = rospy.Subscriber('hand_img', Image, self.hand_img_callback)
         # self.face_img_sub = rospy.Subscriber('face_img', Image, face_img_callback)
         # self.face_name_sub = rospy.Subscriber('face_name', String, face_name_callback)
 
         self.turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)        
         self.rate = rospy.Rate(10)
+
         while not rospy.is_shutdown():
-            self.rotate_tbot(0.4)
-            rospy.sleep(20)
-        # self.tbot_routine()
+            print "Gesture to move me"
+            rospy.sleep(3)
+            gesture = self.determine_gesture()
+
+            if gesture == 2: 
+                self.rotate_tbot(2*np.pi)
+                rospy.sleep(5)
+                station_loc = self.find_station()   
+                rospy.sleep(3) 
+                while not station_loc:
+                    station_loc = self.find_station()  
+                    rospy.sleep(3)         
+                
+                move.move_to_pose(station_loc[0], station_loc[1])
+
+            # elif gesture == 3:
+            #     self.rotate_tbot(2*np.pi)
+            #     rospy.sleep(5)
+            #     print "Who would you like me to find? (Use gestures)"
 
     def qr_callback(self, data):
-        # print data.markers[0].pose.pose.position.x
-        # print data.markers[1].pose.pose.position.x
         self.qr_data = data.markers
-   
-        
-        # self.qr_position = data.markers.pose.pose.position
 
     def odom_callback(self, data):
         # print data
@@ -65,8 +77,8 @@ class MoveTbot:
         except CvBridgeError, e:
             print e
 
-        cv2.imshow("Hand Image", self.hand_img)
-        cv2.waitKey(3)
+        # cv2.imshow("Hand Image", self.hand_img)
+        # cv2.waitKey(3)
 
     def face_img_callback(self, ros_image):
         try:
@@ -80,52 +92,58 @@ class MoveTbot:
     def face_name_callback(self, data):
         self.face_name = data.data
 
-    def rotate_tbot(self, speed):        
-        # th = th_0
+    def rotate_tbot(self, dist, factor=1.0):        
         start = rospy.get_time()
         time = 0
-        while time < 2*np.pi/speed:           
+        while time < (dist+factor)/0.8:           
             self.turn.linear.x = 0.0
-            self.turn.angular.z = speed
+            self.turn.angular.z = 0.8
             self.turn_pub.publish(self.turn)
             self.rate.sleep()
             time = rospy.get_time() - start
 
-    def determine_goal_loc(self, proceed):
-        if proceed == 'm':
-            proceed = "n"
-            while (proceed != "y"):
-                a = []               
+    def determine_gesture(self): 
+        cv2.imshow("Hand Image", self.hand_img)
+        cv2.waitKey(3) 
+        rospy.sleep(10)      
+        a = []        
+        for i in range(10):                    
+            a.append(self.num_fingers)
+            print "detected fingers: ", self.num_fingers
 
-                print "Place your palm parallel to camera & align to center"
-                rospy.sleep(5)
-                for i in range(5):                    
-                    a.append(self.num_fingers)
-                    print self.num_fingers
+        gesture = max(set(a), key=a.count) 
+        cv2.destroyAllWindows()
+        return gesture  
 
-                print "Please remove your hand"
-                rospy.sleep(2)
+    def find_station(self):        
+        print "Which station would you like me to go? (Use gestures)"
+        rospy.sleep(5)
+        gesture = self.determine_gesture()
+        if gesture:
+            station_loc = []
+            station_loc = self.qr_tag_loc(gesture)
+            count=0
+            while not station_loc:
+                if count == 10:
+                    break
+                self.rotate_tbot(np.pi/5, 0.4)
+                station_loc = self.qr_tag_loc(gesture)
+                rospy.sleep(3)
+                count += 1
 
-                self.goal_loc = max(set(a), key=a.count)
-                print "Station to move = ", self.goal_loc
-                rospy.sleep(1)
+            return station_loc
 
-                proceed = raw_input("Do you want to proceed? (y/n): ")
+    def qr_tag_loc(self, qr_id):      
+        if qr_data:
+            for i in range(len(qr_data)):
+                if qr_data[i].id == qr_id:
+                    return [qr_data[i].pose.pose.position.x, qr_data[i].pose.pose.position.y]
+        
 
-            if proceed == 'y':
-                self.person = raw_input("Enter the name of person to move to: ")
-
-    def find_qr_tags(self): # Function to store location (x, y) of detected qr tags in an array
-        self.qr_pos = [[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0],[0.0,0.0]]
-        for i in range(len(self.qr_id)):
-            self.qr_pos[self.qr_id[i]] = [self.qr_position.x, self.qr_position.y]
-
-    # def find_person(self):
-
-    def tbot_routine(self):       
-        # for i in range(4):
-        (_, _, th_0) = euler_from_quaternion([self.odom_orient.x, self.odom_orient.y, self.odom_orient.z, self.odom_orient.w])
-        self.rotate_tbot(th_0)
+    # def tbot_routine(self):       
+    #     # for i in range(4):
+    #     (_, _, th_0) = euler_from_quaternion([self.odom_orient.x, self.odom_orient.y, self.odom_orient.z, self.odom_orient.w])
+    #     self.rotate_tbot(th_0)
 
         # while not rospy.is_shutdown():
             
@@ -158,9 +176,6 @@ class MoveTbot:
 
     def _shutdown(self):
         rospy.loginfo("Shutting down node...")
-
-def test():
-    print qr_data
 
 if __name__ == '__main__':
     try:
