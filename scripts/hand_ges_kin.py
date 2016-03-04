@@ -46,24 +46,13 @@ class HandGestures:
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
         # rate.sleep()
                 
-        # cv2.imshow("Depth Image", self.outImg)
-        # cv2.waitKey(3) 
+        cv2.imshow("Depth Image", self.outImg)
+        cv2.waitKey(3) 
 
 
     def process_depth_image(self, inImg):
         np.clip(inImg, 0, 1023, inImg)
         inImg >>= 2
-
-        lower = np.array([0, 48, 80], dtype = "uint8")
-        upper = np.array([20, 255, 255], dtype = "uint8")
-        converted = cv2.cvtColor(inImg, cv2.COLOR_BGR2HSV)
-        skinMask = cv2.inRange(converted, lower, upper)
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
-        skinMask = cv2.erode(skinMask, kernel, iterations = 2)
-        skinMask = cv2.dilate(skinMask, kernel, iterations = 2)
-        skinMask = cv2.GaussianBlur(skinMask, (3, 3), 0)
-        skin = cv2.bitwise_and(inImg, inImg, mask = skinMask)
-
         inImg = inImg.astype(np.uint8)
 
         outImg, num_fingers = self.numFingers.find(inImg)

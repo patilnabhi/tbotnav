@@ -36,7 +36,7 @@ class TrainFisherFaces:
 
     def img_callback(self, image):
         try:
-            inImg = self.bridge.imgmsg_to_cv2(image)
+            inImg = self.bridge.imgmsg_to_cv2(image, 'bgr8')
         except CvBridgeError, e:
             print e    
 
@@ -58,7 +58,7 @@ class TrainFisherFaces:
     def process_image(self, inImg):
         (self.frame_width, self.frame_height) = (112, 92)        
         frame = cv2.flip(inImg,1,0)
-        grayImg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)        
+        grayImg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
         cropped = cv2.resize(grayImg, (grayImg.shape[1] / self.size, grayImg.shape[0] / self.size))        
         faces = self.haar_cascade.detectMultiScale(cropped)
         faces = sorted(faces, key=lambda x: x[3])  
