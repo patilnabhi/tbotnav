@@ -63,11 +63,11 @@ class MoveTbot:
                 station_loc = self.find_station(station_id)
                 print "Moving to: ", station_loc
 
-                station_loc[0] = station_loc[0] - 0.3
-                station_loc[1] = station_loc[1] - 0.3
-                move.move_to_pose(station_loc[0], station_loc[1])
+                goal_x = station_loc[0] - 0.3
+                goal_y = station_loc[1] - 0.3
+                move.move_to_pose(goal_x, goal_y)
 
-                rospy.sleep(30)  
+                # rospy.sleep(30)  
 
                 # rospy.sleep(3) 
                 # while not station_loc:
