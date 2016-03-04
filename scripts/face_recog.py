@@ -34,13 +34,18 @@ class FaceRecognition:
         try:
             inImg = self.bridge.imgmsg_to_cv2(image)
         except CvBridgeError, e:
-            print e        
+            print e 
+                   
         inImgarr = np.array(inImg)
         try:
-            self.outImg = self.process_image(inImgarr)         
+            self.outImg = self.process_image(inImgarr) 
+            rate = rospy.Rate(10)        
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+            rate.sleep()
+
             cv2.imshow("Recognise Face", self.outImg)
             cv2.waitKey(3)
+
         except:
             print "Failed! Ensure data is collected & trained..."
 

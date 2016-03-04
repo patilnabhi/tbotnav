@@ -37,10 +37,15 @@ class TrainFisherFaces:
         try:
             inImg = self.bridge.imgmsg_to_cv2(image)
         except CvBridgeError, e:
-            print e        
+            print e    
+
         inImgarr = np.array(inImg)
         self.outImg = self.process_image(inImgarr)
+        
+        rate = rospy.Rate(10)
         self.train_img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))    
+        rate.sleep()
+
         cv2.namedWindow("Capture Face")
         cv2.imshow('Capture Face', self.outImg)
         cv2.waitKey(3)

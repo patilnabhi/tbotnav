@@ -41,9 +41,10 @@ class HandGestures:
         
         self.outImg, self.num_fingers = self.process_depth_image(inImgarr) 
         # outImg = self.process_depth_image(inImgarr) 
-        # rate = rospy.Rate(1)        
+        rate = rospy.Rate(10)        
         self.num_pub.publish(self.num_fingers)
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+        rate.sleep()
                 
         # cv2.imshow("Depth Image", self.outImg)
         # cv2.waitKey(3) 
