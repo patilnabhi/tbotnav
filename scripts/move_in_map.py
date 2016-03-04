@@ -50,37 +50,37 @@ class MoveTbot:
         self.rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
-            print "Gesture to move me"
-            rospy.sleep(3)
-            self.determine_gesture()
+            # print "Gesture to move me"
+            # rospy.sleep(3)
+            # self.determine_gesture()
 
-            print "You gestured ", self.detected_gesture
-            rospy.sleep(3)
+            # print "You gestured ", self.detected_gesture
+            # rospy.sleep(3)
 
-            if self.detected_gesture == 2:                              
-                rospy.loginfo("Rotating 360 deg...")
-                rospy.sleep(3)
+            # if self.detected_gesture == 2:                              
+            #     rospy.loginfo("Rotating 360 deg...")
+            #     rospy.sleep(3)
 
-                self.rotate_tbot(360.0+135.0)
-                rospy.sleep(3)
+            #     self.rotate_tbot(360.0+135.0)
+            #     rospy.sleep(3)
 
-                print "Which station would you like me to move?"
-                rospy.sleep(3)
-                self.determine_gesture()
+            #     print "Which station would you like me to move?"
+            #     rospy.sleep(3)
+            #     self.determine_gesture()
 
-                station_id = self.detected_gesture
-                print "You gestured ", self.detected_gesture
-                rospy.sleep(3)
+            #     station_id = self.detected_gesture
+            #     print "You gestured ", self.detected_gesture
+            #     rospy.sleep(3)
 
-                station_loc = self.find_station(4)
-                print "Moving to: ", station_loc
+            station_loc = self.find_station(4)
+            print "Moving to: ", station_loc
 
-                goal_x = station_loc[0] - 0.3
-                goal_y = station_loc[1] - 0.3
+            goal_x = station_loc[0] - 0.3
+            goal_y = station_loc[1] - 0.3
 
-                self.move_tbot(goal_x, goal_y)
-                
-                rospy.sleep(30)  
+            self.move_tbot(goal_x, goal_y)
+            
+            rospy.sleep(15)  
 
                 # rospy.sleep(3) 
                 # while not station_loc:
@@ -185,6 +185,7 @@ class MoveTbot:
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         
     def move_tbot(self, goal_x, goal_y):
+    	rospy.sleep(5)
         self.goal.target_pose.pose.position.x = goal_x
         self.goal.target_pose.pose.position.y = goal_y
         self.goal.target_pose.pose.position.z = 0.0
