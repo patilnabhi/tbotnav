@@ -43,11 +43,11 @@ class MoveTbot:
             self.determine_gesture()
 
             print "You gestured ", self.detected_gesture
- 			rospy.sleep(3)
+            rospy.sleep(3)
 
-            if self.detected_gesture == 2:             	            	
-            	rospy.loginfo("Rotating 360 deg...")
-            	rospy.sleep(3)
+            if self.detected_gesture == 2:                              
+                rospy.loginfo("Rotating 360 deg...")
+                rospy.sleep(3)
 
                 self.rotate_tbot(360.0+135.0)
                 rospy.sleep(3)
@@ -125,9 +125,9 @@ class MoveTbot:
             # time = rospy.get_time() - start
 
     def determine_gesture(self): 
-    	# rospy.sleep(5)
-    	print "Place your palm infront of camera."
-    	rospy.sleep(5)
+        # rospy.sleep(5)
+        print "Place your palm infront of camera."
+        rospy.sleep(5)
 
         cv2.imshow("Hand Image", self.hand_img)
         cv2.waitKey(3) 
@@ -141,14 +141,14 @@ class MoveTbot:
             
         # rospy.loginfo("Gesture recognized")
         self.detected_gesture = max(set(a), key=a.count) 
-      	# print gesture
+        # print gesture
         # while not gesture:
-        # 	a = []        
-	       #  for i in range(10):                    
-	       #      a.append(self.num_fingers)
-	       #      # print "detected fingers: ", self.num_fingers
+        #   a = []        
+           #  for i in range(10):                    
+           #      a.append(self.num_fingers)
+           #      # print "detected fingers: ", self.num_fingers
 
-	       #  gesture = max(set(a), key=a.count)
+           #  gesture = max(set(a), key=a.count)
         # cv2.destroyAllWindows()
         # return gesture  
 
