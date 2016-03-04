@@ -112,7 +112,7 @@ class MoveTbot:
         # start = rospy.get_time()
         # time = 0
         num = int(deg/45.0)
-        for i in range(num*10*2):           
+        for i in range(num*10):           
             # self.turn.linear.x = 0.0
             self.turn.angular.z = radians(45.0)
             self.turn_pub.publish(self.turn)
@@ -152,9 +152,9 @@ class MoveTbot:
         station_loc = self.qr_tag_loc(station_id)
         count=0
         while not station_loc:
-            if count == 10:
+            if count == 12:
                 break
-            self.rotate_tbot(45.0)
+            self.rotate_tbot(45.0+45.0)
             station_loc = self.qr_tag_loc(station_id)
             rospy.sleep(3)
             count += 1
