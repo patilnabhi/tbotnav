@@ -24,7 +24,7 @@ class HandGestures:
         self.bridge = CvBridge()
         self.numFingers = RecognizeNumFingers() 
 
-        self.depth_sub = rospy.Subscriber("/asus/depth/image_raw", Image, self.depth_callback)
+        self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.num_pub = rospy.Publisher('num_fingers', Int32, queue_size=10, latch=True)       
         self.img_pub = rospy.Publisher('hand_img', Image, queue_size=10)
         rospy.loginfo("Waiting for image topics...")        
@@ -46,8 +46,8 @@ class HandGestures:
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
         # rate.sleep()
                 
-        # cv2.imshow("Depth Image", self.outImg)
-        # cv2.waitKey(3) 
+        cv2.imshow("Depth Image", self.outImg)
+        cv2.waitKey(3) 
 
 
     def process_depth_image(self, inImg):
@@ -60,9 +60,9 @@ class HandGestures:
        
         height, width = inImg.shape[:2]
         # print width
-        cv2.circle(outImg, (width/2, height/2), 3, [0, 102, 255], 2)
-        cv2.rectangle(outImg, (width/3, height/3), (width*2/3, height*2/3), [0, 102, 255], 2)
-        cv2.putText(outImg, str(num_fingers), (width/3,height/4), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (122, 0, 255))
+        cv2.circle(outImg, (width/2, height/2), 6, [0, 102, 0], 6)
+        cv2.rectangle(outImg, (width/4, height/4), (width*3/4, height*3/4), [0, 102, 255], 4)
+        cv2.putText(outImg, str(num_fingers), (width/2,height/5), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (122, 0, 255))
         
         return (outImg, num_fingers)
         # return outImg

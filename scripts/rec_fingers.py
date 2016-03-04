@@ -65,6 +65,7 @@ class RecognizeNumFingers:
 
 		# assume largest contour is the one of interest
 		max_contour = max(contours, key=cv2.contourArea)
+
 		epsilon = 0.01*cv2.arcLength(max_contour, True)
 		max_contour = cv2.approxPolyDP(max_contour, epsilon, True)
 
@@ -82,7 +83,6 @@ class RecognizeNumFingers:
 		# some defects are preseent if arm is extended (e.g. thin wrist)
 		if len(defects) <= 2:
 			return [outimg, 0]
-
 		
 		num_fingers = 1
 

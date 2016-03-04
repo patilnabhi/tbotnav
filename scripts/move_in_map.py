@@ -12,7 +12,7 @@ from ar_track_alvar_msgs.msg import AlvarMarkers
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
-from math import pi
+from math import pi, radians
 
 class MoveTbot:
     def __init__(self):
@@ -24,9 +24,6 @@ class MoveTbot:
         self.bridge = CvBridge()
         self.turn = Twist()
         move = GoToPose()
-
-        self.goal_x = []
-        self.goal_y = []
 
         self.qr_data = AlvarMarkers()
 
@@ -52,19 +49,22 @@ class MoveTbot:
             	rospy.loginfo("Rotating 360 deg...")
             	rospy.sleep(3)
 
-                self.rotate_tbot(2*np.pi, 1.8)
+                self.rotate_tbot(360.0)
                 rospy.sleep(3)
 
                 print "Which station would you like me to move?"
                 rospy.sleep(3)
                 self.determine_gesture()
 
+                station_id = self.detected_gesture
                 print "You gestured ", self.detected_gesture
                 rospy.sleep(3)
 
-                rospy.sleep(20)
+                station_loc = self.find_station(station_id)
+                print station_loc
 
-                # station_loc = self.find_station()   
+                rospy.sleep(30)  
+
                 # rospy.sleep(3) 
                 # while not station_loc:
                 #     station_loc = self.find_station()  
@@ -108,15 +108,16 @@ class MoveTbot:
     def face_name_callback(self, data):
         self.face_name = data.data
 
-    def rotate_tbot(self, dist, factor=1.0):        
-        start = rospy.get_time()
-        time = 0
-        while time < (dist+factor)/0.8:           
-            self.turn.linear.x = 0.0
-            self.turn.angular.z = 0.8
+    def rotate_tbot(self, deg):        
+        # start = rospy.get_time()
+        # time = 0
+        num = int(deg/45.0)
+        for i in range(num*10):           
+            # self.turn.linear.x = 0.0
+            self.turn.angular.z = radians(45.0)
             self.turn_pub.publish(self.turn)
             self.rate.sleep()
-            time = rospy.get_time() - start
+            # time = rospy.get_time() - start
 
     def determine_gesture(self): 
     	# rospy.sleep(5)
@@ -146,29 +147,25 @@ class MoveTbot:
         # cv2.destroyAllWindows()
         # return gesture  
 
-    def find_station(self):        
-        print "Which station would you like me to go? (Use gestures)"
-        rospy.sleep(5)
-        gesture = self.determine_gesture()
-        if gesture:
-            station_loc = []
-            station_loc = self.qr_tag_loc(gesture)
-            count=0
-            while not station_loc:
-                if count == 10:
-                    break
-                self.rotate_tbot(np.pi/5, 0.4)
-                station_loc = self.qr_tag_loc(gesture)
-                rospy.sleep(3)
-                count += 1
+    def find_station(self, station_id):         
+        station_loc = []
+        station_loc = self.qr_tag_loc(station_id)
+        count=0
+        while not station_loc:
+            if count == 10:
+                break
+            self.rotate_tbot(45.0)
+            station_loc = self.qr_tag_loc(station_id)
+            rospy.sleep(3)
+            count += 1
 
-            return station_loc
+        return station_loc
 
     def qr_tag_loc(self, qr_id):      
-        if qr_data:
-            for i in range(len(qr_data)):
-                if qr_data[i].id == qr_id:
-                    return [qr_data[i].pose.pose.position.x, qr_data[i].pose.pose.position.y]
+        if self.qr_data:
+            for i in range(len(self.qr_data)):
+                if self.qr_data[i].id == qr_id:
+                    return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         
 
     # def tbot_routine(self):       
