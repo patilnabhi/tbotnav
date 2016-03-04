@@ -19,10 +19,13 @@ class FaceRecognition:
         
         self.size = 4
         self.fn_haar = 'haarcascade_frontalface_default.xml'
+        self.haar_cascade = cv2.CascadeClassifier(self.fn_haar)
         self.fn_dir = 'face_data'
+        self.model = cv2.createFisherFaceRecognizer()
+        (self.im_width, self.im_height) = (112, 92)        
 
-        rospy.loginfo("Training...")
-        self.train_faces()
+        rospy.loginfo("Loading data...")
+        self.load_trained_data()
 
         self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
         self.img_pub = rospy.Publisher('detect_face', Image, queue_size=10)
@@ -36,11 +39,15 @@ class FaceRecognition:
         
         inImgarr = np.array(inImg)
 
-        self.outImg = self.process_image(inImgarr)         
-        self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+        
+        try:
+            self.outImg = self.process_image(inImgarr)         
+            self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
 
-        cv2.imshow("Recognise Face", self.outImg)
-        cv2.waitKey(3)
+            cv2.imshow("Recognise Face", self.outImg)
+            cv2.waitKey(3)
+        except:
+            print "Failed! Ensure data is collected & trained..."
 
     def process_image(self, inImg):
         frame = cv2.flip(inImg,1,0)
@@ -63,26 +70,27 @@ class FaceRecognition:
 
         return frame
 
-    def train_faces(self):
-        (images, labels, names, iden) = ([], [], {}, 0)
+    def load_trained_data(self):
+        (names, iden) = ({}, 0)
         for (subdirs, dirs, files) in os.walk(self.fn_dir):
             for subdir in dirs:
                 names[iden] = subdir
-                subjectpath = os.path.join(self.fn_dir, subdir)
-                for filename in os.listdir(subjectpath):
-                    path = subjectpath + '/' + filename
-                    label = iden
-                    images.append(cv2.imread(path, 0))
-                    labels.append(int(label))
+                # subjectpath = os.path.join(self.fn_dir, subdir)
+                # for filename in os.listdir(subjectpath):
+                #     path = subjectpath + '/' + filename
+                #     label = iden
+                #     images.append(cv2.imread(path, 0))
+                #     labels.append(int(label))
                 iden += 1
         self.names = names
-        (self.im_width, self.im_height) = (112, 92)
+        
 
-        (images, labels) = [np.array(lis) for lis in [images, labels]]
+        # (images, labels) = [np.array(lis) for lis in [images, labels]]
 
-        self.model = cv2.createFisherFaceRecognizer()
-        self.model.train(images, labels)
-        self.haar_cascade = cv2.CascadeClassifier(self.fn_haar)
+        self.model.load('fisher_trained_data.xml')
+        # self.model.train(images, labels)
+        # self.model.save('training.xml')
+        
 
     def cleanup(self):
         print "Shutting down vision node."
