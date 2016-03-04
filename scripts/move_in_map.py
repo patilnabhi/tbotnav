@@ -4,6 +4,9 @@ import sys
 import numpy as np 
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+import actionlib
+from actionlib_msgs.msg import *
 from sensor_msgs.msg import Image
 import rospy
 from move_to_pose_map import GoToPose
