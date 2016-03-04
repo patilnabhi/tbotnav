@@ -4,9 +4,6 @@ import sys
 import numpy as np 
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
-from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-import actionlib
-from actionlib_msgs.msg import *
 from sensor_msgs.msg import Image
 import rospy
 from move_to_pose_map import GoToPose
@@ -24,20 +21,12 @@ class MoveTbot:
 
         rospy.on_shutdown(self._shutdown)
 
-        self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
-        rospy.loginfo("waiting for the action server to come up...")
-        #allow up to 5 seconds for the action server to come up
-        self.move_base.wait_for_server(rospy.Duration(5))
 
         self.bridge = CvBridge()
         self.turn = Twist()
         self.move = GoToPose()
 
-        self.goal = MoveBaseGoal()
-        self.goal.target_pose.header.frame_id = 'odom'
-        self.goal.target_pose.header.stamp = rospy.Time.now()
-
-        # self.qr_data = AlvarMarkers()
+        
 
         self.qr_sub = rospy.Subscriber('ar_pose_marker', AlvarMarkers, self.qr_callback)
         self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
@@ -50,37 +39,37 @@ class MoveTbot:
         self.rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
-            # print "Gesture to move me"
-            # rospy.sleep(3)
-            # self.determine_gesture()
+            print "Gesture to move me"
+            rospy.sleep(3)
+            self.determine_gesture()
 
-            # print "You gestured ", self.detected_gesture
-            # rospy.sleep(3)
+            print "You gestured ", self.detected_gesture
+            rospy.sleep(3)
 
-            # if self.detected_gesture == 2:                              
-            #     rospy.loginfo("Rotating 360 deg...")
-            #     rospy.sleep(3)
+            if self.detected_gesture == 2:                              
+                rospy.loginfo("Rotating 360 deg...")
+                rospy.sleep(3)
 
-            #     self.rotate_tbot(360.0+135.0)
-            #     rospy.sleep(3)
+                self.rotate_tbot(360.0+135.0)
+                rospy.sleep(3)
 
-            #     print "Which station would you like me to move?"
-            #     rospy.sleep(3)
-            #     self.determine_gesture()
+                print "Which station would you like me to move?"
+                rospy.sleep(3)
+                self.determine_gesture()
 
-            #     station_id = self.detected_gesture
-            #     print "You gestured ", self.detected_gesture
-            #     rospy.sleep(3)
-            rospy.sleep(5)
-            station_loc = self.find_station(4)
-            print "Moving to: ", station_loc
+                station_id = self.detected_gesture
+                print "You gestured ", self.detected_gesture
 
-            goal_x = station_loc[0] - 0.3
-            goal_y = station_loc[1] - 0.3
+	            rospy.sleep(5)
+	            station_loc = self.find_station(station_id)
+	            print "Moving to: ", station_loc
 
-            self.move_tbot(goal_x, goal_y)
-            
-            rospy.sleep(15)  
+	            goal_x = station_loc[0] - 0.3
+	            goal_y = station_loc[1] - 0.3
+
+	            self.move_tbot(goal_x, goal_y)
+	            
+	            rospy.sleep(15)  
 
                 # rospy.sleep(3) 
                 # while not station_loc:
@@ -186,31 +175,7 @@ class MoveTbot:
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         
     def move_tbot(self, goal_x, goal_y):
-    	# rospy.sleep(5)
-     #    self.goal.target_pose.pose.position.x = goal_x
-     #    self.goal.target_pose.pose.position.y = goal_y
-     #    self.goal.target_pose.pose.position.z = 0.0
-     #    self.goal.target_pose.pose.orientation.x = 0.0
-     #    self.goal.target_pose.pose.orientation.y = 0.0
-     #    self.goal.target_pose.pose.orientation.z = 0.3
-     #    self.goal.target_pose.pose.orientation.w = 0.3
-        
-     #    #start moving
-     #    self.move_base.send_goal(self.goal)
-     #    rospy.loginfo("moving to desired position...")
-     #    #allow TurtleBot up to 60 seconds to complete task
-     #    self.success = self.move_base.wait_for_result(rospy.Duration(60)) 
-
-     #    if not self.success:
-     #        self.move_base.cancel_goal()
-     #        rospy.loginfo("The base failed to reach the desired pose :(")
-     #    else:
-     #        # We made it!
-     #        state = self.move_base.get_state()
-     #        if state == GoalStatus.SUCCEEDED:
-     #            rospy.loginfo("Hooray, reached! :)")
-
-
+    
         self.move.move_to_pose(goal_x, goal_y)
         # rospy.loginfo("Reached target.")
 
