@@ -49,7 +49,7 @@ class MoveTbot:
             	rospy.loginfo("Rotating 360 deg...")
             	rospy.sleep(3)
 
-                self.rotate_tbot(360.0+90.0)
+                self.rotate_tbot(360.0+135.0)
                 rospy.sleep(3)
 
                 print "Which station would you like me to move?"
@@ -61,7 +61,11 @@ class MoveTbot:
                 rospy.sleep(3)
 
                 station_loc = self.find_station(station_id)
-                print station_loc
+                print "Moving to: ", station_loc
+
+                station_loc[0] = station_loc[0] - 0.3
+                station_loc[1] = station_loc[1] - 0.3
+                move.move_to_pose(station_loc[0], station_loc[1])
 
                 rospy.sleep(30)  
 
@@ -154,7 +158,7 @@ class MoveTbot:
         while not station_loc:
             if count == 12:
                 break
-            self.rotate_tbot(45.0+45.0)
+            self.rotate_tbot(90.0)
             station_loc = self.qr_tag_loc(station_id)
             rospy.sleep(3)
             count += 1
