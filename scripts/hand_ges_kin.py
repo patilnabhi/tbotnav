@@ -12,7 +12,7 @@ from rec_fingers import RecognizeNumFingers
 
 class HandGestures:
     def __init__(self):
-        self.node_name = "getImg"
+        self.node_name = "hand_gestures"
         rospy.init_node(self.node_name)
 
         rospy.on_shutdown(self.cleanup)

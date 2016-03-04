@@ -98,4 +98,5 @@
 
 	<include file="$(find tbotnav)/launch/alvar.launch"/>
 	<include file="$(find tbotnav)/launch/asus_cam.launch"/>
+	<node pkg="tbotnav" type="hand_ges_kin.py" respawn="true" name="hand_gestures" output="screen">
 </launch>

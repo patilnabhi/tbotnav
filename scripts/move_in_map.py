@@ -45,16 +45,22 @@ class MoveTbot:
             rospy.sleep(3)
             gesture = self.determine_gesture()
 
-            if gesture == 2: 
-                self.rotate_tbot(2*np.pi)
-                rospy.sleep(5)
-                station_loc = self.find_station()   
-                rospy.sleep(3) 
-                while not station_loc:
-                    station_loc = self.find_station()  
-                    rospy.sleep(3)         
+            print gesture
+
+            # if gesture == 2: 
+            #     self.rotate_tbot(2*np.pi)
+            #     rospy.sleep(5)
+
+            #     print "Rotation Done..."
+            #     rospy.sleep(20)
+
+                # station_loc = self.find_station()   
+                # rospy.sleep(3) 
+                # while not station_loc:
+                #     station_loc = self.find_station()  
+                #     rospy.sleep(3)         
                 
-                move.move_to_pose(station_loc[0], station_loc[1])
+                # move.move_to_pose(station_loc[0], station_loc[1])
 
             # elif gesture == 3:
             #     self.rotate_tbot(2*np.pi)
@@ -109,9 +115,17 @@ class MoveTbot:
         a = []        
         for i in range(10):                    
             a.append(self.num_fingers)
-            print "detected fingers: ", self.num_fingers
+            # print "detected fingers: ", self.num_fingers
 
         gesture = max(set(a), key=a.count) 
+      	# print gesture
+        # while not gesture:
+        # 	a = []        
+	       #  for i in range(10):                    
+	       #      a.append(self.num_fingers)
+	       #      # print "detected fingers: ", self.num_fingers
+
+	       #  gesture = max(set(a), key=a.count)
         cv2.destroyAllWindows()
         return gesture  
 
