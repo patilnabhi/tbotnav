@@ -17,11 +17,11 @@ class TrainFisherFaces:
         self.bridge = CvBridge()
         
         self.size = 4
-        self.fn_haar = 'haarcascade_frontalface_default.xml'
-        self.haar_cascade = cv2.CascadeClassifier(self.fn_haar)
-        self.fn_dir = 'face_data'
-        self.fn_name = sys.argv[1]
-        self.path = os.path.join(self.fn_dir, self.fn_name)
+        face_haar = 'haarcascade_frontalface_default.xml'
+        self.haar_cascade = cv2.CascadeClassifier(face_haar)
+        self.face_dir = 'face_data'
+        self.face_name = sys.argv[1]
+        self.path = os.path.join(self.face_dir, self.face_name)
         self.model = cv2.createFisherFaceRecognizer()
 
         if not os.path.isdir(self.path):
@@ -51,45 +51,51 @@ class TrainFisherFaces:
             self.fisher_train_data()
             rospy.signal_shutdown('done')       
 
-    # Need to...
     def process_image(self, inImg):
         (self.frame_width, self.frame_height) = (112, 92)        
         frame = cv2.flip(inImg,1,0)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)        
-        cropped = cv2.resize(gray, (gray.shape[1] / self.size, gray.shape[0] / self.size))        
+        grayImg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)        
+        cropped = cv2.resize(grayImg, (grayImg.shape[1] / self.size, grayImg.shape[0] / self.size))        
         faces = self.haar_cascade.detectMultiScale(cropped)
-        faces = sorted(faces, key=lambda x: x[3])        
+        faces = sorted(faces, key=lambda x: x[3])  
         if faces:
-            face_i = faces[0]
-            (x, y, w, h) = [v * self.size for v in face_i]
-            face = gray[y:y + h, x:x + w]
+            face_i = faces[0]            
+            x = face_i[0] * self.size
+            y = face_i[1] * self.size
+            w = face_i[2] * self.size
+            h = face_i[3] * self.size
+            face = grayImg[y:y + h, x:x + w]
             face_resize = cv2.resize(face, (self.frame_width, self.frame_height))
-            pin=sorted([int(n[:n.find('.')]) for n in os.listdir(self.path) if n[0]!='.' ]+[0])[-1] + 1
+            img_no = sorted([int(fn[:fn.find('.')]) for fn in os.listdir(self.path) if fn[0]!='.' ]+[0])[-1] + 1
             if self.count % 5 == 0:
-                cv2.imwrite('%s/%s.png' % (self.path, pin), face_resize)
+                cv2.imwrite('%s/%s.png' % (self.path, img_no), face_resize)
                 print "Captured Img: ", self.count/5 + 1
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            cv2.putText(frame, self.fn_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1,(0, 255, 0))            
+            cv2.putText(frame, self.face_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1,(0, 255, 0))            
             self.count += 1 
         return frame
 
-    # Need to...
     def fisher_train_data(self):        
         try:
-            (images, labels, iden) = ([], [], 0)
-            for (subdirs, dirs, files) in os.walk(self.fn_dir):
+            imgs = []
+            tags = []
+            index = 0
+
+            for (subdirs, dirs, files) in os.walk(self.face_dir):
                 for subdir in dirs:
-                    subjectpath = os.path.join(self.fn_dir, subdir)
-                    for filename in os.listdir(subjectpath):
-                        path = subjectpath + '/' + filename
-                        label = iden
-                        images.append(cv2.imread(path, 0))
-                        labels.append(int(label))
-                    iden += 1
-            (images, labels) = [np.array(lis) for lis in [images, labels]]
-            self.model.train(images, labels)
+                    img_path = os.path.join(self.face_dir, subdir)
+                    for fn in os.listdir(img_path):
+                        path = img_path + '/' + fn
+                        tag = index
+                        imgs.append(cv2.imread(path, 0))
+                        tags.append(int(tag))
+                    index += 1
+            (imgs, tags) = [np.array(item) for item in [imgs, tags]]
+
+            self.model.train(imgs, tags)
             self.model.save('fisher_trained_data.xml')
             rospy.loginfo("Training completed successfully.")
+
         except:
             print "Training failed! Ensure that enough data is collected."
 
