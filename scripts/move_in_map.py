@@ -47,12 +47,12 @@ class MoveTbot:
 
             print gesture
 
-            # if gesture == 2: 
-            #     self.rotate_tbot(2*np.pi)
-            #     rospy.sleep(5)
+            if gesture == 2: 
+                self.rotate_tbot(2*np.pi)
+                rospy.sleep(5)
 
-            #     print "Rotation Done..."
-            #     rospy.sleep(20)
+                print "Rotation Done..."
+                rospy.sleep(20)
 
                 # station_loc = self.find_station()   
                 # rospy.sleep(3) 
@@ -112,11 +112,12 @@ class MoveTbot:
         cv2.imshow("Hand Image", self.hand_img)
         cv2.waitKey(3) 
         rospy.sleep(10)      
-        a = []        
+        a = []  
+        rospy.loginfo("Detecting gesture...")      
         for i in range(10):                    
             a.append(self.num_fingers)
-            print "detected fingers: ", self.num_fingers
-
+            
+        # rospy.loginfo("Gesture recognized")
         gesture = max(set(a), key=a.count) 
       	# print gesture
         # while not gesture:
