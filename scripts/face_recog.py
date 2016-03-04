@@ -39,9 +39,7 @@ class FaceRecognition:
         inImgarr = np.array(inImg)
         try:
             self.outImg = self.process_image(inImgarr) 
-            rate = rospy.Rate(10)        
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
-            rate.sleep()
 
             cv2.imshow("Recognise Face", self.outImg)
             cv2.waitKey(3)
@@ -51,6 +49,7 @@ class FaceRecognition:
 
     def process_image(self, inImg):
         frame = cv2.flip(inImg,1,0)
+        # frame = inImg
         grayImg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)        
         cropped = cv2.resize(grayImg, (grayImg.shape[1] / self.size, grayImg.shape[0] / self.size))        
         faces = self.haar_cascade.detectMultiScale(cropped)
@@ -64,7 +63,7 @@ class FaceRecognition:
             face_resize = cv2.resize(face, (self.im_width, self.im_height))
             confidence = self.model.predict(face_resize)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            if confidence[1]<500:
+            if confidence[1]<1000:
                 cv2.putText(frame, '%s - %.0f' % (self.names[confidence[0]],confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
             else:
                 cv2.putText(frame, 'Unknown', (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))

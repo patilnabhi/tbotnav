@@ -42,9 +42,7 @@ class TrainFisherFaces:
         inImgarr = np.array(inImg)
         self.outImg = self.process_image(inImgarr)
         
-        rate = rospy.Rate(10)
         self.train_img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))    
-        rate.sleep()
 
         cv2.namedWindow("Capture Face")
         cv2.imshow('Capture Face', self.outImg)
@@ -64,7 +62,7 @@ class TrainFisherFaces:
         faces = self.haar_cascade.detectMultiScale(cropped)
         faces = sorted(faces, key=lambda x: x[3])  
         if faces:
-            face_i = faces[0]            
+            face_i = faces[0] 
             x = face_i[0] * self.size
             y = face_i[1] * self.size
             w = face_i[2] * self.size
