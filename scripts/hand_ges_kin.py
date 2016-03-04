@@ -46,8 +46,8 @@ class HandGestures:
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
         # rate.sleep()
                 
-        cv2.imshow("Depth Image", self.outImg)
-        cv2.waitKey(3) 
+        # cv2.imshow("Depth Image", self.outImg)
+        # cv2.waitKey(3) 
 
 
     def process_depth_image(self, inImg):
