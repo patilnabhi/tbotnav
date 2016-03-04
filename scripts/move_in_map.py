@@ -65,6 +65,7 @@ class MoveTbot:
 
                 goal_x = station_loc[0] - 0.3
                 goal_y = station_loc[1] - 0.3
+                print goal_x, goal_y
                 move.move_to_pose(goal_x, goal_y)
 
                 # rospy.sleep(30)  
