@@ -23,7 +23,7 @@ class MoveTbot:
 
         self.bridge = CvBridge()
         self.turn = Twist()
-        move = GoToPose()
+        self.move = GoToPose()
 
         self.qr_data = AlvarMarkers()
 
@@ -65,10 +65,10 @@ class MoveTbot:
 
                 goal_x = station_loc[0] - 0.3
                 goal_y = station_loc[1] - 0.3
-                print goal_x, goal_y
-                move.move_to_pose(goal_x, goal_y)
 
-                # rospy.sleep(30)  
+                self.move_tbot(goal_x, goal_y)
+                
+                rospy.sleep(30)  
 
                 # rospy.sleep(3) 
                 # while not station_loc:
@@ -172,6 +172,9 @@ class MoveTbot:
                 if self.qr_data[i].id == qr_id:
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         
+    def move_tbot(self, goal_x, goal_y):
+        self.move.move_to_pose(goal_x, goal_y)
+        rospy.loginfo("Reached target.")
 
     # def tbot_routine(self):       
     #     # for i in range(4):
