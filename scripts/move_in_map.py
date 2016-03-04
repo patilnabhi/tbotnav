@@ -45,14 +45,14 @@ class MoveTbot:
             rospy.sleep(3)
             self.determine_gesture()
 
-            print "You said %d", self.detected_gesture
+            print "You gestured ", self.detected_gesture
  
-            # if self.detected_gesture == 2: 
-            #     self.rotate_tbot(2*np.pi)
-            #     rospy.sleep(5)
+            if self.detected_gesture == 2: 
+                self.rotate_tbot(2*np.pi)
+                rospy.sleep(5)
 
-            #     print "Rotation Done..."
-            #     rospy.sleep(20)
+                print "Rotation Done..."
+                rospy.sleep(20)
 
                 # station_loc = self.find_station()   
                 # rospy.sleep(3) 
@@ -116,7 +116,7 @@ class MoveTbot:
         rospy.loginfo("Detecting gesture...")      
         for i in range(10):                    
             a.append(self.num_fingers)
-            print "Detected fingers: ", a[i]
+            # print "Detected fingers: ", a[i]
             
         # rospy.loginfo("Gesture recognized")
         self.detected_gesture = max(set(a), key=a.count) 
