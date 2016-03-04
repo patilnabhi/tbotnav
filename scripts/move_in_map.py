@@ -115,7 +115,7 @@ class MoveTbot:
         a = []        
         for i in range(10):                    
             a.append(self.num_fingers)
-            # print "detected fingers: ", self.num_fingers
+            print "detected fingers: ", self.num_fingers
 
         gesture = max(set(a), key=a.count) 
       	# print gesture

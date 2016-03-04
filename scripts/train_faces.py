@@ -23,6 +23,7 @@ class TrainFisherFaces:
         self.face_name = sys.argv[1]
         self.path = os.path.join(self.face_dir, self.face_name)
         self.model = cv2.createFisherFaceRecognizer()
+        self.cp_rate = 15
 
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
@@ -48,7 +49,7 @@ class TrainFisherFaces:
         cv2.imshow('Capture Face', self.outImg)
         cv2.waitKey(3)
 
-        if self.count == 10*5:
+        if self.count == 10*self.cp_rate:
             rospy.loginfo("Data Captured!")
             rospy.loginfo("Training Data...")
             self.fisher_train_data()
@@ -70,9 +71,9 @@ class TrainFisherFaces:
             face = grayImg[y:y + h, x:x + w]
             face_resize = cv2.resize(face, (self.frame_width, self.frame_height))
             img_no = sorted([int(fn[:fn.find('.')]) for fn in os.listdir(self.path) if fn[0]!='.' ]+[0])[-1] + 1
-            if self.count % 5 == 0:
+            if self.count % self.cp_rate == 0:
                 cv2.imwrite('%s/%s.png' % (self.path, img_no), face_resize)
-                print "Captured Img: ", self.count/5 + 1
+                print "Captured Img: ", self.count/self.cp_rate + 1
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
             cv2.putText(frame, self.face_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1,(0, 255, 0))            
             self.count += 1 

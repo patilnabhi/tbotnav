@@ -13,6 +13,9 @@ class RecognizeNumFingers:
 		self.height, self.width = img.shape[:2]
 
 		armImg = self._extract_arm(img)	
+
+		
+		
 		armImg2 = armImg.copy()
 
 		(contours, defects) = self._find_hull_defects(armImg)
