@@ -49,7 +49,7 @@ class MoveTbot:
             	rospy.loginfo("Rotating 360 deg...")
             	rospy.sleep(3)
 
-                self.rotate_tbot(360.0)
+                self.rotate_tbot(360.0+90.0)
                 rospy.sleep(3)
 
                 print "Which station would you like me to move?"
@@ -112,7 +112,7 @@ class MoveTbot:
         # start = rospy.get_time()
         # time = 0
         num = int(deg/45.0)
-        for i in range(num*10):           
+        for i in range(num*10*1.6):           
             # self.turn.linear.x = 0.0
             self.turn.angular.z = radians(45.0)
             self.turn_pub.publish(self.turn)
