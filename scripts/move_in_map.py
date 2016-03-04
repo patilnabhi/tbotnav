@@ -83,8 +83,8 @@ class MoveTbot:
         except CvBridgeError, e:
             print e
 
-        # cv2.imshow("Hand Image", self.hand_img)
-        # cv2.waitKey(3)
+        cv2.imshow("Hand Image", self.hand_img)
+        cv2.waitKey(3)
 
     def face_img_callback(self, ros_image):
         try:
