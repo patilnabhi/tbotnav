@@ -112,7 +112,7 @@ class MoveTbot:
         # start = rospy.get_time()
         # time = 0
         num = int(deg/45.0)
-        for i in range(num*10*1.6):           
+        for i in range(num*10*2):           
             # self.turn.linear.x = 0.0
             self.turn.angular.z = radians(45.0)
             self.turn_pub.publish(self.turn)
