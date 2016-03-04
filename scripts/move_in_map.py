@@ -43,16 +43,16 @@ class MoveTbot:
         while not rospy.is_shutdown():
             print "Gesture to move me"
             rospy.sleep(3)
-            gesture = self.determine_gesture()
+            self.determine_gesture()
 
-            print gesture
+            print self.detected_gesture
 
-            if gesture == 2: 
-                self.rotate_tbot(2*np.pi)
-                rospy.sleep(5)
+            # if self.detected_gesture == 2: 
+            #     self.rotate_tbot(2*np.pi)
+            #     rospy.sleep(5)
 
-                print "Rotation Done..."
-                rospy.sleep(20)
+            #     print "Rotation Done..."
+            #     rospy.sleep(20)
 
                 # station_loc = self.find_station()   
                 # rospy.sleep(3) 
@@ -116,9 +116,10 @@ class MoveTbot:
         rospy.loginfo("Detecting gesture...")      
         for i in range(10):                    
             a.append(self.num_fingers)
+            print a[i]
             
         # rospy.loginfo("Gesture recognized")
-        gesture = max(set(a), key=a.count) 
+        self.detected_gesture = max(set(a), key=a.count) 
       	# print gesture
         # while not gesture:
         # 	a = []        
@@ -128,7 +129,7 @@ class MoveTbot:
 
 	       #  gesture = max(set(a), key=a.count)
         cv2.destroyAllWindows()
-        return gesture  
+        # return gesture  
 
     def find_station(self):        
         print "Which station would you like me to go? (Use gestures)"
