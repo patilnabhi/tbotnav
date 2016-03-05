@@ -64,8 +64,15 @@ class MoveTbot:
                 station_loc = self.find_station(station_id)
                 print "Moving to: ", station_loc
 
-                goal_x = station_loc[0] - 0.5
-                goal_y = station_loc[1] - 0.5
+                if station[0]<0:
+                    goal_x = station_loc[0] + 0.3
+                else:
+                    goal_x = station_loc[0] - 0.3
+                if station[1]<0:
+                    goal_y = station_loc[1] + 0.3
+                else:
+                    goal_y = station_loc[1] - 0.3
+                # goal_y = station_loc[1] - 0.3
 
                 self.move_tbot(goal_x, goal_y)
                 
