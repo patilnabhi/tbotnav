@@ -5,7 +5,7 @@ import sys
 import os
 import cv2
 from sensor_msgs.msg import Image, CameraInfo
-from std_msgs.msg import String
+from tbotnav.msg import StringArray
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
@@ -16,7 +16,8 @@ class FaceRecognition:
 
         rospy.on_shutdown(self.cleanup)
         self.bridge = CvBridge()
-        
+        self.face_names = StringArray()
+
         self.size = 4
         face_haar = 'haarcascade_frontalface_default.xml'
         self.haar_cascade = cv2.CascadeClassifier(face_haar)
@@ -29,7 +30,7 @@ class FaceRecognition:
 
         self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
         self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
-        self.name_pub = rospy.Publisher('face_name', String, queue_size=10)
+        self.name_pub = rospy.Publisher('face_names', StringArray, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -40,12 +41,16 @@ class FaceRecognition:
                    
         inImgarr = np.array(inImg)
         try:
-            self.outImg, self.face_names = self.process_image(inImgarr) 
+            self.outImg, self.face_names.data = self.process_image(inImgarr) 
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+            
+            # self.face_names.data = ['a', 'b']
             self.name_pub.publish(self.face_names)
 
             cv2.imshow("Recognise Face", self.outImg)
             cv2.waitKey(3)
+
+            # print self.face_names
 
         except:
             print "Failed! Ensure data is collected & trained..."
