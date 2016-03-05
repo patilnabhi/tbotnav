@@ -70,32 +70,32 @@ class MoveTbot:
 
             count=0
             while count < 3:
-	            print "Which station would you like me to move?"
-	            rospy.sleep(3)
-	            self.determine_gesture()
+                print "Which station would you like me to move?"
+                rospy.sleep(3)
+                self.determine_gesture()
 
-	            station_id = self.detected_gesture
-	            print "You gestured ", self.detected_gesture
-	            rospy.sleep(3)
+                station_id = self.detected_gesture
+                print "You gestured ", self.detected_gesture
+                rospy.sleep(3)
 
-	            station_loc = self.find_station(station_id)
-	            if station_loc:
-		            print "Moving to station ", station_id
-		            if station_loc[0]<0:
-		                goal_x = station_loc[0] + 0.3
-		            else:
-		                goal_x = station_loc[0] - 0.3
-		            if station_loc[1]<0:
-		                goal_y = station_loc[1] + 0.3
-		            else:
-		                goal_y = station_loc[1] - 0.3
-		            self.move_tbot(goal_x, goal_y)
-		            count = 3
-		        else:
-		        	print "Couldn't find station, try again!"
-		        	count += 1
-		        	if count == 3:
-		        		print "Aborting mission..."
+                station_loc = self.find_station(station_id)
+                if station_loc:
+                    print "Moving to station ", station_id
+                    if station_loc[0]<0:
+                        goal_x = station_loc[0] + 0.3
+                    else:
+                        goal_x = station_loc[0] - 0.3
+                    if station_loc[1]<0:
+                        goal_y = station_loc[1] + 0.3
+                    else:
+                        goal_y = station_loc[1] - 0.3
+                    self.move_tbot(goal_x, goal_y)
+                    count = 3
+                else:
+                    print "Couldn't find station, try again!"
+                    count += 1
+                    if count == 3:
+                        print "Aborting mission..."
         
         if self.detected_gesture == 3:  
             rospy.loginfo("Entering person-finder mode...")
@@ -120,26 +120,26 @@ class MoveTbot:
 
             count=1
             found=False
-            while found != True or count < 6:            	
-            	station_loc = self.find_station(count)
-            	if station_loc:
-		            print "Moving to station ", count
-		            if station_loc[0]<0:
-		                goal_x = station_loc[0] + 0.3
-		            else:
-		                goal_x = station_loc[0] - 0.3
-		            if station_loc[1]<0:
-		                goal_y = station_loc[1] + 0.3
-		            else:
-		                goal_y = station_loc[1] - 0.3
-		            self.move_tbot(goal_x, goal_y)
+            while found != True or count < 6:               
+                station_loc = self.find_station(count)
+                if station_loc:
+                    print "Moving to station ", count
+                    if station_loc[0]<0:
+                        goal_x = station_loc[0] + 0.3
+                    else:
+                        goal_x = station_loc[0] - 0.3
+                    if station_loc[1]<0:
+                        goal_y = station_loc[1] + 0.3
+                    else:
+                        goal_y = station_loc[1] - 0.3
+                    self.move_tbot(goal_x, goal_y)
 
-	            	found = self.find_person(name)
-	            	if found:
-	            		rospy.loginfo("I found %s"%name)
-	            		self.rotate_tbot(360.0*3)
+                    found = self.find_person(name)
+                    if found:
+                        rospy.loginfo("I found %s"%name)
+                        self.rotate_tbot(360.0*3)
 
-	            count += 1           
+                count += 1           
 
             rospy.sleep(15)
 
@@ -209,7 +209,7 @@ class MoveTbot:
 
     def qr_tag_loc(self, qr_id):
         if qr_id == 1:
-        	return [0.0, 0.0]
+            return [0.0, 0.0]
 
         elif self.qr_data:
             for i in range(len(self.qr_data)):
@@ -219,18 +219,18 @@ class MoveTbot:
             return []
 
     def find_person(self, name):
-    	cv2.imshow("Face Image", self.face_img)
+        cv2.imshow("Face Image", self.face_img)
         cv2.waitKey(3)
 
-    	count=0
-    	found = False
-    	while count < 12 or found != True:
-    		for i in range(len(face.names)):
-	    		if self.names[i] == name:
-	    			found = True
-    		count += 1
-    		self.rotate_tbot(90.0)
-		return found
+        count=0
+        found = False
+        while count < 12 or found != True:
+            for i in range(len(face.names)):
+                if self.names[i] == name:
+                    found = True
+            count += 1
+            self.rotate_tbot(90.0)
+        return found
         
     def move_tbot(self, goal_x, goal_y):
         self.move.move_to_pose(goal_x, goal_y)
