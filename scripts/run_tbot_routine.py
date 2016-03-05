@@ -141,8 +141,9 @@ class MoveTbot:
 
                         found = self.find_person(name)
                         if found:
-                            rospy.loginfo("I found %s"%name)
-                            self.rotate_tbot(360.0*3)
+                            print "I found ", name
+                            rospy.sleep(5)
+                            # self.rotate_tbot(360.0*3)
 
                     count += 1  
             else:
