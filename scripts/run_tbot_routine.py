@@ -139,9 +139,7 @@ class MoveTbot:
 	            		rospy.loginfo("I found %s"%name)
 	            		self.rotate_tbot(360.0*3)
 
-	            count += 1
-
-            
+	            count += 1           
 
             rospy.sleep(15)
 
