@@ -176,8 +176,8 @@ class MoveTbot:
         except CvBridgeError, e:
             print e
 
-        # cv2.imshow("Face Image", self.face_img)
-        # cv2.waitKey(3)
+        cv2.imshow("Face Image", self.face_img)
+        cv2.waitKey(3)
 
     def face_names_callback(self, data):
         self.face_names = data.data
@@ -235,8 +235,8 @@ class MoveTbot:
         found = False
         while count < 12 and found != True:
             for i in range(len(self.face_names)):
-                if self.names[i] == name:
-                    print self.names[i]
+                if self.face_names[i] == name:
+                    print self.face_names[i]
                     found = True
             count += 1
             self.rotate_tbot(90.0)
