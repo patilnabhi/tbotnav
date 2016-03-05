@@ -47,8 +47,8 @@ class FaceRecognition:
             # self.face_names.data = ['a', 'b']
             self.name_pub.publish(self.face_names)
 
-            cv2.imshow("Recognise Face", self.outImg)
-            cv2.waitKey(3)
+            # cv2.imshow("Recognise Face", self.outImg)
+            # cv2.waitKey(3)
 
             # print self.face_names
 

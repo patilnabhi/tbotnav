@@ -3,14 +3,14 @@
 <launch>
 
     <node name="get_hand_gestures" pkg="tbotnav" type="get_hand_gestures.py" />
-    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <!-- <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
         <param name="video_device" value="/dev/video0" />
         <param name="image_width" value="640" />
         <param name="image_height" value="480" />
         <param name="pixel_format" value="yuyv" />
         <param name="camera_frame_id" value="usb_cam" />
         <param name="io_method" value="mmap"/>
-    </node>
+    </node> -->
     <!-- <node name="face_recog" pkg="tbotnav" type="face_recog.py" /> -->
     <!-- <node name="run_tbot_routine" pkg="tbotnav" type="run_tbot_routine.py" /> -->
 
