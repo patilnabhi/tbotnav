@@ -117,9 +117,9 @@ class MoveTbot:
             print "You gestured ", self.detected_gesture
             rospy.sleep(3)
             # person_data = self.get_person_data.get_data()
-            if person_id:
+            if person_id > 1:
                 person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
-                name = person_data[person_id]
+                name = person_data[person_id-2]
 
                 count=1
                 found=False
@@ -127,6 +127,8 @@ class MoveTbot:
                     station_loc = self.find_station(count)
                     if station_loc:
                         print "Moving to station ", count
+                        if count == 1:
+                            goal_x, goal_y = 0.0, 0.0
                         if station_loc[0]<0:
                             goal_x = station_loc[0] + 0.3
                         else:
@@ -213,10 +215,10 @@ class MoveTbot:
         return station_loc
 
     def qr_tag_loc(self, qr_id):
-        if qr_id == 1:
-            return [0.0, 0.0]
+        # if qr_id == 1:
+        #     return [0.0, 0.0]
 
-        elif self.qr_data:
+        if self.qr_data:
             for i in range(len(self.qr_data)):
                 if self.qr_data[i].id == qr_id:
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
