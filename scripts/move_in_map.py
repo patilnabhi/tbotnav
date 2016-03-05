@@ -58,7 +58,7 @@ class MoveTbot:
                 rospy.loginfo("Rotating 360 deg...")
                 rospy.sleep(1)
 
-                self.rotate_tbot(360.0+135.0)
+                self.rotate_tbot(360.0+120.0)
                 rospy.sleep(3)
 
                 print "Which station would you like me to move?"
@@ -134,7 +134,7 @@ class MoveTbot:
         for i in range(6):
             a.append(self.num_fingers)
             print "Detected fingers: ", a[i]
-            
+
         self.detected_gesture = max(set(a), key=a.count)
 
     def find_station(self, station_id):
@@ -148,7 +148,6 @@ class MoveTbot:
             station_loc = self.qr_tag_loc(station_id)
             rospy.sleep(3)
             count += 1
-
         return station_loc
 
     def qr_tag_loc(self, qr_id):
