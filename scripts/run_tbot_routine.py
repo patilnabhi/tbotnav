@@ -43,7 +43,7 @@ class MoveTbot:
 	        rospy.sleep(3)
 	        # if self.detected_gesture == 5:
 	        begin = 0
-	        while begin != 5:
+	        while begin != 5 or not rospy.is_shutdown():
 	            self.determine_gesture()
 	            begin = self.detected_gesture
 
