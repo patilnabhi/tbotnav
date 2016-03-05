@@ -5,6 +5,7 @@ import sys
 import os
 import cv2
 from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import String
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
@@ -27,7 +28,8 @@ class FaceRecognition:
         self.load_trained_data()
 
         self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
-        self.img_pub = rospy.Publisher('detect_face', Image, queue_size=10)
+        self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
+        self.name_pub = rospy.Publisher('face_name', String, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -38,8 +40,9 @@ class FaceRecognition:
                    
         inImgarr = np.array(inImg)
         try:
-            self.outImg = self.process_image(inImgarr) 
+            self.outImg, self.face_names = self.process_image(inImgarr) 
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+            self.name_pub.publish(self.face_names)
 
             cv2.imshow("Recognise Face", self.outImg)
             cv2.waitKey(3)
@@ -52,6 +55,7 @@ class FaceRecognition:
         grayImg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)        
         cropped = cv2.resize(grayImg, (grayImg.shape[1] / self.size, grayImg.shape[0] / self.size))        
         faces = self.haar_cascade.detectMultiScale(cropped)
+        persons = []
         for i in range(len(faces)):
             face_i = faces[i]
             x = face_i[0] * self.size
@@ -63,10 +67,13 @@ class FaceRecognition:
             confidence = self.model.predict(face_resize)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
             if confidence[1]<1000:
-                cv2.putText(frame, '%s - %.0f' % (self.names[confidence[0]],confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+                person = self.names[confidence[0]]
+                cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
             else:
-                cv2.putText(frame, 'Unknown', (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
-        return frame
+                person = 'Unknown'
+                cv2.putText(frame, person, (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+            persons.append(person)
+        return (frame, persons)
 
     def load_trained_data(self):
         names = {}
