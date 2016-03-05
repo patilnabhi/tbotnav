@@ -173,6 +173,8 @@ class MoveTbot:
             for i in range(len(self.qr_data)):
                 if self.qr_data[i].id == qr_id:
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
+        else:
+            return []
         
     def move_tbot(self, goal_x, goal_y):
     
