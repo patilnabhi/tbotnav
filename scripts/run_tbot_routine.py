@@ -121,9 +121,9 @@ class MoveTbot:
                 person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
                 name = person_data[person_id-2]
 
-                count=1
+                count=2
                 found=False
-                while found != True or count < 6:               
+                while found != True and count < 6:               
                     station_loc = self.find_station(count)
                     if station_loc:
                         print "Moving to station ", count
@@ -140,6 +140,7 @@ class MoveTbot:
                         self.move_tbot(goal_x, goal_y)
 
                         found = self.find_person(name)
+
                         if found:
                             print "I found ", name
                             rospy.sleep(5)
@@ -232,12 +233,15 @@ class MoveTbot:
 
         count=0
         found = False
-        while count < 12 or found != True:
+        while count < 12 and found != True:
             for i in range(len(self.face_names)):
                 if self.names[i] == name:
+                    print self.names[i]
                     found = True
             count += 1
             self.rotate_tbot(90.0)
+            rospy.sleep(3)
+            print count
         return found
         
     def move_tbot(self, goal_x, goal_y):
