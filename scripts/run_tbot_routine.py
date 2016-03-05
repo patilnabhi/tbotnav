@@ -115,31 +115,34 @@ class MoveTbot:
 
             person_id = self.detected_gesture
             # person_data = self.get_person_data.get_data()
-            person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
-            name = person_data[person_id]
+            if person_id:
+                person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
+                name = person_data[person_id]
 
-            count=1
-            found=False
-            while found != True or count < 6:               
-                station_loc = self.find_station(count)
-                if station_loc:
-                    print "Moving to station ", count
-                    if station_loc[0]<0:
-                        goal_x = station_loc[0] + 0.3
-                    else:
-                        goal_x = station_loc[0] - 0.3
-                    if station_loc[1]<0:
-                        goal_y = station_loc[1] + 0.3
-                    else:
-                        goal_y = station_loc[1] - 0.3
-                    self.move_tbot(goal_x, goal_y)
+                count=1
+                found=False
+                while found != True or count < 6:               
+                    station_loc = self.find_station(count)
+                    if station_loc:
+                        print "Moving to station ", count
+                        if station_loc[0]<0:
+                            goal_x = station_loc[0] + 0.3
+                        else:
+                            goal_x = station_loc[0] - 0.3
+                        if station_loc[1]<0:
+                            goal_y = station_loc[1] + 0.3
+                        else:
+                            goal_y = station_loc[1] - 0.3
+                        self.move_tbot(goal_x, goal_y)
 
-                    found = self.find_person(name)
-                    if found:
-                        rospy.loginfo("I found %s"%name)
-                        self.rotate_tbot(360.0*3)
+                        found = self.find_person(name)
+                        if found:
+                            rospy.loginfo("I found %s"%name)
+                            self.rotate_tbot(360.0*3)
 
-                count += 1           
+                    count += 1  
+            else:
+                print "Did not understand your gesture, try again"         
 
             rospy.sleep(15)
 
