@@ -43,10 +43,12 @@ class MoveTbot:
 	        rospy.sleep(3)
 	        # if self.detected_gesture == 5:
 	        begin = 0
-	        while begin != 5 or rospy.is_shutdown() != True:
+	        while begin != 5:
 	            self.determine_gesture()
 	            begin = self.detected_gesture
 
+	        print "You gestured ", self.detected_gesture
+	        rospy.sleep(3)
 	        print "Gesture '2' or '3'"
 	        rospy.sleep(1)
 	        self.determine_gesture()
@@ -136,7 +138,7 @@ class MoveTbot:
         rospy.loginfo("Detecting gesture...")
         for i in range(6):
             a.append(self.num_fingers)
-            print "Detected fingers: ", a[i]
+            # print "Detected fingers: ", a[i]
 
         self.detected_gesture = max(set(a), key=a.count)
 
