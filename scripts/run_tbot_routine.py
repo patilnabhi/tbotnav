@@ -36,58 +36,58 @@ class MoveTbot:
         self.rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
-            self.run_tbot_routine()
+            # self.run_tbot_routine()
 
-    def run_tbot_routine(self):
-        print "Gesture '5' to begin"
-        rospy.sleep(3)
-        # if self.detected_gesture == 5:
-        begin = 0
-        while begin != 5:
-            self.determine_gesture()
-            begin = self.detected_gesture
+    # def run_tbot_routine(self):
+	        print "Gesture '5' to begin"
+	        rospy.sleep(3)
+	        # if self.detected_gesture == 5:
+	        begin = 0
+	        while begin != 5:
+	            self.determine_gesture()
+	            begin = self.detected_gesture
 
-        print "Gesture '2' or '3'"
-        rospy.sleep(1)
-        self.determine_gesture()
+	        print "Gesture '2' or '3'"
+	        rospy.sleep(1)
+	        self.determine_gesture()
 
-        print "You gestured ", self.detected_gesture
-        rospy.sleep(1)
+	        print "You gestured ", self.detected_gesture
+	        rospy.sleep(1)
 
-        if self.detected_gesture == 2:  
-            rospy.loginfo("Entering station-finder mode...")
-            rospy.sleep(3)
+	        if self.detected_gesture == 2:  
+	            rospy.loginfo("Entering station-finder mode...")
+	            rospy.sleep(3)
 
-            rospy.loginfo("Rotating 360 deg...")
-            rospy.sleep(1)
+	            rospy.loginfo("Rotating 360 deg...")
+	            rospy.sleep(1)
 
-            self.rotate_tbot(360.0+120.0)
-            rospy.sleep(3)
+	            self.rotate_tbot(360.0+120.0)
+	            rospy.sleep(3)
 
-            print "Which station would you like me to move?"
-            rospy.sleep(1)
-            self.determine_gesture()
+	            print "Which station would you like me to move?"
+	            rospy.sleep(1)
+	            self.determine_gesture()
 
-            station_id = self.detected_gesture
-            print "You gestured ", self.detected_gesture
-            rospy.sleep(1)
+	            station_id = self.detected_gesture
+	            print "You gestured ", self.detected_gesture
+	            rospy.sleep(1)
 
-            station_loc = self.find_station(station_id)
-            print "Moving to station ", station_id
+	            station_loc = self.find_station(station_id)
+	            print "Moving to station ", station_id
 
-            if station_loc[0]<0:
-                goal_x = station_loc[0] + 0.3
-            else:
-                goal_x = station_loc[0] - 0.3
+	            if station_loc[0]<0:
+	                goal_x = station_loc[0] + 0.3
+	            else:
+	                goal_x = station_loc[0] - 0.3
 
-            if station_loc[1]<0:
-                goal_y = station_loc[1] + 0.3
-            else:
-                goal_y = station_loc[1] - 0.3
+	            if station_loc[1]<0:
+	                goal_y = station_loc[1] + 0.3
+	            else:
+	                goal_y = station_loc[1] - 0.3
 
-            self.move_tbot(goal_x, goal_y)
-            
-            rospy.sleep(15)
+	            self.move_tbot(goal_x, goal_y)
+	            
+	            rospy.sleep(15)
 
     def qr_callback(self, data):
         self.qr_data = data.markers
