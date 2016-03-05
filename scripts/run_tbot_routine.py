@@ -114,6 +114,8 @@ class MoveTbot:
             self.determine_gesture()
 
             person_id = self.detected_gesture
+            print "You gestured ", self.detected_gesture
+            rospy.sleep(3)
             # person_data = self.get_person_data.get_data()
             if person_id:
                 person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
@@ -228,7 +230,7 @@ class MoveTbot:
         count=0
         found = False
         while count < 12 or found != True:
-            for i in range(len(face.names)):
+            for i in range(len(self.face_names)):
                 if self.names[i] == name:
                     found = True
             count += 1
