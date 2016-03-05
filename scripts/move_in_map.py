@@ -39,30 +39,42 @@ class MoveTbot:
         self.rate = rospy.Rate(10)
 
         while not rospy.is_shutdown():
-            print "Gesture to move me"
+            
+            print "Gesture '5' to begin"
             rospy.sleep(3)
+            # if self.detected_gesture == 5:
+            begin = 0
+            while begin != 5:               
+                self.determine_gesture()
+                begin = self.detected_gesture
+
+            print "Gesture '2' or '3'"
+            rospy.sleep(1)
             self.determine_gesture()
 
             print "You gestured ", self.detected_gesture
-            rospy.sleep(3)
+            rospy.sleep(1)
 
-            if self.detected_gesture == 2:                              
-                rospy.loginfo("Rotating 360 deg...")
+            if self.detected_gesture == 2:  
+                rospy.loginfo("Entering station-finder mode...")  
                 rospy.sleep(3)
+
+                rospy.loginfo("Rotating 360 deg...")
+                rospy.sleep(1)
 
                 self.rotate_tbot(360.0+135.0)
                 rospy.sleep(3)
 
                 print "Which station would you like me to move?"
-                rospy.sleep(3)
+                rospy.sleep(1)
                 self.determine_gesture()
 
                 station_id = self.detected_gesture
                 print "You gestured ", self.detected_gesture
+                rospy.sleep(1)
 
-                rospy.sleep(5)
                 station_loc = self.find_station(station_id)
-                print "Moving to: ", station_loc
+                print "Moving to station ", station_id
 
                 if station_loc[0]<0:
                     goal_x = station_loc[0] + 0.3
@@ -136,17 +148,15 @@ class MoveTbot:
     def determine_gesture(self): 
         # rospy.sleep(5)
         print "Place your palm infront of camera."
-        rospy.sleep(5)
-
         cv2.imshow("Hand Image", self.hand_img)
         cv2.waitKey(3) 
 
         rospy.sleep(5)      
         a = []  
         rospy.loginfo("Detecting gesture...")      
-        for i in range(10):                    
+        for i in range(6):                    
             a.append(self.num_fingers)
-            # print "Detected fingers: ", a[i]
+            print "Detected fingers: ", a[i]
             
         # rospy.loginfo("Gesture recognized")
         self.detected_gesture = max(set(a), key=a.count) 
