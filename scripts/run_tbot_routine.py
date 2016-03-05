@@ -45,9 +45,12 @@ class MoveTbot:
         rospy.sleep(3)
         # if self.detected_gesture == 5:
         begin = 0
-        while begin != 5:
+        start = rospy.get_time()
+        while begin != 5 or time_elapsed < 60.0:
             self.determine_gesture()
             begin = self.detected_gesture
+            time_elapsed = rospy.get_time() - start
+            print time_elapsed
 
         print "You gestured ", self.detected_gesture
         rospy.sleep(3)

@@ -28,7 +28,7 @@ class FaceRecognition:
         rospy.loginfo("Loading data...")
         self.load_trained_data()
 
-        self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
+        self.img_sub = rospy.Subscriber("/asus/rgb/image_raw", Image, self.img_callback)
         self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
         self.name_pub = rospy.Publisher('face_names', StringArray, queue_size=10)
         rospy.loginfo("Detecting faces...")        
