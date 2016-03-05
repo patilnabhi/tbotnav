@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <node name="get_hand_gestures" pkg="tbotnav" type="get_hand_gestures.py" />
+    <node name="run_tbot_routine" pkg="tbotnav" type="run_tbot_routine.py" />
+
+</launch>

@@ -6,7 +6,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 import rospy
-from move_to_pose_map import GoToPose
+from move_to_pose import GoToPose
 from std_msgs.msg import Int32
 from ar_track_alvar_msgs.msg import AlvarMarkers
 from nav_msgs.msg import Odometry
