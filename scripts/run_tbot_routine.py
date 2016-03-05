@@ -50,29 +50,29 @@ class MoveTbot:
 	        print "You gestured ", self.detected_gesture
 	        rospy.sleep(3)
 	        print "Gesture '2' or '3'"
-	        rospy.sleep(1)
+	        rospy.sleep(3)
 	        self.determine_gesture()
 
 	        print "You gestured ", self.detected_gesture
-	        rospy.sleep(1)
+	        rospy.sleep(3)
 
 	        if self.detected_gesture == 2:  
 	            rospy.loginfo("Entering station-finder mode...")
 	            rospy.sleep(3)
 
 	            rospy.loginfo("Rotating 360 deg...")
-	            rospy.sleep(1)
+	            rospy.sleep(3)
 
 	            self.rotate_tbot(360.0+120.0)
 	            rospy.sleep(3)
 
 	            print "Which station would you like me to move?"
-	            rospy.sleep(1)
+	            rospy.sleep(3)
 	            self.determine_gesture()
 
 	            station_id = self.detected_gesture
 	            print "You gestured ", self.detected_gesture
-	            rospy.sleep(1)
+	            rospy.sleep(3)
 
 	            station_loc = self.find_station(station_id)
 	            print "Moving to station ", station_id
