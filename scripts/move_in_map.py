@@ -60,16 +60,16 @@ class MoveTbot:
                 station_id = self.detected_gesture
                 print "You gestured ", self.detected_gesture
 
-	            rospy.sleep(5)
-	            station_loc = self.find_station(station_id)
-	            print "Moving to: ", station_loc
+                rospy.sleep(5)
+                station_loc = self.find_station(station_id)
+                print "Moving to: ", station_loc
 
-	            goal_x = station_loc[0] - 0.3
-	            goal_y = station_loc[1] - 0.3
+                goal_x = station_loc[0] - 0.3
+                goal_y = station_loc[1] - 0.3
 
-	            self.move_tbot(goal_x, goal_y)
-	            
-	            rospy.sleep(15)  
+                self.move_tbot(goal_x, goal_y)
+                
+                rospy.sleep(15)  
 
                 # rospy.sleep(3) 
                 # while not station_loc:
