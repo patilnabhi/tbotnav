@@ -24,7 +24,7 @@ class GoToPose():
 
         #we'll send a goal to the robot to tell it to move to a pose that's near the docking station
         self.goal = MoveBaseGoal()
-        self.goal.target_pose.header.frame_id = 'odom'
+        self.goal.target_pose.header.frame_id = 'map'
         self.goal.target_pose.header.stamp = rospy.Time.now()
         
         
@@ -35,8 +35,8 @@ class GoToPose():
         self.goal.target_pose.pose.position.z = 0.0
         self.goal.target_pose.pose.orientation.x = 0.0
         self.goal.target_pose.pose.orientation.y = 0.0
-        self.goal.target_pose.pose.orientation.z = 0.001
-        self.goal.target_pose.pose.orientation.w = 0.001
+        self.goal.target_pose.pose.orientation.z = 0.0
+        self.goal.target_pose.pose.orientation.w = 0.0
         
         #start moving
         self.move_base.send_goal(self.goal)

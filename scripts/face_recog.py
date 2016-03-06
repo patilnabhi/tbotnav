@@ -27,6 +27,7 @@ class FaceRecognition:
 
         rospy.loginfo("Training data...")
         self.fisher_train_data()
+        rospy.sleep(5)
         # self.load_trained_data()
 
         self.img_sub = rospy.Subscriber("/asus/rgb/image_raw", Image, self.img_callback)
