@@ -17,9 +17,9 @@ class HandGestures:
 
         rospy.on_shutdown(self.cleanup)
 
-        self.cv_window_name = self.node_name
-        cv2.namedWindow("Depth Image", 1)
-        cv2.moveWindow("Depth Image", 20, 350)
+        # self.cv_window_name = self.node_name
+        # cv2.namedWindow("Depth Image", 1)
+        # cv2.moveWindow("Depth Image", 20, 350)
 
         self.bridge = CvBridge()
         self.numFingers = RecognizeNumFingers() 

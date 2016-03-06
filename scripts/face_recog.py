@@ -25,10 +25,10 @@ class FaceRecognition:
         self.model = cv2.createFisherFaceRecognizer()
         (self.im_width, self.im_height) = (112, 92)        
 
-        rospy.loginfo("Training data...")
-        self.fisher_train_data()
-        rospy.sleep(5)
-        # self.load_trained_data()
+        rospy.loginfo("Loading data...")
+        # self.fisher_train_data()
+        self.load_trained_data()
+        rospy.sleep(3)        
 
         # self.img_sub = rospy.Subscriber("/asus/rgb/image_raw", Image, self.img_callback)
         self.img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)

@@ -35,8 +35,8 @@ class GoToPose():
         self.goal.target_pose.pose.position.z = 0.0
         self.goal.target_pose.pose.orientation.x = 0.0
         self.goal.target_pose.pose.orientation.y = 0.0
-        self.goal.target_pose.pose.orientation.z = 0.001
-        self.goal.target_pose.pose.orientation.w = 0.001
+        self.goal.target_pose.pose.orientation.z = -0.5
+        self.goal.target_pose.pose.orientation.w = 0.1
         
         #start moving
         self.move_base.send_goal(self.goal)

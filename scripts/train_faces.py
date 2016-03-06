@@ -51,8 +51,8 @@ class TrainFisherFaces:
 
         if self.count == 10*self.cp_rate:
             rospy.loginfo("Data Captured!")
-            # rospy.loginfo("Training Data...")
-            # self.fisher_train_data()
+            rospy.loginfo("Training Data...")
+            self.fisher_train_data()
             rospy.signal_shutdown('done')       
 
     def process_image(self, inImg):

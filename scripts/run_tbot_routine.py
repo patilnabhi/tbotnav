@@ -88,10 +88,11 @@ class MoveTbot:
                         goal_x = station_loc[0] + 0.3
                     else:
                         goal_x = station_loc[0] - 0.3
-                    if station_loc[1]<0:
-                        goal_y = station_loc[1] + 0.3
-                    else:
-                        goal_y = station_loc[1] - 0.3
+                    # if station_loc[1]<0:
+                    #     goal_y = station_loc[1] + 0.3
+                    # else:
+                    #     goal_y = station_loc[1] - 0.3
+                    goal_y = station_loc[1]
                     self.move_tbot(goal_x, goal_y)
                     count = 3
                 else:
@@ -137,10 +138,11 @@ class MoveTbot:
                             goal_x = station_loc[0] + 0.3
                         else:
                             goal_x = station_loc[0] - 0.3
-                        if station_loc[1]<0:
-                            goal_y = station_loc[1] + 0.3
-                        else:
-                            goal_y = station_loc[1] - 0.3
+                        # if station_loc[1]<0:
+                        #     goal_y = station_loc[1] + 0.3
+                        # else:
+                        #     goal_y = station_loc[1] - 0.3
+                        goal_y = station_loc[1]
                         self.move_tbot(goal_x, goal_y)
 
                         found = self.find_person(name)
@@ -211,6 +213,8 @@ class MoveTbot:
 
     def find_station(self, station_id):
         station_loc = []
+        if station_id == 1:
+            return [0.0, 0.0]
         station_loc = self.qr_tag_loc(station_id)
         count=0
         while not station_loc:
@@ -229,6 +233,7 @@ class MoveTbot:
         if self.qr_data:
             for i in range(len(self.qr_data)):
                 if self.qr_data[i].id == qr_id:
+                    print [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         else:
             return []
