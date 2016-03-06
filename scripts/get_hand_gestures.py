@@ -8,7 +8,7 @@ from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int32
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np 
-from rec_fingers import RecognizeNumFingers
+from fingers_recog import RecognizeNumFingers
 
 class HandGestures:
     def __init__(self):
