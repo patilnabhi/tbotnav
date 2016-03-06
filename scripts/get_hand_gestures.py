@@ -26,7 +26,7 @@ class HandGestures:
 
         self.depth_sub = rospy.Subscriber("/asus/depth/image_raw", Image, self.depth_callback)
         self.num_pub = rospy.Publisher('num_fingers', Int32, queue_size=10, latch=True)       
-        self.img_pub = rospy.Publisher('hand_img', Image, queue_size=10)
+        # self.img_pub = rospy.Publisher('hand_img', Image, queue_size=10)
         rospy.loginfo("Waiting for image topics...")        
 
     def depth_callback(self, ros_image):
@@ -43,11 +43,11 @@ class HandGestures:
         # outImg = self.process_depth_image(inImgarr) 
         # rate = rospy.Rate(10)        
         self.num_pub.publish(self.num_fingers)
-        self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
+        # self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
         # rate.sleep()
                 
-        # cv2.imshow("Depth Image", self.outImg)
-        # cv2.waitKey(3) 
+        cv2.imshow("Hand Gesture Recognition", self.outImg)
+        cv2.waitKey(3) 
 
 
     def process_depth_image(self, inImg):

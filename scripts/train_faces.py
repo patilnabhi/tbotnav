@@ -31,7 +31,7 @@ class TrainFisherFaces:
         self.count = 0    
 
         self.train_img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
-        self.train_img_pub = rospy.Publisher('train_face', Image, queue_size=10)
+        # self.train_img_pub = rospy.Publisher('train_face', Image, queue_size=10)
         rospy.loginfo("Capturing data...")    
 
     def img_callback(self, image):
@@ -43,16 +43,16 @@ class TrainFisherFaces:
         inImgarr = np.array(inImg)
         self.outImg = self.process_image(inImgarr)
         
-        self.train_img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))    
+        # self.train_img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))    
 
-        cv2.namedWindow("Capture Face")
+        # cv2.namedWindow("Capture Face")
         cv2.imshow('Capture Face', self.outImg)
         cv2.waitKey(3)
 
         if self.count == 10*self.cp_rate:
             rospy.loginfo("Data Captured!")
-            rospy.loginfo("Training Data...")
-            self.fisher_train_data()
+            # rospy.loginfo("Training Data...")
+            # self.fisher_train_data()
             rospy.signal_shutdown('done')       
 
     def process_image(self, inImg):
