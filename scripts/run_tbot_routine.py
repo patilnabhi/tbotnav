@@ -109,10 +109,10 @@ class MoveTbot:
             rospy.sleep(3)
 
             rospy.loginfo("Who would you like me to find?")            
-            rospy.loginfo("2 -- Abhi")            
-            rospy.loginfo("3 -- Fan")            
-            rospy.loginfo("4 -- Tim")            
-            rospy.loginfo("5 -- Mikhail")
+            rospy.loginfo("2 -- abhi")            
+            rospy.loginfo("3 -- fan")            
+            rospy.loginfo("4 -- tim")            
+            rospy.loginfo("5 -- mikhail")
             rospy.sleep(5)
             self.determine_gesture()
 
@@ -122,7 +122,7 @@ class MoveTbot:
             rospy.sleep(3)
             # person_data = self.get_person_data.get_data()
             if person_id > 1:
-                person_data = ['abhi', 'Fan', 'Tim', 'Mikhail']
+                person_data = ['abhi', 'fan', 'tim', 'mikhail']
                 name = person_data[person_id-2]
 
                 count=2
@@ -188,7 +188,7 @@ class MoveTbot:
     def face_names_callback(self, data):
         self.face_names = data.data
 
-    def rotate_tbot(self, deg):
+    def rotate_tbot(self, deg, speed=45.0):
         num = int(deg/45.0)
         for i in range(num*10):
             self.turn.angular.z = radians(45.0)
@@ -239,14 +239,14 @@ class MoveTbot:
 
         count=0
         found = False
-        while count < 12 and found != True:
+        while count < 6 and found != True:
             for i in range(len(self.face_names)):
                 if self.face_names[i] == name:
                     # print self.face_names[i]
                     found = True
             count += 1
-            self.rotate_tbot(90.0)
-            rospy.sleep(3)
+            self.rotate_tbot(180.0, 45.0/2)
+            rospy.sleep(5)
             # print count
         return found
         
