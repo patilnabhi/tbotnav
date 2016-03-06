@@ -24,7 +24,7 @@ class GoToPose():
 
         #we'll send a goal to the robot to tell it to move to a pose that's near the docking station
         self.goal = MoveBaseGoal()
-        self.goal.target_pose.header.frame_id = 'odom'
+        self.goal.target_pose.header.frame_id = 'map'
         self.goal.target_pose.header.stamp = rospy.Time.now()
         
         
