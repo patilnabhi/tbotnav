@@ -111,7 +111,7 @@ class MoveTbot:
 
             rospy.loginfo("Who would you like me to find?")            
             rospy.loginfo("2 -- abhi")            
-            rospy.loginfo("3 -- fan")            
+            rospy.loginfo("3 -- ayush")            
             rospy.loginfo("4 -- tim")            
             rospy.loginfo("5 -- mikhail")
             rospy.sleep(5)
@@ -123,7 +123,7 @@ class MoveTbot:
             rospy.sleep(3)
             # person_data = self.get_person_data.get_data()
             if person_id > 1:
-                person_data = ['abhi', 'fan', 'tim', 'mikhail']
+                person_data = ['abhi', 'ayush', 'tim', 'mikhail']
                 name = person_data[person_id-2]
 
                 count=2
@@ -248,7 +248,8 @@ class MoveTbot:
             for i in range(len(self.face_names)):
                 if self.face_names[i] == name:
                     # print self.face_names[i]
-                    found = True
+                    return True
+                    break
             count += 1
             self.rotate_tbot(180.0, 45.0/2)
             rospy.sleep(5)
