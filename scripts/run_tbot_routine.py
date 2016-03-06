@@ -49,6 +49,8 @@ class MoveTbot:
         while begin != 5:
             self.determine_gesture()
             begin = self.detected_gesture
+            if begin == 4:
+                rospy.signal_shutdown('Terminating...')
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
         rospy.sleep(3)
