@@ -37,6 +37,7 @@ class FaceRecognition:
 
         # self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
         self.name_pub = rospy.Publisher('face_names', StringArray, queue_size=10)
+        self.all_names_pub = rospy.Publisher('all_face_names', StringArray, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -94,6 +95,7 @@ class FaceRecognition:
                 names[index] = subdir
                 index += 1
         self.names = names 
+        self.all_names_pub.publish(names)
 
         self.model.load('fisher_trained_data.xml')
 
