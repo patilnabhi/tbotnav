@@ -14,7 +14,6 @@ def train_btn_load():
     os.system('rosrun tbotnav train_faces.py %s'%name)
 
 def recog_btn_load():
-    name = svalue.get()
     os.system('rosrun tbotnav face_recog.py')
     
 train_btn = Button(root,text="Train", command=train_btn_load)

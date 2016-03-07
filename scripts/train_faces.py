@@ -23,6 +23,8 @@ class TrainFisherFaces:
         self.face_name = sys.argv[1]
         self.path = os.path.join(self.face_dir, self.face_name)
         self.model = cv2.createFisherFaceRecognizer()
+        # self.model = cv2.createEigenFaceRecognizer()
+
         self.cp_rate = 15
 
         if not os.path.isdir(self.path):

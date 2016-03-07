@@ -23,6 +23,8 @@ class FaceRecognition:
         self.haar_cascade = cv2.CascadeClassifier(face_haar)
         self.face_dir = 'face_data'
         self.model = cv2.createFisherFaceRecognizer()
+        # self.model = cv2.createEigenFaceRecognizer()
+
         (self.im_width, self.im_height) = (112, 92)        
 
         rospy.loginfo("Loading data...")
@@ -92,34 +94,35 @@ class FaceRecognition:
                 names[index] = subdir
                 index += 1
         self.names = names 
+
         self.model.load('fisher_trained_data.xml')
 
-    def fisher_train_data(self):        
-        try:
-            imgs = []
-            tags = []
-            names = {}
-            index = 0
+    # def fisher_train_data(self):        
+    #     try:
+    #         imgs = []
+    #         tags = []
+    #         names = {}
+    #         index = 0
 
-            for (subdirs, dirs, files) in os.walk(self.face_dir):
-                for subdir in dirs:
-                    img_path = os.path.join(self.face_dir, subdir)
-                    names[index] = subdir
-                    for fn in os.listdir(img_path):
-                        path = img_path + '/' + fn
-                        tag = index
-                        imgs.append(cv2.imread(path, 0))
-                        tags.append(int(tag))
-                    index += 1
-            (imgs, tags) = [np.array(item) for item in [imgs, tags]]
-            self.names = names
+    #         for (subdirs, dirs, files) in os.walk(self.face_dir):
+    #             for subdir in dirs:
+    #                 img_path = os.path.join(self.face_dir, subdir)
+    #                 names[index] = subdir
+    #                 for fn in os.listdir(img_path):
+    #                     path = img_path + '/' + fn
+    #                     tag = index
+    #                     imgs.append(cv2.imread(path, 0))
+    #                     tags.append(int(tag))
+    #                 index += 1
+    #         (imgs, tags) = [np.array(item) for item in [imgs, tags]]
+    #         self.names = names
 
-            self.model.train(imgs, tags)
-            # self.model.save('fisher_trained_data.xml')
-            rospy.loginfo("Training completed successfully.")
+    #         self.model.train(imgs, tags)
+    #         # self.model.save('fisher_trained_data.xml')
+    #         rospy.loginfo("Training completed successfully.")
 
-        except:
-            print "Training failed! Ensure that enough data is collected."
+    #     except:
+    #         print "Training failed! Ensure that enough data is collected."
 
     def cleanup(self):
         print "Shutting down vision node."

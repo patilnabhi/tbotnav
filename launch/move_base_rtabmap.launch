@@ -2,104 +2,104 @@
 
 <launch>
 
-	<arg name="database_path"     default="rtabmap.db"/>
-	<arg name="localization"      default="false"/>
-	<arg name="rgbd_odometry"     default="false"/>
-	<arg name="args"              default=""/>
-	<arg name="version083"        default="false"/>
-	<arg name="rtabmapviz"        default="false"/>
-	<arg name="wait_for_transform"  default="0.1"/>
+    <arg name="database_path"     default="rtabmap.db"/>
+    <arg name="localization"      default="false"/>
+    <arg name="rgbd_odometry"     default="false"/>
+    <arg name="args"              default=""/>
+    <arg name="version083"        default="false"/>
+    <arg name="rtabmapviz"        default="false"/>
+    <arg name="wait_for_transform"  default="0.1"/>
 
-	<include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+    <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
 
-	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+    <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
         <!-- <arg name="rgb_processing" value="false" />
         <arg name="depth_registration" value="false" />
         <arg name="depth_processing" value="false" />        
         <arg name="scan_topic" value="/scan" /> -->
-    </include>	
+    </include>  
 
     <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
-	<include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
+    <include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
 
-	<arg name="odom_frame_id"   default="odom"/>
-	<arg name="base_frame_id"   default="base_footprint"/>
-	<arg name="global_frame_id" default="odom"/> 
-	<arg name="odom_topic" default="odom" />
-	<arg name="laser_topic" default="scan" />
+    <arg name="odom_frame_id"   default="odom"/>
+    <arg name="base_frame_id"   default="base_footprint"/>
+    <arg name="global_frame_id" default="odom"/> 
+    <arg name="odom_topic" default="odom" />
+    <arg name="laser_topic" default="scan" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 
-		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />   
-		<rosparam file="$(find tbotnav)/config/local_costmap_params.yaml" command="load" />   
-		<rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" />
-		<rosparam file="$(find tbotnav)/config/dwa_planner_params.yaml" command="load" />
-		<!-- <rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load" /> -->
-		<rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
-		<rosparam file="$(find tbotnav)/config/global_planner_params.yaml" command="load" />
-		<!-- <rosparam file="$(find tbotnav)/config/navfn_global_planner_params.yaml" command="load" /> -->
+        <rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find tbotnav)/config/costmap_params.yaml" command="load" ns="local_costmap" />   
+        <rosparam file="$(find tbotnav)/config/local_costmap_params.yaml" command="load" />   
+        <rosparam file="$(find tbotnav)/config/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find tbotnav)/config/dwa_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find tbotnav)/config/eband_planner_params.yaml" command="load" /> -->
+        <rosparam file="$(find tbotnav)/config/move_base_params.yaml" command="load" />
+        <rosparam file="$(find tbotnav)/config/global_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find tbotnav)/config/navfn_global_planner_params.yaml" command="load" /> -->
 
 
-	    <!-- <param name="base_global_planner" value="navfn/NavfnROS" /> -->
-	    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
-	    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
-	    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
-	    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
-	    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
-	    <!-- <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" /> -->
-	    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+        <!-- <param name="base_global_planner" value="navfn/NavfnROS" /> -->
+        <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+        <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
+        <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+        <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
+        <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+        <!-- <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" /> -->
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
 
-	    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
-	    <remap from="odom" to="$(arg odom_topic)"/>
-	    <remap from="scan" to="$(arg laser_topic)"/>
+        <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+        <remap from="odom" to="$(arg odom_topic)"/>
+        <remap from="scan" to="$(arg laser_topic)"/>
 
-	</node>
+    </node>
 
-	<!-- Mapping -->
-	<group ns="rtabmap">
+    <!-- Mapping -->
+    <group ns="rtabmap">
 
-		<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
-			<param name="database_path"       type="string" value="$(arg database_path)"/>
-			<param name="frame_id"            type="string" value="base_footprint"/>
-			<param name="odom_frame_id"       type="string" value="odom"/>
-			<param name="wait_for_transform_duration"  type="double"   value="$(arg wait_for_transform)"/>
-			<param name="subscribe_depth"     type="bool"   value="true"/>
-			<param name="subscribe_laserScan" type="bool"   value="true"/>
+        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
+            <param name="database_path"       type="string" value="$(arg database_path)"/>
+            <param name="frame_id"            type="string" value="base_footprint"/>
+            <param name="odom_frame_id"       type="string" value="odom"/>
+            <param name="wait_for_transform_duration"  type="double"   value="$(arg wait_for_transform)"/>
+            <param name="subscribe_depth"     type="bool"   value="true"/>
+            <param name="subscribe_laserScan" type="bool"   value="true"/>
 
-			<!-- inputs -->
-			<remap from="scan"            to="/scan"/>
-			<remap from="rgb/image"       to="/camera/rgb/image_rect_color"/>
-			<remap from="depth/image"     to="/camera/depth_registered/image_raw"/>
-			<remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+            <!-- inputs -->
+            <remap from="scan"            to="/scan"/>
+            <remap from="rgb/image"       to="/camera/rgb/image_rect_color"/>
+            <remap from="depth/image"     to="/camera/depth_registered/image_raw"/>
+            <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
 
-			<!-- output -->
-			<remap unless="$(arg version083)" from="grid_map" to="/map"/>
-			<!-- <remap unless="$(arg version083)" from="proj_map" to="/map"/> -->
+            <!-- output -->
+            <remap unless="$(arg version083)" from="grid_map" to="/map"/>
+            <!-- <remap unless="$(arg version083)" from="proj_map" to="/map"/> -->
 
-			<!-- RTAB-Map's parameters: do "rosrun rtabmap rtabmap (double-dash)params" to see the list of available parameters. -->
-			<param name="RGBD/PoseScanMatching" type="string" value="true"/>
-			<param name="RGBD/LocalLoopDetectionSpace" type="string" value="true"/>   <!-- Local loop closure detection (using estimated position) with locations in WM -->
-			<param name="RGBD/OptimizeFromGraphEnd"    type="string" value="false"/>  <!-- Set to false to generate map correction between /map and /odom -->
-			<param name="Kp/MaxDepth"                  type="string" value="4.0"/>
-			<param name="LccIcp/Type"                  type="string" value="2"/>      <!-- Loop closure transformation refining with ICP: 0=No ICP, 1=ICP 3D, 2=ICP 2D -->
-			<param name="LccIcp2/CorrespondenceRatio"  type="string" value="0.3"/>
-			<param name="LccBow/MinInliers"            type="string" value="5"/>      <!-- 3D visual words minimum inliers to accept loop closure -->
-			<param name="LccBow/InlierDistance"        type="string" value="0.1"/>    <!-- 3D visual words correspondence distance -->
-			<param name="RGBD/AngularUpdate"           type="string" value="0.1"/>    <!-- Update map only if the robot is moving -->
-			<param name="RGBD/LinearUpdate"            type="string" value="0.1"/>    <!-- Update map only if the robot is moving -->
-			<param name="Rtabmap/TimeThr"              type="string" value="700"/>
-			<param name="Mem/RehearsalSimilarity"      type="string" value="0.30"/>   
+            <!-- RTAB-Map's parameters: do "rosrun rtabmap rtabmap (double-dash)params" to see the list of available parameters. -->
+            <param name="RGBD/PoseScanMatching" type="string" value="true"/>
+            <param name="RGBD/LocalLoopDetectionSpace" type="string" value="true"/>   <!-- Local loop closure detection (using estimated position) with locations in WM -->
+            <param name="RGBD/OptimizeFromGraphEnd"    type="string" value="false"/>  <!-- Set to false to generate map correction between /map and /odom -->
+            <param name="Kp/MaxDepth"                  type="string" value="4.0"/>
+            <param name="LccIcp/Type"                  type="string" value="2"/>      <!-- Loop closure transformation refining with ICP: 0=No ICP, 1=ICP 3D, 2=ICP 2D -->
+            <param name="LccIcp2/CorrespondenceRatio"  type="string" value="0.3"/>
+            <param name="LccBow/MinInliers"            type="string" value="5"/>      <!-- 3D visual words minimum inliers to accept loop closure -->
+            <param name="LccBow/InlierDistance"        type="string" value="0.1"/>    <!-- 3D visual words correspondence distance -->
+            <param name="RGBD/AngularUpdate"           type="string" value="0.1"/>    <!-- Update map only if the robot is moving -->
+            <param name="RGBD/LinearUpdate"            type="string" value="0.1"/>    <!-- Update map only if the robot is moving -->
+            <param name="Rtabmap/TimeThr"              type="string" value="700"/>
+            <param name="Mem/RehearsalSimilarity"      type="string" value="0.30"/>   
 
-			<!-- localization mode -->
-			<param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
-			<param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
-			<param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/> 
-		</node>
-	</group>
+            <!-- localization mode -->
+            <param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
+            <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
+            <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/> 
+        </node>
+    </group>
 
-	<include file="$(find tbotnav)/launch/alvar.launch" />
-	<node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <include file="$(find tbotnav)/launch/alvar.launch" />
+    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
         <param name="video_device" value="/dev/video0" />
         <param name="image_width" value="640" />
         <param name="image_height" value="480" />
@@ -107,8 +107,8 @@
         <param name="camera_frame_id" value="usb_cam" />
         <param name="io_method" value="mmap"/>
     </node>
-	<!-- <include file="$(find tbotnav)/launch/asus_cam.launch" /> -->
-	
-	
-	<!-- <node pkg="tbotnav" type="hand_ges_kin.py" respawn="false" name="hand_gestures"/> -->
+    <!-- <include file="$(find tbotnav)/launch/asus_cam.launch" /> -->
+    
+    
+    <!-- <node pkg="tbotnav" type="hand_ges_kin.py" respawn="false" name="hand_gestures"/> -->
 </launch>

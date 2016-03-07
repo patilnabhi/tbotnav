@@ -33,6 +33,7 @@ class MoveTbot:
         # self.hand_img_sub = rospy.Subscriber('hand_img', Image, self.hand_img_callback)
         # self.face_img_sub = rospy.Subscriber('face_img', Image, self.face_img_callback)
         self.face_name_sub = rospy.Subscriber('face_names', StringArray, self.face_names_callback)
+        self.all_face_names_sub = rospy.Subscriber('all_face_names', StringArray, self.all_face_names_callback)
 
         self.turn_pub = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
         self.rate = rospy.Rate(10)
@@ -42,26 +43,28 @@ class MoveTbot:
 
     def run_tbot_routine(self):
         # print "Gesture '5' to begin"
-        rospy.loginfo("Gesture '5' to begin...")
-        rospy.sleep(3)
+        
         # if self.detected_gesture == 5:
         begin = 0
         while begin != 5:
+            rospy.loginfo("Gesture '5' to begin...")
+            rospy.sleep(3)
             self.determine_gesture()
             begin = self.detected_gesture
+            rospy.sleep(2)
             if begin == 4:
                 rospy.signal_shutdown('Terminating...')
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
         rospy.sleep(3)
-        rospy.loginfo("Gesture '2' or '3'")
+        rospy.loginfo("Gesture '3' or '5'")
         rospy.sleep(3)
         self.determine_gesture()
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
         rospy.sleep(3)
 
-        if self.detected_gesture == 2:  
+        if self.detected_gesture == 3:  
             rospy.loginfo("Entering station-finder mode...")
             rospy.sleep(3)
 
@@ -101,7 +104,7 @@ class MoveTbot:
                     if count == 3:
                         rospy.loginfo("Aborting mission...")
         
-        if self.detected_gesture == 3:  
+        if self.detected_gesture == 5:  
             rospy.loginfo("Entering person-finder mode...")
             rospy.sleep(3)
 
@@ -109,11 +112,13 @@ class MoveTbot:
             self.rotate_tbot(360.0+120.0)
             rospy.sleep(3)
 
+            person_data = self.all_face_names
+            total_person_data = len(person_data)
             rospy.loginfo("Who would you like me to find?")            
-            rospy.loginfo("2 -- abhi")            
-            rospy.loginfo("3 -- ayush")            
-            rospy.loginfo("4 -- tim")            
-            rospy.loginfo("5 -- mikhail")
+            rospy.loginfo("2 -- %s", person_data[len-1])            
+            rospy.loginfo("3 -- %s", person_data[len-2])            
+            rospy.loginfo("4 -- %s", person_data[len-3])            
+            rospy.loginfo("5 -- %s", person_data[len-4])
             rospy.sleep(5)
             self.determine_gesture()
 
@@ -123,7 +128,7 @@ class MoveTbot:
             rospy.sleep(3)
             # person_data = self.get_person_data.get_data()
             if person_id > 1:
-                person_data = ['abhi', 'ayush', 'tim', 'mikhail']
+                
                 name = person_data[person_id-2]
 
                 count=2
@@ -158,7 +163,7 @@ class MoveTbot:
             else:
                 rospy.loginfo("Did not understand you, please try again")
 
-            rospy.sleep(15)
+            # rospy.sleep(15)
 
     def qr_callback(self, data):
         self.qr_data = data.markers
@@ -190,6 +195,9 @@ class MoveTbot:
     def face_names_callback(self, data):
         self.face_names = data.data
 
+    def all_face_names_callback(self, data):
+        self.all_face_names = data.data
+
     def rotate_tbot(self, deg, speed=45.0):
         num = int(deg/45.0)
         for i in range(num*10):
@@ -202,18 +210,19 @@ class MoveTbot:
         # cv2.imshow("Hand Image", self.hand_img)
         # cv2.waitKey(3) 
 
-        rospy.sleep(8)      
+        rospy.sleep(6)      
         a = []  
         rospy.loginfo("Detecting gesture...")
         for i in range(6):
             a.append(self.num_fingers)
-            # print "Detected fingers: ", a[i]
+            rospy.loginfo("Detected fingers: %d", a[i])
+            rospy.sleep(1)
 
         self.detected_gesture = max(set(a), key=a.count)
 
     def find_station(self, station_id):
         station_loc = []
-        if station_id == 1:
+        if station_id < 2:
             return [0.0, 0.0]
         station_loc = self.qr_tag_loc(station_id)
         count=0
