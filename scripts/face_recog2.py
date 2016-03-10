@@ -11,7 +11,7 @@ import numpy as np
 
 class FaceRecognition:
     def __init__(self):
-        self.node_name = "face_recog_fisher"
+        self.node_name = "face_recog_eigen"
         rospy.init_node(self.node_name)
 
         rospy.on_shutdown(self.cleanup)
@@ -21,9 +21,9 @@ class FaceRecognition:
         self.size = 4
         face_haar = 'haarcascade_frontalface_default.xml'
         self.haar_cascade = cv2.CascadeClassifier(face_haar)
-        self.face_dir = 'face_data_fisher'
-        self.model = cv2.createFisherFaceRecognizer()
-        # self.model = cv2.createEigenFaceRecognizer()
+        self.face_dir = 'face_data_eigen'
+        # self.model = cv2.createFisherFaceRecognizer()
+        self.model = cv2.createEigenFaceRecognizer()
 
         (self.im_width, self.im_height) = (112, 92)        
 
@@ -78,7 +78,7 @@ class FaceRecognition:
             face_resize = cv2.resize(face, (self.im_width, self.im_height))
             confidence = self.model.predict(face_resize)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            if confidence[1]<1000:
+            if confidence[1]<5000:
                 person = self.names[confidence[0]]
                 cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
             else:
@@ -97,7 +97,7 @@ class FaceRecognition:
         self.names = names 
         # self.all_names_pub.publish(names)
 
-        self.model.load('fisher_trained_data.xml')
+        self.model.load('eigen_trained_data.xml')
 
     # def fisher_train_data(self):        
     #     try:

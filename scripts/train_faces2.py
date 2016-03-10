@@ -10,7 +10,7 @@ import numpy as np
 
 class TrainFisherFaces:
     def __init__(self):
-        self.node_name = "train_faces_fisher"
+        self.node_name = "train_faces_eigen"
         rospy.init_node(self.node_name)
 
         rospy.on_shutdown(self.cleanup)
@@ -19,11 +19,11 @@ class TrainFisherFaces:
         self.size = 4
         face_haar = 'haarcascade_frontalface_default.xml'
         self.haar_cascade = cv2.CascadeClassifier(face_haar)
-        self.face_dir = 'face_data_fisher'
+        self.face_dir = 'face_data_eigen'
         self.face_name = sys.argv[1]
         self.path = os.path.join(self.face_dir, self.face_name)
-        self.model = cv2.createFisherFaceRecognizer()
-        # self.model = cv2.createEigenFaceRecognizer()
+        # self.model = cv2.createFisherFaceRecognizer()
+        self.model = cv2.createEigenFaceRecognizer()
 
         self.cp_rate = 15
 
@@ -99,7 +99,7 @@ class TrainFisherFaces:
             (imgs, tags) = [np.array(item) for item in [imgs, tags]]
 
             self.model.train(imgs, tags)
-            self.model.save('fisher_trained_data.xml')
+            self.model.save('eigen_trained_data.xml')
             rospy.loginfo("Training completed successfully.")
 
         except:
