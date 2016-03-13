@@ -54,6 +54,7 @@ class MoveTbot:
             rospy.sleep(2)
             if begin == 4:
                 rospy.signal_shutdown('Terminating...')
+                sys.exit(0)
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
         rospy.sleep(3)
