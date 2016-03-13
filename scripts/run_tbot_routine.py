@@ -114,11 +114,12 @@ class MoveTbot:
 
             person_data = self.all_face_names
             total_person_data = len(person_data)
-            rospy.loginfo("Who would you like me to find?")            
-            rospy.loginfo("2 -- %s", person_data[len-1])            
-            rospy.loginfo("3 -- %s", person_data[len-2])            
-            rospy.loginfo("4 -- %s", person_data[len-3])            
-            rospy.loginfo("5 -- %s", person_data[len-4])
+            rospy.loginfo("Who would you like me to find?") 
+            for i in range(total_person_data):           
+                rospy.loginfo("%d -- %s", i+2, person_data[total_person_data-(i+1)])            
+            # rospy.loginfo("3 -- %s", person_data[len-2])            
+            # rospy.loginfo("4 -- %s", person_data[len-3])            
+            # rospy.loginfo("5 -- %s", person_data[len-4])
             rospy.sleep(5)
             self.determine_gesture()
 

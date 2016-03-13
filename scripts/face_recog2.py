@@ -77,13 +77,15 @@ class FaceRecognition:
             face = grayImg[y:y + h, x:x + w]
             face_resize = cv2.resize(face, (self.im_width, self.im_height))
             confidence = self.model.predict(face_resize)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
             if confidence[1]<5000:
                 person = self.names[confidence[0]]
-                cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+                cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0),2)
             else:
                 person = 'Unknown'
-                cv2.putText(frame, person, (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+                cv2.putText(frame, person, (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 102, 255),2)
             persons.append(person)
         return (frame, persons)
 
