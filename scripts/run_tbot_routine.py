@@ -90,8 +90,8 @@ class MoveTbot:
                     # x1 = station_loc[0]
                     # y1 = station_loc[1]
                     # d1 = sqrt(x1**2 + y1**2)
-                    # th = atan2(y1/x1)
-                    # d2 = d1 - 0.3
+                    # th = atan(y1/x1)
+                    # d2 = d1 - 0.2
                     # x2 = d2*cos(th)
                     # y2 = d2*sin(th)
                     rospy.loginfo("Moving to station %d", station_id)
@@ -99,11 +99,11 @@ class MoveTbot:
                         goal_x = station_loc[0] + 0.3
                     else:
                         goal_x = station_loc[0] - 0.3
-                    # if station_loc[1]<0:
-                    #     goal_y = station_loc[1] + 0.1
-                    # else:
-                    #     goal_y = station_loc[1] - 0.1
-                    goal_y = station_loc[1]
+                    if station_loc[1]<0:
+                        goal_y = station_loc[1] + 0.1
+                    else:
+                        goal_y = station_loc[1] - 0.1
+                    # goal_y = station_loc[1]
                     self.move_tbot(goal_x, goal_y)
                     count = 3
                 else:
