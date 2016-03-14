@@ -95,16 +95,16 @@ class MoveTbot:
                     # x2 = d2*cos(th)
                     # y2 = d2*sin(th)
                     rospy.loginfo("Moving to station %d", station_id)
-                    # if station_loc[0]<0:
-                    #     goal_x = station_loc[0] + 0.3
-                    # else:
-                    #     goal_x = station_loc[0] - 0.3
+                    if station_loc[0]<0:
+                        goal_x = station_loc[0] + 0.3
+                    else:
+                        goal_x = station_loc[0] - 0.3
                     # if station_loc[1]<0:
                     #     goal_y = station_loc[1] + 0.1
                     # else:
                     #     goal_y = station_loc[1] - 0.1
-                    # goal_y = station_loc[1]
-                    self.move_tbot(x2, y2)
+                    goal_y = station_loc[1]
+                    self.move_tbot(goal_x, goal_y)
                     count = 3
                 else:
                     rospy.loginfo("Couldn't find station, try again!")
