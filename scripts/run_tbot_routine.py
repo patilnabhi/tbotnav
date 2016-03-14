@@ -90,7 +90,7 @@ class MoveTbot:
                     x1 = station_loc[0]
                     y1 = station_loc[1]
                     d1 = sqrt(x1**2 + y1**2)
-                    th = atan(y1/x1)
+                    th = atan2(y1/x1)
                     d2 = d1 - 0.3
                     x2 = d2*cos(th)
                     y2 = d2*sin(th)
