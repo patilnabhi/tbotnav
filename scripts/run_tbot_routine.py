@@ -13,7 +13,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from tbotnav.msg import StringArray
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
-from math import pi, radians
+from math import pi, radians, atan, sqrt, cos, sin
 
 class MoveTbot:
     def __init__(self):
@@ -47,7 +47,7 @@ class MoveTbot:
         # if self.detected_gesture == 5:
         begin = 0
         while begin != 5:
-            rospy.loginfo("Gesture '5' to begin...")
+            rospy.loginfo("Gesture '5' to begin OR '4' to exit")
             rospy.sleep(3)
             self.determine_gesture()
             begin = self.detected_gesture
@@ -63,11 +63,11 @@ class MoveTbot:
         self.determine_gesture()
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
-        rospy.sleep(3)
+        rospy.sleep(1)
 
         if self.detected_gesture == 3:  
             rospy.loginfo("Entering station-finder mode...")
-            rospy.sleep(3)
+            rospy.sleep(1)
 
             rospy.loginfo("Rotating 360 deg...")
             # rospy.sleep(3)
@@ -78,26 +78,33 @@ class MoveTbot:
             count=0
             while count < 3:
                 rospy.loginfo("Which station would you like me to move?")
-                rospy.sleep(3)
+                rospy.sleep(1)
                 self.determine_gesture()
 
                 station_id = self.detected_gesture
                 rospy.loginfo("You gestured %d", self.detected_gesture)
-                rospy.sleep(3)
+                rospy.sleep(1)
 
                 station_loc = self.find_station(station_id)
                 if station_loc:
+                	x1 = station_loc[0]
+                	y1 = station_loc[1]
+                	d1 = sqrt(x1**2 + y1**2)
+                	th = atan(y1/x1)
+                	d2 = d1 - 0.3
+                	x2 = d2*cos(th)
+                	y2 = d2*sin(th)
                     rospy.loginfo("Moving to station %d", station_id)
-                    if station_loc[0]<0:
-                        goal_x = station_loc[0] + 0.3
-                    else:
-                        goal_x = station_loc[0] - 0.3
-                    # if station_loc[1]<0:
-                    #     goal_y = station_loc[1] + 0.3
+                    # if station_loc[0]<0:
+                    #     goal_x = station_loc[0] + 0.3
                     # else:
-                    #     goal_y = station_loc[1] - 0.3
-                    goal_y = station_loc[1]
-                    self.move_tbot(goal_x, goal_y)
+                    #     goal_x = station_loc[0] - 0.3
+                    # if station_loc[1]<0:
+                    #     goal_y = station_loc[1] + 0.1
+                    # else:
+                    #     goal_y = station_loc[1] - 0.1
+                    # goal_y = station_loc[1]
+                    self.move_tbot(x2, y2)
                     count = 3
                 else:
                     rospy.loginfo("Couldn't find station, try again!")
@@ -244,7 +251,7 @@ class MoveTbot:
         if self.qr_data:
             for i in range(len(self.qr_data)):
                 if self.qr_data[i].id == qr_id:
-                    print [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
+                    # print [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
                     return [self.qr_data[i].pose.pose.position.x, self.qr_data[i].pose.pose.position.y]
         else:
             return []
