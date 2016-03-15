@@ -78,7 +78,7 @@ class FaceRecognition:
             face_resize = cv2.resize(face, (self.im_width, self.im_height))
             confidence = self.model.predict(face_resize)
             # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            if confidence[1]<5000:
+            if confidence[1]<3100:
                 person = self.names[confidence[0]]
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                 cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0),2)

@@ -37,7 +37,7 @@ class FaceRecognition:
 
         # self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
         self.name_pub = rospy.Publisher('face_names', StringArray, queue_size=10)
-        self.all_names_pub = rospy.Publisher('all_face_names', StringArray, queue_size=10)
+        # self.all_names_pub = rospy.Publisher('all_face_names', StringArray, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -78,7 +78,7 @@ class FaceRecognition:
             face_resize = cv2.resize(face, (self.im_width, self.im_height))
             confidence = self.model.predict(face_resize)
             # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-            if confidence[1]<1000:
+            if confidence[1]<500:
                 person = self.names[confidence[0]]
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                 cv2.putText(frame, '%s - %.0f' % (person, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0),2)
@@ -97,7 +97,7 @@ class FaceRecognition:
                 names[index] = subdir
                 index += 1
         self.names = names 
-        self.all_names_pub.publish(names)
+        # self.all_names_pub.publish(names)
 
         self.model.load('fisher_trained_data.xml')
 

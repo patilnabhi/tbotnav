@@ -25,7 +25,7 @@ class TrainFisherFaces:
         self.model = cv2.createFisherFaceRecognizer()
         # self.model = cv2.createEigenFaceRecognizer()
 
-        self.cp_rate = 10
+        self.cp_rate = 5
 
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
@@ -51,7 +51,7 @@ class TrainFisherFaces:
         cv2.imshow('Capture Face', self.outImg)
         cv2.waitKey(3)
 
-        if self.count == 20*self.cp_rate:
+        if self.count == 100*self.cp_rate:
             rospy.loginfo("Data Captured!")
             rospy.loginfo("Training Data...")
             self.fisher_train_data()
