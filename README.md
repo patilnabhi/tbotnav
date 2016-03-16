@@ -24,14 +24,14 @@ The following **hardware** is required for complete execution of project:
 2. Kinect (mounted on turtlebot)
 3. A computer with webcam and installed with ROS Indigo and Ubuntu 14.04 (mounted/connected on turtlebot)
 4. A second computer installed with ROS Indigo and Ubuntu 14.04 for visualization (Rviz) and hand gesture API
-5. A second depth camera is *preferred* (Asus Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
+5. A second depth camera is *preferred* (ASUS Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
 6. Printed AR codes from 2 to 5 that could be placed aywhere around turtlebot
 
 The following **packages** need to be installed:
 
 1. [turtlebot packages] - SLAM packages
 2. [rtabmap_ros] - RTAB-Map package 
-3. [openni2_launch] - required if using Asus Xtion Pro for hand gesture recognition
+3. [openni2_launch] - required if using ASUS Xtion Pro for hand gesture recognition
 4. [freenect_launch] - required for `3dsensor.launch` with turtlebot navigation
 5. [ar_track_alvar] - to recognize AR code tags and move turtlebot towards them
 
@@ -39,7 +39,7 @@ The following needs to be **setup** in order to run all nodes:
 
 1. [Turtlebot setup]
 2. [Turtlebot networking setup]
-3. Second depth camera setup (Asus Xtion Pro camera) - Please edit the `camera_id` parameter value in `asus_cam.launch` with appropriate value for your camera. To find your `camera_id` value, launch the OpenNI2 driver and look for `device_id`:
+3. Second depth camera setup (ASUS Xtion Pro camera) - Please edit the `camera_id` parameter value in `asus_cam.launch` with appropriate value for your camera. To find your `camera_id` value, launch the OpenNI2 driver and look for `device_id`:
 ```
 roslaunch openni2_launch openni2.launch
 ```
