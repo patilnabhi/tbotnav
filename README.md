@@ -48,7 +48,7 @@ roslaunch openni2_launch openni2.launch
 
 This package consists the following **nodes**:
 
-**Navigation:**
+--Navigation:--
 
 1. `move_to_pose.py` - this node is used to move turtlebot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
 2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
@@ -57,7 +57,7 @@ This package consists the following **nodes**:
 	c. `face_names` - get the names of people detected during face recognition mode
 	d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implemnetation in progress]
 	 
-**Hand Gesture Recognition:**
+--Hand Gesture Recognition:--
 
 3. `fingers_recog.py` - this node takes a input image and outputs an image with detected number of fingers
 4. `get_hand_gestures.py` - this ndoe subscribes to a depth image `/asus/depth/image_raw`, processes the image using `finger_recog.py` and publishes the detected number of fingers at the topic `num_fingers`. This ndoe also outputs an image window showing the depth feed with hand and detected number of fingers.
@@ -68,7 +68,7 @@ This package consists the following **nodes**:
 6. `face_recog.py` - this node subscribes to rgb image stream from webcam, loads the trained data file from above and performs face recognition.
 7. `gui_face.py` - this node launches a simple GUI making it easier for users to input their name, captures their faces, train the data and finally run the recognition API
 
-This package consists the following *launch* files:
+This package consists the following **launch** files:
 
 1. `move_base_rtabmap.launch` - (to be launched on turtlebot computer) this file performs the following:  
 	a. Launches `minimal.launch` from `turtlebot_bringup` package
