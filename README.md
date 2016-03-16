@@ -52,11 +52,11 @@ This package consists the following **nodes**:
 
 1. `move_to_pose.py` - this node is used to move turtlebot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
 2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
-	a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
-	b. `num_fingers` - the detected number of fingers using hand gestures  
-	c. `face_names` - get the names of people detected during face recognition mode  
-	d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implemnetation in progress]  
-	 
+    a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
+    b. `num_fingers` - the detected number of fingers using hand gestures  
+    c. `face_names` - get the names of people detected during face recognition mode  
+    d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implemnetation in progress]  
+     
 **Hand Gesture Recognition:**
 
 3. `fingers_recog.py` - this node takes a input image and outputs an image with detected number of fingers
@@ -71,16 +71,16 @@ This package consists the following **nodes**:
 This package consists the following **launch** files:
 
 1. `move_base_rtabmap.launch` - (to be launched on turtlebot computer) this file performs the following:  
-	a. Launches `minimal.launch` from `turtlebot_bringup` package
-	b. Runs the `move_base` node for navigation
-	c. Runs the `rtabmap` node 
-	d. Launches `alvar.launch` for AR code detection
-	e. Runs the `usb_cam` node for face recognition
+    a. Launches `minimal.launch` from `turtlebot_bringup` package
+    b. Runs the `move_base` node for navigation
+    c. Runs the `rtabmap` node 
+    d. Launches `alvar.launch` for AR code detection
+    e. Runs the `usb_cam` node for face recognition
 
 2. `tbot_routine.launch`:
-	a. Launches `tbot_routine_rviz.launch` and runs the `rviz` node, opening up a Rviz visualization window
-	b. Launches `asus_cam.launch`, launching `openni2.launch` with custom `camera_id`
-	c. Runs the `get_hand_gestures` node
+    a. Launches `tbot_routine_rviz.launch` and runs the `rviz` node, opening up a Rviz visualization window
+    b. Launches `asus_cam.launch`, launching `openni2.launch` with custom `camera_id`
+    c. Runs the `get_hand_gestures` node
 
 <!-- This package consists the following *config* files:
 
@@ -100,21 +100,25 @@ This package consists the following **launch** files:
 2. Connect ASUS Xtion Pro to your 'second' computer for hand gesture recognition  
 
 3. Source the turtlebot workspace. For e.g, if your workspace is called 'tbot_ws', enter in command line:  
-	```
-	source ~/tbot_ws/devel/setup.bash
-	```  
+    ```
+    source ~/tbot_ws/devel/setup.bash
+    ```  
+
 4. On turtlebot computer, run:  
-	```
-	roslaunch tbotnav move_base_rtabmap.launch
-	```  
+    ```
+    roslaunch tbotnav move_base_rtabmap.launch
+    ```  
+
 5. On your 'second' computer, run:  
-	```
-	roslaunch tbotnav tbot_routine.launch
-	```  
+    ```
+    roslaunch tbotnav tbot_routine.launch
+    ```  
+
 6. On your 'second' computer, in another terminal window, run:  
-	```
-	rosrun tbotnav run_tbot_routine.py
-	```  
+    ```
+    rosrun tbotnav run_tbot_routine.py
+    ```  
+    
 7. Follow the instructions on the window launched in (6)
 
 
