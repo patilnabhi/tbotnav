@@ -6,7 +6,7 @@ A ROS project developed as part of Master fo Science in Robotics (MSR) program a
 
 ## Demo:
 
-<p><iframe width="560" height="315" src="https://www.youtube.com/embed/u7TcyaLekFg" frameborder="0" allowfullscreen></iframe></p>
+* Please visit [http://patilnabhi.github.io/portfolio/tbotnav]
 
 ## Goal:
 
@@ -131,3 +131,5 @@ This package consists the following **launch** files:
 * **Object tracking:** Replace AR code tracking and get turtlebot to find specific objects in the environment
 * **RTAB-Map & beyond:** Explore the capabilities of RTAB-Map and RGB-D SLAM to make the navigation more robust
 * **Simple is beautiful:** Improve the overall execution of the project to make it more user interactive by making it simpler/easier
+
+[http://patilnabhi.github.io/portfolio/tbotnav]: [http://patilnabhi.github.io/portfolio/tbotnav]
