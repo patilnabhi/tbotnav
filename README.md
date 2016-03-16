@@ -12,9 +12,9 @@ A ROS project developed as part of Master fo Science in Robotics (MSR) program a
 
 Navigation of turtlebot using hand-gestures to find target locations marked with AR codes and/or to find a specific person using face-recognition
 
-## Overview:
+<!-- ## Overview:
 
-Refer to my portfolio entry at http://patilnabhi.github.io/portfolio/tbotnav
+Refer to my portfolio entry at http://patilnabhi.github.io/portfolio/tbotnav -->
 
 ## Tutorial:
 
