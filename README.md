@@ -95,26 +95,26 @@ This package consists the following **launch** files:
 
 ### 3. Step-by-step guide:
 
-1. Turn on turtlebot and ensure that networking is setup correctly
-2. Connect ASUS Xtion Pro to your 'second' computer for hand gesture recognition
-3. Source the turtlebot workspace. For e.g, if your workspace is called 'tbot_ws', enter in command line:
+1. Turn on turtlebot and ensure that networking is setup correctly  
 
+2. Connect ASUS Xtion Pro to your 'second' computer for hand gesture recognition  
+
+3. Source the turtlebot workspace. For e.g, if your workspace is called 'tbot_ws', enter in command line:  
 	```
 	source ~/tbot_ws/devel/setup.bash
 	```  
-
-4. On turtlebot computer, run:
-```
-roslaunch tbotnav move_base_rtabmap.launch
-```  
-5. On your 'second' computer, run:
-```
-roslaunch tbotnav tbot_routine.launch
-```  
-6. On your 'second' computer, in another terminal window, run:
-```
-rosrun tbotnav run_tbot_routine.py
-```  
+4. On turtlebot computer, run:  
+	```
+	roslaunch tbotnav move_base_rtabmap.launch
+	```  
+5. On your 'second' computer, run:  
+	```
+	roslaunch tbotnav tbot_routine.launch
+	```  
+6. On your 'second' computer, in another terminal window, run:  
+	```
+	rosrun tbotnav run_tbot_routine.py
+	```  
 7. Follow the instructions on the window launched in (6)
 
 
