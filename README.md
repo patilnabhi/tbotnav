@@ -56,6 +56,7 @@ This package consists the following **nodes**:
 
 1. `move_to_pose.py` - this node is used to move turtlebot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
 2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
+
     a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
     b. `num_fingers` - the detected number of fingers using hand gestures  
     c. `face_names` - get the names of people detected during face recognition mode  
@@ -75,13 +76,15 @@ This package consists the following **nodes**:
 This package consists the following **launch** files:
 
 1. `move_base_rtabmap.launch` - (to be launched on turtlebot computer) this file performs the following:  
+
     a. Launches `minimal.launch` from `turtlebot_bringup` package
     b. Runs the `move_base` node for navigation
     c. Runs the `rtabmap` node 
     d. Launches `alvar.launch` for AR code detection
     e. Runs the `usb_cam` node for face recognition
 
-2. `tbot_routine.launch`:
+2. `tbot_routine.launch`:  
+
     a. Launches `tbot_routine_rviz.launch` and runs the `rviz` node, opening up a Rviz visualization window
     b. Launches `asus_cam.launch`, launching `openni2.launch` with custom `camera_id`
     c. Runs the `get_hand_gestures` node
