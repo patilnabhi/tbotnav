@@ -6,7 +6,7 @@ A ROS project developed as part of Master fo Science in Robotics (MSR) program a
 
 ## Demo:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/u7TcyaLekFg" frameborder="0" allowfullscreen></iframe>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/u7TcyaLekFg" frameborder="0" allowfullscreen></iframe></p>
 
 ## Goal:
 
