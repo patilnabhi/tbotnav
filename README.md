@@ -4,9 +4,9 @@
 
 A ROS project developed as part of Master fo Science in Robotics (MSR) program at Northwestern University (NU)
 
-## Demo:
+<!-- ## Demo:
 
-* Video
+* Video -->
 
 ## Goal:
 
