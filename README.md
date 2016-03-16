@@ -128,6 +128,6 @@ This package consists the following **launch** files:
 
 ## Future work:
     
-* Object tracking: Replace AR code tracking and get turtlebot to find specific objects in the environment
-* RTAB-Map & beyond: Explore the capabilities of RTAB-Map and RGB-D SLAM to make the navigation more robust
-* Simple is beautiful: Improve the overall execution of the project to make it more user interactive by making it simpler/easier
+* **Object tracking:** Replace AR code tracking and get turtlebot to find specific objects in the environment
+* **RTAB-Map & beyond:** Explore the capabilities of RTAB-Map and RGB-D SLAM to make the navigation more robust
+* **Simple is beautiful:** Improve the overall execution of the project to make it more user interactive by making it simpler/easier
