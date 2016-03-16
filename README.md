@@ -18,7 +18,7 @@ The following sections describe contents of this package and how to use them:
 
 ### 1. Prequisites:
 
-* The following **hardware** is required for complete execution of project:
+The following **hardware** is required for complete execution of project:
 
 1. Turtlebot 2 (with Kobuki base)
 2. Kinect (mounted on turtlebot)
@@ -27,7 +27,7 @@ The following sections describe contents of this package and how to use them:
 5. A second depth camera is *preferred* (Asus Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
 6. Printed AR codes from 2 to 5 that could be placed aywhere around turtlebot
 
-The following *packages* need to be installed:
+The following **packages** need to be installed:
 
 1. [turtlebot packages] - SLAM packages
 2. [rtabmap_ros] - RTAB-Map package 
@@ -35,7 +35,7 @@ The following *packages* need to be installed:
 4. [freenect_launch] - required for `3dsensor.launch` with turtlebot navigation
 5. [ar_track_alvar] - to recognize AR code tags and move turtlebot towards them
 
-The following needs to be *setup* in order to run all nodes:
+The following needs to be **setup** in order to run all nodes:
 
 1. [Turtlebot setup]
 2. [Turtlebot networking setup]
@@ -46,9 +46,9 @@ roslaunch openni2_launch openni2.launch
 
 ### 2. 'tbotnav' Package Contents
 
-This package consists the following *nodes*:
+This package consists the following **nodes**:
 
-#### Navigation:
+**Navigation:**
 
 1. `move_to_pose.py` - this node is used to move turtlebot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
 2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
@@ -57,12 +57,12 @@ This package consists the following *nodes*:
 	c. `face_names` - get the names of people detected during face recognition mode
 	d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implemnetation in progress]
 	 
-#### Hand Gesture Recognition:
+**Hand Gesture Recognition:**
 
 3. `fingers_recog.py` - this node takes a input image and outputs an image with detected number of fingers
 4. `get_hand_gestures.py` - this ndoe subscribes to a depth image `/asus/depth/image_raw`, processes the image using `finger_recog.py` and publishes the detected number of fingers at the topic `num_fingers`. This ndoe also outputs an image window showing the depth feed with hand and detected number of fingers.
 
-#### Face Recognition:
+**Face Recognition:**
 
 5. `train_faces.py` - this node subscribes to a rgb image stream from webcam, detects faces, captures faces for training (using Fisherfaces algorithm) and saves the trained data in a xml file, to be used in face recognition.
 6. `face_recog.py` - this node subscribes to rgb image stream from webcam, loads the trained data file from above and performs face recognition.
