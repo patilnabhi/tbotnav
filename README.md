@@ -2,7 +2,7 @@
 
 ## About:
 
-A ROS project developed as part of Master fo Science in Robotics (MSR) program at Northwestern University (NU)
+A ROS project developed as part of Master of     Science in Robotics (MSR) program at Northwestern University (NU)
 
 ## Demo:
 
@@ -10,7 +10,7 @@ A ROS project developed as part of Master fo Science in Robotics (MSR) program a
 
 ## Goal:
 
-Navigation of turtlebot using hand-gestures to find target locations marked with AR codes and/or to find a specific person using face-recognition
+Navigation of TurtleBot using hand-gestures to find target locations marked with AR codes and/or to find a specific person using face-recognition
 
 <!-- ## Overview:
 
@@ -24,16 +24,16 @@ The following sections describe contents of this package and how to use them:
 
 The following **hardware** is required for complete execution of project:
 
-1. Turtlebot 2 (with Kobuki base)
-2. Kinect (mounted on turtlebot)
-3. A computer with webcam and installed with ROS Indigo and Ubuntu 14.04 (mounted/connected on turtlebot)
+1. TurtleBot 2 (with Kobuki base)
+2. Kinect (mounted on TurtleBot)
+3. A computer with webcam and installed with ROS Indigo and Ubuntu 14.04 (mounted/connected on TurtleBot)
 4. A second computer installed with ROS Indigo and Ubuntu 14.04 for visualization (Rviz) and hand gesture API
 5. A second depth camera is *preferred* (ASUS Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
-6. Printed AR codes from 2 to 5 that could be placed aywhere around turtlebot
+6. Printed AR codes from 2 to 5 that could be placed aywhere around TurtleBot
 
 The following **packages** need to be installed:
 
-1. [turtlebot packages] - SLAM packages
+1. [TurtleBot packages] - SLAM packages
 2. [rtabmap_ros] - RTAB-Map package 
 3. [openni2_launch] - required if using ASUS Xtion Pro for hand gesture recognition
 4. [freenect_launch] - required for `3dsensor.launch` with turtlebot navigation
@@ -41,8 +41,8 @@ The following **packages** need to be installed:
 
 The following needs to be **setup** in order to run all nodes:
 
-1. [Turtlebot setup]
-2. [Turtlebot networking setup]
+1. [TurtleBot setup]
+2. [TurtleBot networking setup]
 3. Second depth camera setup (ASUS Xtion Pro camera) - Please edit the `camera_id` parameter value in `asus_cam.launch` with appropriate value for your camera. To find your `camera_id` value, launch the OpenNI2 driver and look for `device_id`:
 ```
 roslaunch openni2_launch openni2.launch
@@ -54,7 +54,7 @@ This package consists the following **nodes**:
 
 **Navigation:**
 
-1. `move_to_pose.py` - this node is used to move turtlebot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
+1. `move_to_pose.py` - this node is used to move TurtleBot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
 2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
     a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
     b. `num_fingers` - the detected number of fingers using hand gestures  
@@ -74,8 +74,8 @@ This package consists the following **nodes**:
 
 This package consists the following **launch** files:
 
-1. `move_base_rtabmap.launch` - (to be launched on turtlebot computer) this file performs the following:  
-    a. Launches `minimal.launch` from `turtlebot_bringup` package  
+1. `move_base_rtabmap.launch` - (to be launched on TurtleBot computer) this file performs the following:  
+    a. Launches `minimal.launch` from `TurtleBot_bringup` package  
     b. Runs the `move_base` node for navigation  
     c. Runs the `rtabmap` node  
     d. Launches `alvar.launch` for AR code detection  
@@ -99,16 +99,16 @@ This package consists the following **launch** files:
 
 ### 3. Step-by-step guide:
 
-1. Turn on turtlebot and ensure that networking is setup correctly  
+1. Turn on TurtleBot and ensure that networking is setup correctly  
 
 2. Connect ASUS Xtion Pro to your 'second' computer for hand gesture recognition  
 
-3. Source the turtlebot workspace. For e.g, if your workspace is called `tbot_ws`, enter in command line:  
+3. Source the TurtleBot workspace. For e.g, if your workspace is called `tbot_ws`, enter in command line:  
     ```
     source ~/tbot_ws/devel/setup.bash
     ```  
 
-4. On turtlebot computer, run:  
+4. On TurtleBot computer, run:  
     ```
     roslaunch tbotnav move_base_rtabmap.launch
     ```  
@@ -128,7 +128,7 @@ This package consists the following **launch** files:
 
 ## Future work:
     
-* **Object tracking:** Replace AR code tracking and get turtlebot to find specific objects in the environment
+* **Object tracking:** Replace AR code tracking and get TurtleBot to find specific objects in the environment
 * **RTAB-Map & beyond:** Explore the capabilities of RTAB-Map and RGB-D SLAM to make the navigation more robust
 * **Simple is beautiful:** Improve the overall execution of the project to make it more user interactive by making it simpler/easier
 
