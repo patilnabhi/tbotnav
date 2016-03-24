@@ -1,4 +1,4 @@
-# Turtlebot SLAM (with RTAB-Map, Hand-Gestures, Face Recognition & AR Code Tracking)
+# TurtleBot SLAM (with RTAB-Map, Hand-Gestures, Face Recognition & AR Code Tracking)
 
 ## About:
 
@@ -20,7 +20,7 @@ Refer to my portfolio entry at http://patilnabhi.github.io/portfolio/tbotnav -->
 
 The following sections describe contents of this package and how to use them:
 
-### 1. Prequisites:
+### 1. Pre-requisites:
 
 The following **hardware** is required for complete execution of project:
 
@@ -29,15 +29,15 @@ The following **hardware** is required for complete execution of project:
 3. A computer with webcam and installed with ROS Indigo and Ubuntu 14.04 (mounted/connected on TurtleBot)
 4. A second computer installed with ROS Indigo and Ubuntu 14.04 for visualization (Rviz) and hand gesture API
 5. A second depth camera is *preferred* (ASUS Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
-6. Printed AR codes from 2 to 5 that could be placed aywhere around TurtleBot
+6. Printed AR codes from 2 to 5 that could be placed anywhere around TurtleBot
 
 The following **packages** need to be installed:
 
 1. [TurtleBot packages] - SLAM packages
 2. [rtabmap_ros] - RTAB-Map package 
 3. [openni2_launch] - required if using ASUS Xtion Pro for hand gesture recognition
-4. [freenect_launch] - required for `3dsensor.launch` with turtlebot navigation
-5. [ar_track_alvar] - to recognize AR code tags and move turtlebot towards them
+4. [freenect_launch] - required for `3dsensor.launch` with TurtleBot navigation
+5. [ar_track_alvar] - to recognize AR code tags and move TurtleBot towards them
 
 The following needs to be **setup** in order to run all nodes:
 
@@ -59,17 +59,17 @@ This package consists the following **nodes**:
     a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
     b. `num_fingers` - the detected number of fingers using hand gestures  
     c. `face_names` - get the names of people detected during face recognition mode  
-    d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implemnetation in progress]  
+    d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implementation in progress]  
      
 **Hand Gesture Recognition:**
 
 3. `fingers_recog.py` - this node takes a input image and outputs an image with detected number of fingers
-4. `get_hand_gestures.py` - this ndoe subscribes to a depth image `/asus/depth/image_raw`, processes the image using `finger_recog.py` and publishes the detected number of fingers at the topic `num_fingers`. This ndoe also outputs an image window showing the depth feed with hand and detected number of fingers.
+4. `get_hand_gestures.py` - this node subscribes to a depth image `/asus/depth/image_raw`, processes the image using `finger_recog.py` and publishes the detected number of fingers at the topic `num_fingers`. This node also outputs an image window showing the depth feed with hand and detected number of fingers.
 
 **Face Recognition:**
 
-5. `train_faces.py` - this node subscribes to a rgb image stream from webcam, detects faces, captures faces for training (using Fisherfaces algorithm) and saves the trained data in a xml file, to be used in face recognition.
-6. `face_recog.py` - this node subscribes to rgb image stream from webcam, loads the trained data file from above and performs face recognition.
+5. `train_faces.py` - this node subscribes to a RGB image stream from webcam, detects faces, captures faces for training (using Fisherfaces algorithm) and saves the trained data in a xml file, to be used in face recognition.
+6. `face_recog.py` - this node subscribes to RGB image stream from webcam, loads the trained data file from above and performs face recognition.
 7. `gui_face.py` - this node launches a simple GUI making it easier for users to input their name, captures their faces, train the data and finally run the recognition API
 
 This package consists the following **launch** files:
