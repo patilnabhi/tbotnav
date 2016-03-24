@@ -55,7 +55,7 @@ This package consists the following **nodes**:
     a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
     b. `num_fingers` - the detected number of fingers using hand gestures  
     c. `face_names` - get the names of people detected during face recognition mode  
-    d.  `odom` - this is required to know the current odometry of the robot and perform odom correction [implementation in progress]  
+    d.  `odom` - this is required to know the current odometry of the robot and perform odom correction (implementation in progress)  
      
 **Hand Gesture Recognition:**
 
