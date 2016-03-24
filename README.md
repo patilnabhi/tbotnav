@@ -1,16 +1,12 @@
 # TurtleBot SLAM (with RTAB-Map, Hand-Gestures, Face Recognition & AR Code Tracking)
 
-## About:
+## Goal:
 
-A ROS project developed as part of Master of     Science in Robotics (MSR) program at Northwestern University (NU)
+Navigation of TurtleBot using hand-gestures to find target locations marked with AR codes and/or to find a specific person using face-recognition
 
 ## Demo:
 
 * Please visit [http://patilnabhi.github.io/portfolio/tbotnav]
-
-## Goal:
-
-Navigation of TurtleBot using hand-gestures to find target locations marked with AR codes and/or to find a specific person using face-recognition
 
 <!-- ## Overview:
 
@@ -132,4 +128,14 @@ This package consists the following **launch** files:
 * **RTAB-Map & beyond:** Explore the capabilities of RTAB-Map and RGB-D SLAM to make the navigation more robust
 * **Simple is beautiful:** Improve the overall execution of the project to make it more user interactive by making it simpler/easier
 
+*This project was completed as part of the MS in Robotics [(MSR)] program at Northwestern University.*
+
 [http://patilnabhi.github.io/portfolio/tbotnav]: [http://patilnabhi.github.io/portfolio/tbotnav]
+[TurtleBot packages]: http://wiki.ros.org/turtlebot_navigation
+[rtabmap_ros]: http://wiki.ros.org/rtabmap_ros
+[openni2_launch]: http://wiki.ros.org/openni2_launch
+[freenect_launch]: http://wiki.ros.org/freenect_launch
+[ar_track_alvar]: http://wiki.ros.org/ar_track_alvar
+[TurtleBot setup]: http://wiki.ros.org/turtlebot/Tutorials/indigo
+[TurtleBot networking setup]: http://wiki.ros.org/turtlebot/Tutorials/indigo/Network%20Configuration
+[(MSR)]: http://www.mccormick.northwestern.edu/robotics/meet-students/profiles-2015-2016/patil-abhishek.html
