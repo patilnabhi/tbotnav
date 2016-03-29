@@ -27,14 +27,6 @@ The following **hardware** is required for complete execution of project:
 5. A second depth camera is *preferred* (ASUS Xtion Pro or Kinect) for hand gesture recognition; this will be connected to the second computer
 6. Printed AR codes from 2 to 5 that could be placed anywhere around TurtleBot
 
-The following **packages** need to be installed:
-
-1. [TurtleBot packages] - SLAM packages
-2. [rtabmap_ros] - RTAB-Map package 
-3. [openni2_launch] - required if using ASUS Xtion Pro for hand gesture recognition
-4. [freenect_launch] - required for `3dsensor.launch` with TurtleBot navigation
-5. [ar_track_alvar] - to recognize AR code tags and move TurtleBot towards them
-
 The following needs to be **setup** in order to run all nodes:
 
 1. [TurtleBot setup]
@@ -44,6 +36,13 @@ The following needs to be **setup** in order to run all nodes:
 roslaunch openni2_launch openni2.launch
 ```
 
+The following **packages** need to be installed:
+
+1. [rtabmap_ros] - RTAB-Map package 
+2. [openni2_launch] - required if using ASUS Xtion Pro for hand gesture recognition
+3. [freenect_launch] - required for `3dsensor.launch` with TurtleBot navigation
+4. [ar_track_alvar] - to recognize AR code tags and move TurtleBot towards them
+
 ### 2. 'tbotnav' Package Contents
 
 This package consists the following **nodes**:
@@ -51,7 +50,7 @@ This package consists the following **nodes**:
 **Navigation:**
 
 1. `move_to_pose.py` - this node is used to move TurtleBot to a specific pose and uses the `MoveBaseAction` and `MoveBaseGoal` messages to do so
-2. `run_tbot_routine.py` - this the main node that performs the entire routine, combining various nodes, as outlined in the Overview section. This node subscribes to the following topics:  
+2. `run_tbot_routine.py` - this is the main node that performs the entire routine, combining various nodes, as outlined in the overview section; this node subscribes to the following topics:  
     a. `ar_pose_marker` - to determine the id and pose estimate of AR code  
     b. `num_fingers` - the detected number of fingers using hand gestures  
     c. `face_names` - get the names of people detected during face recognition mode  
