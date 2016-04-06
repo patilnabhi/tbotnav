@@ -14,6 +14,7 @@ from geometry_msgs.msg import Twist
 from tbotnav.msg import StringArray
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from math import pi, radians, atan, sqrt, cos, sin
+from face_recog import FaceRecognition
 
 class MoveTbot:
     def __init__(self):
@@ -25,8 +26,10 @@ class MoveTbot:
         self.bridge = CvBridge()
         self.turn = Twist()
         self.move = GoToPose()
+        # self.face_recog_file = FaceRecognition()
         # self.get_person_data = GetPersonData()
         self.qr_data = []
+        self.all_face_names = []
 
         self.qr_sub = rospy.Subscriber('ar_pose_marker', AlvarMarkers, self.qr_callback)
         self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
@@ -122,6 +125,7 @@ class MoveTbot:
             rospy.sleep(3)
 
             person_data = self.all_face_names
+            # person_data = [abhi, mikhail, tanay]
             total_person_data = len(person_data)
             rospy.loginfo("Who would you like me to find?") 
             for i in range(total_person_data):           
@@ -146,26 +150,36 @@ class MoveTbot:
                 while found != True and count < 6:               
                     station_loc = self.find_station(count)
                     if station_loc:
+                        x1 = station_loc[0]
+                        y1 = station_loc[1]
+                        d1 = sqrt(x1**2 + y1**2)
+                        th = atan(y1/x1)
+                        d2 = d1 - 0.45
+                        x2 = d2*cos(th)
+                        y2 = d2*sin(th)
+                        if x1 < 0 and y1<0:
+                            x2 = -x2
+                            y2 = -y2
                         rospy.loginfo("Moving to station %d", count)
-                        if count == 1:
-                            goal_x, goal_y = 0.0, 0.0
-                        if station_loc[0]<0:
-                            goal_x = station_loc[0] + 0.3
-                        else:
-                            goal_x = station_loc[0] - 0.3
+                        # if count == 1:
+                        #     goal_x, goal_y = 0.0, 0.0
+                        # if station_loc[0]<0:
+                        #     goal_x = station_loc[0] + 0.3
+                        # else:
+                        #     goal_x = station_loc[0] - 0.3
                         # if station_loc[1]<0:
                         #     goal_y = station_loc[1] + 0.3
                         # else:
                         #     goal_y = station_loc[1] - 0.3
-                        goal_y = station_loc[1]
-                        self.move_tbot(goal_x, goal_y)
+                        # goal_y = station_loc[1]
+                        self.move_tbot(x2, y2)
 
                         found = self.find_person(name)
 
                         if found:
                             rospy.loginfo("I found %s", name)
-                            rospy.sleep(5)
-                            # self.rotate_tbot(360.0*3)
+                            rospy.sleep(10)
+                            self.rotate_tbot(360.0*1)
                     else:
                         rospy.loginfo("Couldn't find station. Searching for next station...")
 
@@ -229,6 +243,7 @@ class MoveTbot:
 
     def all_face_names_callback(self, data):
         self.all_face_names = data.data
+        # print self.all_face_names
 
     def rotate_tbot(self, deg, speed=45.0):
         num = int(deg/45.0)
@@ -308,5 +323,6 @@ class MoveTbot:
 if __name__ == '__main__':
     try:
         MoveTbot()
+        rospy.spin()
     except rospy.ROSInterruptException:
         rospy.loginfo("Exception thrown")

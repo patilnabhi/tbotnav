@@ -17,6 +17,7 @@ class FaceRecognition:
         rospy.on_shutdown(self.cleanup)
         self.bridge = CvBridge()
         self.face_names = StringArray()
+        self.all_names = StringArray()
 
         self.size = 4
         face_haar = 'haarcascade_frontalface_default.xml'
@@ -37,7 +38,7 @@ class FaceRecognition:
 
         # self.img_pub = rospy.Publisher('face_img', Image, queue_size=10)
         self.name_pub = rospy.Publisher('face_names', StringArray, queue_size=10)
-        # self.all_names_pub = rospy.Publisher('all_face_names', StringArray, queue_size=10)
+        self.all_names_pub = rospy.Publisher('all_face_names', StringArray, queue_size=10)
         rospy.loginfo("Detecting faces...")        
 
     def img_callback(self, image):
@@ -52,7 +53,11 @@ class FaceRecognition:
             # self.img_pub.publish(self.bridge.cv2_to_imgmsg(self.outImg, "bgr8"))
             
             # self.face_names.data = ['a', 'b']
+            # print self.face_names
             self.name_pub.publish(self.face_names)
+            self.all_names.data = self.names.values()
+            # print self.all_names
+            self.all_names_pub.publish(self.all_names)
 
             cv2.imshow("Face Recognition", self.outImg)
             cv2.waitKey(3)
@@ -97,9 +102,11 @@ class FaceRecognition:
                 names[index] = subdir
                 index += 1
         self.names = names 
-        # self.all_names_pub.publish(names)
+        # print names.values()
+        # self.all_names_pub.publish(names.values())
 
         self.model.load('fisher_trained_data.xml')
+        # return names
 
     # def fisher_train_data(self):        
     #     try:
