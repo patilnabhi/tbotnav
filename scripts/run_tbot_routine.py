@@ -61,103 +61,44 @@ class MoveTbot:
                 sys.exit(0)
 
         rospy.loginfo("You gestured %d", self.detected_gesture)
-        rospy.sleep(3)
-        if self.counter == 0:
-                rospy.loginfo("Rotating 360 deg...")
-                self.rotate_tbot(360.0+120.0)
-                rospy.sleep(3)
-        rospy.loginfo("Gesture '3' or '5'")
-        rospy.sleep(3)
-        self.determine_gesture()
+        rospy.sleep(1)
 
+        if self.counter == 0:
+                rospy.loginfo("Initializing...Rotating 360 deg...")
+                self.rotate_tbot(360.0+120.0)
+                rospy.sleep(2)
+        rospy.loginfo("Gesture '3' to enter Station-Finder Mode... OR")
+        rospy.loginfo("Gesture '5' to enter Person-Finder Mode...")
+        rospy.sleep(2)
+
+        self.determine_gesture()
         rospy.loginfo("You gestured %d", self.detected_gesture)
         rospy.sleep(1)
 
-        if self.detected_gesture == 3:  
-            rospy.loginfo("Entering station-finder mode...")
-            rospy.sleep(1)
+        # if self.detected_gesture == 3:  
+        rospy.loginfo("Entering station-finder mode...")
+        rospy.sleep(2)
 
-            # if self.counter == 0:
-            #     rospy.loginfo("Rotating 360 deg...")
-            #     self.rotate_tbot(360.0+120.0)
-            #     rospy.sleep(3)
-
+        # if self.counter == 0:
+        #     rospy.loginfo("Rotating 360 deg...")
+        #     self.rotate_tbot(360.0+120.0)
+        #     rospy.sleep(3)
+        if self.detected_gesture == 3:
             count=0
             while count < 3:
                 rospy.loginfo("Which station would you like me to move?")
-                rospy.sleep(1)
+                rospy.sleep(2)
+
                 self.determine_gesture()
-
                 station_id = self.detected_gesture
-                rospy.loginfo("You gestured %d", self.detected_gesture)
-                rospy.sleep(1)
 
-                station_loc = self.find_station(station_id)
-                if station_loc != 0:
-                    x1 = station_loc[0]
-                    y1 = station_loc[1]
-                    d1 = sqrt(x1**2 + y1**2)
-                    th = atan(y1/x1)
-                    d2 = d1 - 0.45
-                    x2 = d2*cos(th)
-                    y2 = d2*sin(th)
-                    if x1 < 0 and y1<0:
-                        x2 = -x2
-                        y2 = -y2
-                    rospy.loginfo("Moving to station %d", station_id)
-                    # if station_loc[0]<0:
-                    #     goal_x = station_loc[0] + 0.3
-                    # else:
-                    #     goal_x = station_loc[0] - 0.3
-                    # if station_loc[1]<0:
-                    #     goal_y = station_loc[1] + 0.1
-                    # else:
-                    #     goal_y = station_loc[1] - 0.1
-                    # # goal_y = station_loc[1]
-                    self.move_tbot(x2, y2)
-                    count = 3
-                else:
-                    rospy.loginfo("Couldn't find station, try again!")
-                    count += 1
-                    if count == 3:
-                        rospy.loginfo("Aborting mission...")
-        
-        if self.detected_gesture == 5:  
-            rospy.loginfo("Entering person-finder mode...")
-            rospy.sleep(3)
-
-            # rospy.loginfo("Rotating 360 deg...")
-            # self.rotate_tbot(360.0+120.0)
-            # rospy.sleep(3)
-
-            person_data = self.all_face_names
-            rospy.sleep(2)
-            print person_data
-            # person_data = [abhi, mikhail, tanay]
-            total_person_data = len(person_data)
-            rospy.loginfo("Who would you like me to find?") 
-            for i in range(total_person_data):           
-                rospy.loginfo("%d -- %s", i+2, person_data[i])            
-            # rospy.loginfo("3 -- %s", person_data[len-2])            
-            # rospy.loginfo("4 -- %s", person_data[len-3])            
-            # rospy.loginfo("5 -- %s", person_data[len-4])
-            rospy.sleep(5)
-            self.determine_gesture()
-
-            person_id = self.detected_gesture
-            
-            rospy.loginfo("You gestured %d", self.detected_gesture)
-            rospy.sleep(3)
-            # person_data = self.get_person_data.get_data()
-            if person_id > 1:
-                
-                name = person_data[person_id-2]
-
-                count=2
-                found=False
-                while found != True and count < 6:               
-                    station_loc = self.find_station(count)
-                    if station_loc:
+                if station_id > 1:
+                    rospy.loginfo("You gestured %d", self.detected_gesture)
+                    rospy.sleep(1)
+                    rospy.loginfo("Searching for station %d...", self.detected_gesture)
+                    
+                    station_loc = self.find_station(station_id)
+                    if station_loc != 0:
                         x1 = station_loc[0]
                         y1 = station_loc[1]
                         d1 = sqrt(x1**2 + y1**2)
@@ -168,34 +109,99 @@ class MoveTbot:
                         if x1 < 0 and y1<0:
                             x2 = -x2
                             y2 = -y2
-                        rospy.loginfo("Moving to station %d", count)
-                        # if count == 1:
-                        #     goal_x, goal_y = 0.0, 0.0
+                        rospy.loginfo("Moving to station %d...", station_id)
                         # if station_loc[0]<0:
                         #     goal_x = station_loc[0] + 0.3
                         # else:
                         #     goal_x = station_loc[0] - 0.3
                         # if station_loc[1]<0:
-                        #     goal_y = station_loc[1] + 0.3
+                        #     goal_y = station_loc[1] + 0.1
                         # else:
-                        #     goal_y = station_loc[1] - 0.3
-                        # goal_y = station_loc[1]
+                        #     goal_y = station_loc[1] - 0.1
+                        # # goal_y = station_loc[1]
                         self.move_tbot(x2, y2)
-
-                        found = self.find_person(name)
-                        rospy.sleep(1)
-                        if found:
-                            rospy.loginfo("I found %s !", name)
-                            rospy.sleep(2)
-                            self.rotate_tbot(360.0*2)
-                            rospy.sleep(10)
-                            
+                        count = 3
                     else:
-                        rospy.loginfo("Couldn't find station. Searching for next station...")
+                        rospy.loginfo("Couldn't find station, try again!")
+                        count += 1
+                        if count == 3:
+                            rospy.loginfo("Aborting mission...")
+        
+        # # self.detected_gesture = 0;
+        # if self.detected_gesture == 5:  
+        #     rospy.loginfo("Entering person-finder mode...")
+        #     rospy.sleep(3)
 
-                    count += 1  
-            else:
-                rospy.loginfo("Did not understand you, please try again")
+        #     # rospy.loginfo("Rotating 360 deg...")
+        #     # self.rotate_tbot(360.0+120.0)
+        #     # rospy.sleep(3)
+
+        #     person_data = self.all_face_names
+        #     rospy.sleep(2)
+        #     print person_data
+        #     # person_data = [abhi, mikhail, tanay]
+        #     total_person_data = len(person_data)
+        #     rospy.loginfo("Who would you like me to find?") 
+        #     for i in range(total_person_data):           
+        #         rospy.loginfo("%d -- %s", i+2, person_data[i])            
+        #     # rospy.loginfo("3 -- %s", person_data[len-2])            
+        #     # rospy.loginfo("4 -- %s", person_data[len-3])            
+        #     # rospy.loginfo("5 -- %s", person_data[len-4])
+        #     rospy.sleep(5)
+        #     self.determine_gesture()
+
+        #     person_id = self.detected_gesture
+            
+        #     rospy.loginfo("You gestured %d", self.detected_gesture)
+        #     rospy.sleep(3)
+        #     # person_data = self.get_person_data.get_data()
+        #     if person_id > 1:
+                
+        #         name = person_data[person_id-2]
+
+        #         count=2
+        #         found=False
+        #         while found != True and count < 6:               
+        #             station_loc = self.find_station(count)
+        #             if station_loc:
+        #                 x1 = station_loc[0]
+        #                 y1 = station_loc[1]
+        #                 d1 = sqrt(x1**2 + y1**2)
+        #                 th = atan(y1/x1)
+        #                 d2 = d1 - 0.45
+        #                 x2 = d2*cos(th)
+        #                 y2 = d2*sin(th)
+        #                 if x1 < 0 and y1<0:
+        #                     x2 = -x2
+        #                     y2 = -y2
+        #                 rospy.loginfo("Moving to station %d", count)
+        #                 # if count == 1:
+        #                 #     goal_x, goal_y = 0.0, 0.0
+        #                 # if station_loc[0]<0:
+        #                 #     goal_x = station_loc[0] + 0.3
+        #                 # else:
+        #                 #     goal_x = station_loc[0] - 0.3
+        #                 # if station_loc[1]<0:
+        #                 #     goal_y = station_loc[1] + 0.3
+        #                 # else:
+        #                 #     goal_y = station_loc[1] - 0.3
+        #                 # goal_y = station_loc[1]
+        #                 self.move_tbot(x2, y2)
+
+        #                 found = self.find_person(name)
+        #                 rospy.sleep(1)
+        #                 if found:
+        #                     rospy.loginfo("I found %s !", name)
+        #                     rospy.sleep(2)
+        #                     self.rotate_tbot(360.0*2)
+        #                     rospy.sleep(10)
+                            
+        #             else:
+        #                 rospy.loginfo("Couldn't find station. Searching for next station...")
+
+        #             count += 1  
+        #     else:
+        #         rospy.loginfo("Did not understand you, please try again")
 
         # station_loc = self.find_station(3)
         # print station_loc
@@ -269,13 +275,13 @@ class MoveTbot:
         # cv2.imshow("Hand Image", self.hand_img)
         # cv2.waitKey(3) 
         rospy.loginfo("Detecting gesture...")
-        rospy.sleep(3)      
+        rospy.sleep(2)      
         a = []  
         
         for i in range(6):
             a.append(self.num_fingers)
             rospy.loginfo("Detected fingers: %d", a[i])
-            rospy.sleep(1)
+            rospy.sleep(0.3)
 
         self.detected_gesture = max(set(a), key=a.count)
 
