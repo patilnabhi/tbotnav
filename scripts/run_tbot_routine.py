@@ -292,10 +292,10 @@ class MoveTbot:
         station_loc = self.qr_tag_loc(station_id)
         count=0
         while not station_loc:
-            if count == 12:
+            if count == 18:
                 break
-            self.rotate_tbot(90.0)
-            rospy.sleep(4)
+            self.rotate_tbot(45.0)
+            rospy.sleep(1)
             station_loc = self.qr_tag_loc(station_id)
             # print station_loc
             # rospy.sleep(3)
