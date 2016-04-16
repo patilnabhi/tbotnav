@@ -1,7 +1,7 @@
 <launch>
     <!-- <include file="$(find turtlebot_bringup)/launch/3dsensor.launch"/> -->
 
-    <arg name="marker_size"          default="18.0" />
+    <arg name="marker_size"          default="14.0" />
     <arg name="max_new_marker_error" default="0.05" />
     <arg name="max_track_error"      default="0.05" />
     <arg name="cam_image_topic"      default="/camera/depth_registered/points" />
