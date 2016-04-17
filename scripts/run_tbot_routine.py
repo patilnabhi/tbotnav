@@ -127,7 +127,7 @@ class MoveTbot:
                         if count == 3:
                             rospy.loginfo("Aborting mission...")
         
-        # # self.detected_gesture = 0;
+        self.detected_gesture = 0;
         if self.detected_gesture == 5:  
             rospy.loginfo("Entering person-finder mode...")
             rospy.sleep(1)
