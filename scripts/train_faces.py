@@ -32,7 +32,7 @@ class TrainFisherFaces:
 
         self.count = 0    
 
-        self.train_img_sub = rospy.Subscriber("/asus/rgb/image_raw", Image, self.img_callback)
+        self.train_img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.img_callback)
         # self.train_img_pub = rospy.Publisher('train_face', Image, queue_size=10)
         rospy.loginfo("Capturing data...")    
 

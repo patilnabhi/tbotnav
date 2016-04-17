@@ -76,14 +76,15 @@ class MoveTbot:
         rospy.sleep(1)
 
         # if self.detected_gesture == 3:  
-        rospy.loginfo("Entering station-finder mode...")
-        rospy.sleep(2)
+        
 
         # if self.counter == 0:
         #     rospy.loginfo("Rotating 360 deg...")
         #     self.rotate_tbot(360.0+120.0)
         #     rospy.sleep(3)
         if self.detected_gesture == 3:
+            rospy.loginfo("Entering station-finder mode...")
+            rospy.sleep(2)
             count=0
             while count < 3:
                 rospy.loginfo("Which station would you like me to move?")
@@ -95,7 +96,7 @@ class MoveTbot:
                 if station_id > 1:
                     rospy.loginfo("You gestured %d", self.detected_gesture)
                     rospy.sleep(1)
-                    rospy.loginfo("Searching for station %d...", self.detected_gesture)
+                    rospy.loginfo("Looking for station %d...", self.detected_gesture)
                     
                     station_loc = self.find_station(station_id)
                     if station_loc != 0:
@@ -127,7 +128,8 @@ class MoveTbot:
                         if count == 3:
                             rospy.loginfo("Aborting mission...")
         
-        self.detected_gesture = 0;
+            self.detected_gesture = 0;
+
         if self.detected_gesture == 5:  
             rospy.loginfo("Entering person-finder mode...")
             rospy.sleep(1)
@@ -275,8 +277,9 @@ class MoveTbot:
         rospy.loginfo("Position your gesture infront of camera.")
         # cv2.imshow("Hand Image", self.hand_img)
         # cv2.waitKey(3) 
+        rospy.sleep(3) 
         rospy.loginfo("Detecting gesture...")
-        rospy.sleep(2)      
+        # rospy.sleep(2)      
         a = []  
         
         for i in range(6):

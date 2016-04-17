@@ -40,18 +40,18 @@ class GoToPose():
         
         #start moving
         self.move_base.send_goal(self.goal)
-        rospy.loginfo("moving to desired position...")
+        rospy.loginfo("Moving to desired position...")
         #allow TurtleBot up to 60 seconds to complete task
         self.success = self.move_base.wait_for_result(rospy.Duration(60)) 
 
         if not self.success:
             self.move_base.cancel_goal()
-            rospy.loginfo("The base failed to reach the desired pose :(")
+            rospy.loginfo("The base failed to reach the desired position :(")
         else:
             # We made it!
             state = self.move_base.get_state()
             if state == GoalStatus.SUCCEEDED:
-                rospy.loginfo("Hooray, reached! :)")
+                rospy.loginfo("Destination reached!")
 
     def _shutdown(self):
         rospy.loginfo("Stopped")
