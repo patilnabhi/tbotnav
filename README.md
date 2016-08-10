@@ -6,7 +6,7 @@ Navigation of TurtleBot using hand-gestures to find target locations marked with
 
 ## Demo:
 
-* Please visit [http://patilnabhi.github.io/portfolio/tbotnav]
+* Please visit [http://abhipatil.me/portfolio/tbot_slam/]
 
 <!-- ## Overview:
 
@@ -129,7 +129,7 @@ This package consists the following **launch** files:
 
 *This project was completed as part of the MS in Robotics [(MSR)] program at Northwestern University.*
 
-[http://patilnabhi.github.io/portfolio/tbotnav]: [http://patilnabhi.github.io/portfolio/tbotnav]
+[http://abhipatil.me/portfolio/tbot_slam/]: [http://abhipatil.me/portfolio/tbot_slam/]
 [TurtleBot packages]: http://wiki.ros.org/turtlebot_navigation
 [rtabmap_ros]: http://wiki.ros.org/rtabmap_ros
 [openni2_launch]: http://wiki.ros.org/openni2_launch
